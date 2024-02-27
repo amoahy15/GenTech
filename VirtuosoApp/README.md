@@ -6,9 +6,9 @@ Follow this file strucutre
     Services: For functionalities like authentication and recommendations.
     Utils: For database connections and other utilities.
     Tests: To store your tests for models, controllers, etc.
-/backend
     /app
-        __init__.py
+/backend
+__init__.py
         /models
             __init__.py
             user.py
