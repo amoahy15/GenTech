@@ -224,4 +224,8 @@ Thumbs.db
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-"""
+
+.gitignore
+VirtuosoApp/backend/__init__.py
+.gitignore
+VirtuosoApp/backend/config.py
