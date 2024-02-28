@@ -1,7 +1,6 @@
 import mongoengine
 
 import mongoengine
-
 def connect_db(app):
     try:
         mongoengine.connect(

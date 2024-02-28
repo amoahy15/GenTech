@@ -1,7 +1,7 @@
 from mongoengine import Document, StringField, EmailField, DateTimeField, BooleanField, ListField, DictField
 from datetime import datetime
 
-class User(Document):
+class Users(Document):
     userID = StringField(required=True)
     username = StringField(required=True)
     first_name = StringField(max_length=50)

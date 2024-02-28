@@ -1,7 +1,7 @@
 import bcrypt
 from flask import request, jsonify, Blueprint
 from mongoengine import NotUniqueError, ValidationError
-from VirtuosoApp.backend.app.models.user import User
+from VirtuosoApp.backend.app.models.user import Users
 
 user_controller = Blueprint('UserController', __name__)
 @user_controller.route('/users', methods=['POST'])
@@ -23,7 +23,7 @@ def create_user():
     hashed_password = bcrypt.hashpw(data['password'].encode('utf-8'), bcrypt.gensalt())
 
     try:
-        new_user = User(
+        new_user = Users(
             userID=data.get('userID'),
             username=data['username'],  # Using direct access since we now know it exists
             first_name=data.get('firstName'),
