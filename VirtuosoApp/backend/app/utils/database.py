@@ -1,11 +1,13 @@
 import mongoengine
+from dotenv import load_dotenv
+import os
 
-import mongoengine
 def connect_db(app):
+    load_dotenv()
     try:
         mongoengine.connect(
-            db=app.config['MONGODB_SETTINGS']['db'],
-            host=app.config['MONGODB_SETTINGS']['host'],
+            db=os.environ.get("MONGODB_DATABASE"),
+            host=os.environ.get("MONGODB_URI"),
             alias='default'
         )
         print("Successful connection to MongoDB Atlas.")
