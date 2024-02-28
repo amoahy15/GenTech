@@ -1,11 +1,14 @@
-# GenTech/Virtusio/backend/app/utils/database.py
-from mongoengine import connect
-from VirtuosoApp.backend.config import Config
+import mongoengine
 
-import sys
-def initialize_db():
+import mongoengine
+
+def connect_db(app):
     try:
-        connect(host=Config.MONGODB_URI)
-        print("Database connection established successfully.")
+        mongoengine.connect(
+            db=app.config['MONGODB_SETTINGS']['db'],
+            host=app.config['MONGODB_SETTINGS']['host'],
+            alias='default'
+        )
+        print("Successful connection to MongoDB Atlas.")
     except Exception as e:
-        print(f"Failed to connect to the database. Error: {e}", file=sys.stderr)
+        print(f"An error occurred while connecting to MongoDB: {e}")
