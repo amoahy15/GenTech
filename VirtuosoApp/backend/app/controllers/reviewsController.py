@@ -30,7 +30,7 @@ def create_review():
     except Exception as e:
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
-@review_controller.route('/reviews/<review_id>', methods=['GET'])
+@review_controller.route('/reviews/<reviewID>', methods=['GET'])
 def get_review(reviewID):
     review = Review.objects(reviewID=reviewID).first()
     if review:
@@ -38,7 +38,7 @@ def get_review(reviewID):
     else:
         return jsonify({"error": "Review not found"}), 404
 
-@review_controller.route('/reviews/<review_id>', methods=['PUT'])
+@review_controller.route('/reviews/<reviewID>', methods=['PUT'])
 def update_review(reviewID):
     data = request.get_json()
     try:
@@ -55,7 +55,7 @@ def update_review(reviewID):
     except Exception as e:
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
-@review_controller.route('/reviews/<review_id>', methods=['DELETE'])
+@review_controller.route('/reviews/<reviewID>', methods=['DELETE'])
 def delete_review(reviewID):
     review = Review.objects(reviewID=reviewID).first()
     if review:
