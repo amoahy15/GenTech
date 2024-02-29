@@ -34,7 +34,7 @@ def create_review():
 def get_review(review_id):
     review = Review.objects(reviewID=review_id).first()
     if review:
-        return jsonify(review.serialize())  # Assuming a serialize method is defined in the Review model
+        return jsonify(review.serialize())  
     else:
         return jsonify({"error": "Review not found"}), 404
 
