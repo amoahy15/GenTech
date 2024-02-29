@@ -6,8 +6,8 @@ from datetime import datetime
 class Reviews(Document):
     # Fields
     reviewID = StringField(required=True, unique=True)
-    user_id = StringField(required=True)
-    artwork_id = StringField(required=True)
+    userID = StringField(required=True)
+    artworkID = StringField(required=True)
     rating = IntField(min_value=1, max_value=5)
     comment = StringField()
     created_at = DateTimeField(default=datetime.now)
@@ -19,11 +19,11 @@ class Reviews(Document):
     def serialize(self):
         return {
             'reviewID': self.reviewID,
-            'user_id': self.user_id,
-            'artwork_id': self.artwork_id,
+            'userID': self.userID,
+            'artworkID': self.artworkID,
             'rating': self.rating,
             'comment': self.comment,
-            'created_at': self.created_at.isoformat()  # Convert to ISO format for datetime
+            'createdAt': self.createdAt.isoformat()  # Convert to ISO format for datetime
         }
                             
     }
