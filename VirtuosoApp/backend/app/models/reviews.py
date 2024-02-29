@@ -14,4 +14,16 @@ class Reviews(Document):
 
     meta = {
         'collection': 'reviews'
+   
+    #Serialize the Review object into a dictionary
+    def serialize(self):
+        return {
+            'reviewID': self.reviewID,
+            'user_id': self.user_id,
+            'artwork_id': self.artwork_id,
+            'rating': self.rating,
+            'comment': self.comment,
+            'created_at': self.created_at.isoformat()  # Convert to ISO format for datetime
+        }
+                            
     }
