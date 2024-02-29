@@ -10,10 +10,11 @@ class Reviews(Document):
     artworkID = StringField(required=True)
     rating = DoubleField(required =True, min_value=0.0, max_value=5.0)
     comment = StringField()
-    created_at = DateTimeField(default=datetime.now)
+    createdAt = DateTimeField(default=datetime.now)
 
     meta = {
-        'collection': 'reviews'
+        'collection': 'reviews
+    }
    
     #Serialize the Review object into a dictionary
     def serialize(self):
@@ -26,4 +27,4 @@ class Reviews(Document):
             'createdAt': self.createdAt.isoformat()  # Convert to ISO format for datetime
         }
                             
-    }
+
