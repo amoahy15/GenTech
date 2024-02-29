@@ -9,7 +9,7 @@ def create_review():
     data = request.get_json()
 
     # Required fields list
-    required_fields = ['user_id', 'artwork_id', 'rating']
+    required_fields = ['userID', 'artworkID', 'rating']
 
     # Check if all required fields are present
     missing_fields = [field for field in required_fields if field not in data]
@@ -18,8 +18,8 @@ def create_review():
 
     try:
         new_review = Review(
-            user_id=data['user_id'],
-            artwork_id=data['artwork_id'],
+            userID=data['userID'],
+            artworkID=data['artworkID'],
             rating=data['rating'],
             comment=data.get('comment')
         )
@@ -31,18 +31,18 @@ def create_review():
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
 @review_controller.route('/reviews/<review_id>', methods=['GET'])
-def get_review(review_id):
-    review = Review.objects(reviewID=review_id).first()
+def get_review(reviewID):
+    review = Review.objects(reviewID=reviewID).first()
     if review:
         return jsonify(review.serialize())  
     else:
         return jsonify({"error": "Review not found"}), 404
 
 @review_controller.route('/reviews/<review_id>', methods=['PUT'])
-def update_review(review_id):
+def update_review(reviewID):
     data = request.get_json()
     try:
-        review = Review.objects(reviewID=review_id).first()
+        review = Review.objects(reviewID=reviewID).first()
         if review:
             for key, value in data.items():
                 setattr(review, key, value)
@@ -56,8 +56,8 @@ def update_review(review_id):
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
 @review_controller.route('/reviews/<review_id>', methods=['DELETE'])
-def delete_review(review_id):
-    review = Review.objects(reviewID=review_id).first()
+def delete_review(reviewID):
+    review = Review.objects(reviewID=reviewID).first()
     if review:
         review.delete()
         return jsonify({"message": "Review deleted successfully"})
