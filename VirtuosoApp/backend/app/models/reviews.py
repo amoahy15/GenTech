@@ -13,7 +13,7 @@ class Reviews(Document):
     createdAt = DateTimeField(default=datetime.now)
 
     meta = {
-        'collection': 'reviews
+        'collection': 'reviews'
     }
    
     #Serialize the Review object into a dictionary
