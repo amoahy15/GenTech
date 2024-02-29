@@ -8,7 +8,7 @@ class Reviews(Document):
     reviewID = StringField(required=True, unique=True)
     userID = StringField(required=True)
     artworkID = StringField(required=True)
-    rating = IntField(min_value=1, max_value=5)
+    rating = DoubleField(required =True, min_value=0.0, max_value=5.0)
     comment = StringField()
     created_at = DateTimeField(default=datetime.now)
 
