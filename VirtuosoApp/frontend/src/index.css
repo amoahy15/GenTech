@@ -59,3 +59,8 @@ nav ul li {
   line-height: 150%;
   position: relative;
 }
+.divider{
+  width:5px;
+  height:auto;
+  display:inline-block;
+}
