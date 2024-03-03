@@ -13,11 +13,11 @@ const Nav = () => {
       <div className="virtuoso">VIRTUOSO</div>
       <nav>
         <ul>
-          <li><Button color='beige' text='Home' onClick={onClick}/></li>
-          <li><Button color='beige' text='Exhibits' onClick={onClick}/></li>
-          <li><Button color='beige' text='Profile' onClick={onClick}/></li>
-          <li><Button color='beige' text='About' onClick={onClick}/></li> 
-          <li><Button color='beige' text='Search' onClick={onClick}/></li>
+          <a href='./'><Button color='beige' text='Home' onClick={onClick}/></a>
+          <a><Button color='beige' text='Exhibits' onClick={onClick}/></a>
+          <a><Button color='beige' text='Profile' onClick={onClick}/></a>
+          <a href ='./about'><Button color='beige' text='About' onClick={onClick}/></a> 
+          <a><Button color='beige' text='Search' onClick={onClick}/></a> 
         </ul>
       </nav>
     </div>
