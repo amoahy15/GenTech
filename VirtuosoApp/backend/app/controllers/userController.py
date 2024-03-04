@@ -1,11 +1,11 @@
 import logging
+import os
+from datetime import timedelta
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-from VirtuosoApp.backend.app.models.user import Users
-from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
-from datetime import timedelta
-import os
 import bcrypt
+from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
+from VirtuosoApp.backend.app.models.user import Users
 
 # Initialize Blueprint for UserController
 user_controller = Blueprint('user_controller', __name__)
