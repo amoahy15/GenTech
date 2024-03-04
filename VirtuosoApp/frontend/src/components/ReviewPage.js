@@ -1,8 +1,8 @@
+import FlexibleColumns from "./ImageTextColumn";
 
 function ReviewPage() {
   return (
-      <h1>"hi</h1>   
-    
+    <FlexibleColumns></FlexibleColumns>
   );
 }
 
