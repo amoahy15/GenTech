@@ -1,5 +1,5 @@
 from mongoengine import Document, StringField, EmailField, DateTimeField, BooleanField, ListField, DictField
-from datetime import datetime
+from datetime import datetime,timezone
 
 class Users(Document):
     userID = StringField(required=True)
@@ -17,6 +17,6 @@ class Users(Document):
     socialMediaLinks = DictField()
     verificationStatus = BooleanField(default=False)
     preferences = DictField()
-    joinedDate = DateTimeField(required=True, default=datetime.utcnow())
+    joinedDate = DateTimeField(required=True, default=datetime.now(timezone.utc).isoformat())
 
 
