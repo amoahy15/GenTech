@@ -13,15 +13,15 @@ const Nav = () => {
       <div className="virtuoso">VIRTUOSO</div>
       <nav>
         <ul>
-          <a href='./'><Button color='beige' text='Home' onClick={onClick}/></a>
+          <a href='./'><Button text='Home' onClick={onClick}/></a>
           <div class="divider"/>
-          <a><Button color='beige' text='Exhibits' onClick={onClick}/></a>
+          <a><Button text='Exhibits' onClick={onClick}/></a>
           <div class="divider"/>
-          <a><Button color='beige' text='Profile' onClick={onClick}/></a>
+          <a><Button text='Profile' onClick={onClick}/></a>
           <div class="divider"/>
-          <a href ='./about'><Button color='beige' text='About' onClick={onClick}/></a> 
+          <a href ='./about'><Button text='About' onClick={onClick}/></a> 
           <div class="divider"/>
-          <a><Button color='beige' text='Search' onClick={onClick}/></a> 
+          <a><Button  text='Search' onClick={onClick}/></a> 
         </ul>
       </nav>
     </div>

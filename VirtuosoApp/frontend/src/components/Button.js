@@ -5,11 +5,11 @@ const Button = ({color, text, onClick}) => {
 
     
 
-  return <button onClick={onClick} style={{background: color}} className='btn'>{text}</button>
+  return <button onClick={onClick} style={{background: color, color:'#f6f5f1'}} className='btn'>{text}</button>
 }
 
 Button.defaultProps = {
-    color: 'beige'
+    color: '#990000'
 }
 
 Button.propTypes = {
