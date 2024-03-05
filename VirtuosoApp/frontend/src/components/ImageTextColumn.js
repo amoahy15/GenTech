@@ -1,9 +1,13 @@
 import React from 'react';
 import placeholderImage from '../assets/images/art3.jpeg';
+import StarRating from './stars'
 
 const ImageColumn = ({ imageUrl }) => (
     <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '50%' }}>
-        <img src={imageUrl} alt="Image" style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', objectFit: 'cover', alignItems: 'center'}} />
+        <div>
+            <img src={imageUrl} alt="Image" style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', objectFit: 'cover', alignItems: 'center'}} />
+            <StarRating></StarRating>
+        </div>
     </div>
 );
 
@@ -17,13 +21,17 @@ const TextColumn = ({ text, header, info}) => (
     </div>
 );
 
-
-const FlexibleColumns = () => {
+const FlexibleColumns = ( {text }) => {
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', margin: '0px 20px', padding: '40px'}}>
-          <ImageColumn imageUrl={placeholderImage} />
-          <div style={{ margin: '0 20px' }} />
-          <TextColumn text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." header= "TITLE" info = "Year, genre, etc"/>
+        <div>
+            <hr style={{width: '90%', margin: 'auto'}}></hr>
+            <div className="virtuoso" style={{padding: '15px 60px'}}>{text}</div>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', margin: '0px 20px', padding: '40px'}}>
+                <ImageColumn imageUrl={placeholderImage} />
+                
+                <div style={{ margin: '0 20px' }} />
+                <TextColumn text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." info = "Year, genre, etc"/>
+            </div>
         </div>
       );
 };

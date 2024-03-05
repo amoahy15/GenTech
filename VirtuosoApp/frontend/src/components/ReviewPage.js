@@ -1,8 +1,11 @@
 import FlexibleColumns from "./ImageTextColumn";
+import StarRating from "./stars"
 
 function ReviewPage() {
   return (
-    <FlexibleColumns></FlexibleColumns>
+    <div>
+      <FlexibleColumns text={"Lorem ipsum dolor sit amet"}></FlexibleColumns>
+    </div>
   );
 }
 
