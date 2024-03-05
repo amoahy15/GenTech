@@ -3,13 +3,15 @@ import placeholderImage from '../assets/images/art3.jpeg';
 import StarRating from './stars'
 
 const ImageColumn = ({ imageUrl }) => (
-    <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '50%' }}>
-        <div>
-            <img src={imageUrl} alt="Image" style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', objectFit: 'cover', alignItems: 'center'}} />
-            <StarRating></StarRating>
-        </div>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', maxWidth: '50%' }}>
+      <div style={{ width: '100%' }}>
+        <img src={imageUrl} alt="Image" style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', objectFit: 'cover' }} />
+      </div>
+      <div style={{ marginTop: '10px' }}>
+        <StarRating />
+      </div>
     </div>
-);
+  );
 
 const TextColumn = ({ text, header, info}) => (
     <div style={{ flex: 2, maxWidth:'50%'}}>
