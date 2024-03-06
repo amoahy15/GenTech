@@ -3,12 +3,15 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AboutPage from "./components/AboutPage";
 import Home from "./components/Home";
 import ReviewPage from "./components/ReviewPage";
+import LoginPage from "./components/UserData/loginPage";
+
+
 
 function App() {
   return (
 
     <Router>
-     <div className="App">
+    <div className="App">
      <Nav/>
       <div className="Content">
       <Switch>
@@ -21,8 +24,16 @@ function App() {
         <Route path="/reviews">
           <ReviewPage/>
         </Route> 
+        
       </Switch> 
       </div>
+    </div>
+    <div className="Users">
+      <Switch>
+        <Route path="/login">
+          <LoginPage/>
+        </Route> 
+      </Switch> 
     </div>
     </Router>
    
