@@ -8,33 +8,33 @@ import LoginPage from "./components/UserData/loginPage";
 
 
 function App() {
+
+
   return (
 
     <Router>
     <div className="App">
-     <Nav/>
       <div className="Content">
       <Switch>
         <Route exact path = "/">
+          <Nav/>
           <Home/>
         </Route>
         <Route path="/about">
+          <Nav/>
           <AboutPage/>
         </Route> 
         <Route path="/reviews">
+          <Nav/>
           <ReviewPage/>
         </Route> 
-        
-      </Switch> 
-      </div>
-    </div>
-    <div className="Users">
-      <Switch>
         <Route path="/login">
           <LoginPage/>
         </Route> 
       </Switch> 
+      </div>
     </div>
+   
     </Router>
    
     
