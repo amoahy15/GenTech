@@ -30,7 +30,8 @@ def createArtwork():
         except ValidationError as e:
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+  return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+
 
 @artworkController.route('/artwork', methods=['GET'])
     def artwork(artworkID):
@@ -39,6 +40,7 @@ def createArtwork():
             return jsonify(artwork.serialize())
         else:
             return jsonify({"error": "Artwork not found"}), 404
+
 
 @artworkController.route('/artwork/<artworkID>', methods=['PUT'])
     def updateArtwork(artworkID):
@@ -68,6 +70,7 @@ def createArtwork():
                 return jsonify({"error": str(e)}), 400
             except Exception as e:
                 return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+
 @artworkController.route('/artwork/<artworkID>', methods=['DELETE'])
    def delete_artwork(artworkID):
         artwork = artwork.objects(artworkID=artworkID).first()
