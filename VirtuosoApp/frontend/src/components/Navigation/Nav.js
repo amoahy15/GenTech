@@ -11,7 +11,7 @@ const Nav = () => {
     
     
       <div className={styles.Nav}>
-      <div className={styles.virtuoso}>VIRTUOSO</div>
+      <a className={styles.virtuoso} href = './' style = {{textDecoration: 'none'}}>VIRTUOSO</a>
       <nav className={styles.nav}>
         <ul>
           <a href='./'><Button text='Home' onClick={onClick}/></a>

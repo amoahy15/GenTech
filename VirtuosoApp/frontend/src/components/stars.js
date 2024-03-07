@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import button from "./styles/stars.module.css"; // Import CSS module
 
 const StarRating = () => {
   const [rating, setRating] = useState(0);
@@ -17,21 +17,20 @@ const StarRating = () => {
     setHover(rating);
   };
 
-  
   return (
-    <div className="star-rating">
+    <div className={button["button"]}>
       {[...Array(5)].map((_, index) => {
         const starIndex = index + 1;
         return (
           <button
             type="button"
             key={starIndex}
-            className={starIndex <= (hover || rating) ? "on" : "off"}
+            className={starIndex <= (hover || rating) ? button.on : button.off}
             onClick={() => handleStarClick(starIndex)}
             onMouseEnter={() => handleMouseEnter(starIndex)}
             onMouseLeave={handleMouseLeave}
           >
-            <span className="star">&#9733;</span>
+            <span className={button.star}>&#9733;</span>
           </button>
         );
       })}
