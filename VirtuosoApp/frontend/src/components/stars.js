@@ -17,6 +17,7 @@ const StarRating = () => {
     setHover(rating);
   };
 
+  
   return (
     <div className="star-rating">
       {[...Array(5)].map((_, index) => {
