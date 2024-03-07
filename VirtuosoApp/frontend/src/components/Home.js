@@ -1,7 +1,8 @@
+import styles from "./styles/main.module.css";
 
 const Home = () => {
   return (
-    <div>
+    <div className="home">
       <h2>Hello World</h2>
     </div>
   )
