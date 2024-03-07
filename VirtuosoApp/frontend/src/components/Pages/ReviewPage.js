@@ -1,5 +1,5 @@
-import FlexibleColumns from "./ImageTextColumn";
-import StarRating from "./stars"
+import FlexibleColumns from "../ImageTextColumn";
+import StarRating from "../stars"
 
 function ReviewPage() {
   return (

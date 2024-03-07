@@ -1,5 +1,5 @@
-import Button from "./Button"
-import styles from "./styles/main.module.css";
+import Button from "../Button"
+import styles from "../styles/main.module.css";
 import {Link} from "react-router-dom"
 
 const Nav = () => {
