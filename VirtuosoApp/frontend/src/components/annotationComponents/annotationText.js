@@ -1,6 +1,7 @@
 import React from 'react';
-import './styles/annotation.module.css';
+import '../styles/annotation.module.css'
 
+ {/* One single comment */} 
 const SingleAnnotation = ({ username, comment}) => {
   return (
     <div className="single-annotation" style={{ marginBottom: '20px' }}>
