@@ -4,10 +4,7 @@ import React, { useState } from 'react';
 
 const ImageDisplay = ({ imageUrl, onClick }) => (
   <div style={{ width: '100%' }} onClick={onClick}>
-    <img
-      src={imageUrl}
-      alt="Image"
-      style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', objectFit: 'cover' }}
+    <img src={imageUrl} alt="Image" style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', maxHeight: '600px', objectFit: 'cover' }}
     />
   </div>
 );
