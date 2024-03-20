@@ -1,8 +1,13 @@
+import logging
 from flask import request, jsonify, Blueprint
 from mongoengine import NotUniqueError, ValidationError
 from VirtuosoApp.backend.app.models.review import Review
 
 review_controller = Blueprint('ReviewController', __name__)
+
+# Configure the logger
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 @review_controller.route('/review', methods=['POST'])
 def create_review():
@@ -24,18 +29,23 @@ def create_review():
             comment=data.get('comment')
         )
         new_review.save()
+        logger.info("Review created successfully!")
         return jsonify({"message": "Review created successfully!"}), 201
     except ValidationError as e:
+        logger.error(f"Validation error: {e}")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
+        logger.error(f"Unexpected error: {e}")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
 @review_controller.route('/review/<reviewID>', methods=['GET'])
 def get_review(reviewID):
     review = Review.objects(reviewID=reviewID).first()
     if review:
+        logger.info("Review found")
         return jsonify(review.serialize())  
     else:
+        logger.error("Review not found")
         return jsonify({"error": "Review not found"}), 404
 
 @review_controller.route('/review/<reviewID>', methods=['PUT'])
@@ -47,12 +57,16 @@ def update_review(reviewID):
             for key, value in data.items():
                 setattr(review, key, value)
             review.save()
+            logger.info("Review updated successfully")
             return jsonify({"message": "Review updated successfully"})
         else:
+            logger.error("Review not found")
             return jsonify({"error": "Review not found"}), 404
     except ValidationError as e:
+        logger.error(f"Validation error: {e}")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
+        logger.error(f"Unexpected error: {e}")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
 @review_controller.route('/review/<reviewID>', methods=['DELETE'])
@@ -60,6 +74,8 @@ def delete_review(reviewID):
     review = Review.objects(reviewID=reviewID).first()
     if review:
         review.delete()
+        logger.info("Review deleted successfully")
         return jsonify({"message": "Review deleted successfully"})
     else:
+        logger.error("Review not found")
         return jsonify({"error": "Review not found"}), 404
