@@ -1,6 +1,5 @@
 import logging
 from flask import Blueprint, request, jsonify
-from flask_jwt_extended import jwt_required
 from VirtuosoApp.backend.app.models.annotation import Annotation
 from mongoengine.errors import ValidationError, DoesNotExist
 
@@ -12,7 +11,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 @annotation_controller.route('/create_annotation', methods=['POST'])
-@jwt_required()
 def create_annotation():
     data = request.get_json()
     try:
@@ -34,7 +32,6 @@ def create_annotation():
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 @annotation_controller.route('/delete_annotation/<annotation_id>', methods=['DELETE'])
-@jwt_required()
 def delete_annotation(annotation_id):
     try:
         annotation = Annotation.objects.get(id=annotation_id)
@@ -48,7 +45,6 @@ def delete_annotation(annotation_id):
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 @annotation_controller.route('/modify_annotation/<annotation_id>', methods=['PUT'])
-@jwt_required()
 def modify_annotation(annotation_id):
     data = request.get_json()
     try:
