@@ -229,3 +229,5 @@ yarn-error.log*
 VirtuosoApp/backend/__init__.py
 .gitignore
 VirtuosoApp/backend/config.py
+/VirtuosoApp/backend/tests/
+/VirtuosoApp/backend/app/utils/db_scriipts.txt
