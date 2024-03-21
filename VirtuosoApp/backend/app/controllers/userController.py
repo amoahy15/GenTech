@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 user_controller = Blueprint('UserController', __name__)
 @user_controller.route('/users', methods=['POST'])
