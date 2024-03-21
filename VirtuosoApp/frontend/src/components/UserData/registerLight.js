@@ -30,12 +30,13 @@ const Register2 = () => {
     axios.post('http://localhost:5000/create_user', userData)
     .then(function (response) {
       console.log(response);
+      alert("User Created.")
     }).catch(function (error) {
       console.log(error);
       if(error.response && error.response.status === 401){
         alert("Invalid credentials");
       } else {
-        alert("An error occurred. Please try again.");
+        alert("Error. Please try again");
       }
     });
 }

@@ -3,11 +3,11 @@ import styles from "../styles/loginFormLight.module.css";
 import { FaUser } from "react-icons/fa";
 import { IoLockClosedSharp } from "react-icons/io5";
 import bgVid from '../../assets/videos/lightvid.mp4';
+import axios from 'axios';
 
 const LoginPage2 = () => {
 
-  const [email, setEmail] = useState ('');
-  const [password, setPassword] = useState ('');
+
 
   return (
 
@@ -38,7 +38,7 @@ const LoginPage2 = () => {
         <button className = {styles.btn} type="submit">sign in</button>
 
         <div className={styles.register}>
-          <p className={styles.p}>First time here?<a className ={styles.a2} href="#"> Register</a></p>
+          <p className={styles.p}>First time here?<a className ={styles.a2} href="/register2"> Register</a></p>
         </div>
 
       </form>
