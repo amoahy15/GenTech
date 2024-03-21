@@ -15,7 +15,8 @@ class Artwork(Document):
         image_location = StringField()
         annotations = StringField()
         average_rating = DoubleField()
-        
+        genre = StringField()
+
 
 meta = {
         'collection': 'Artwork'

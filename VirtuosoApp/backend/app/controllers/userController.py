@@ -1,5 +1,5 @@
 import logging
-from flask import Blueprint, request, jsonify, current_app
+from flask import Flask, Blueprint, request, jsonify, current_app
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 from VirtuosoApp.backend.app.models.user import Users
 from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
