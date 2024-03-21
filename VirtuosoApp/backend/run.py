@@ -1,7 +1,7 @@
 from flask import Flask
 from dotenv import load_dotenv
 from VirtuosoApp.backend.app.utils.database import connect_db
-from VirtuosoApp.backend.app.controllers import userController
+from VirtuosoApp.backend.app.controllers import userController, reviewController, artworkController,annotationController
 import os
 
 # Load environment variables
@@ -30,6 +30,9 @@ def create_app(test_config=None):
 
     # Register blueprints
     app.register_blueprint(userController.user_controller)
+    app.register_blueprint(reviewController.review_controller)
+    app.register_blueprint(artworkController.artwork_controller)
+    app.register_blueprint(annotationController.annotation_controller)
 
     return app
 
