@@ -21,14 +21,14 @@ meta = {
         'collection': 'Artwork'
     }
 
-    def serialize(self):
-        return {
-            'artworkID' : self.artworkID
-            'title' : self.title
-            'artist' : self.artist
-            'year' : self.year
-            'image_url' : self.image_url
-            'description' : self.description 
-            'image_location' : self.image_location
-            'annotations' : self.annotations
-        }
+def serialize(self):
+    return {
+        'artworkID' : self.artworkID,
+        'title' : self.title,
+        'artist' : self.artist,
+        'year' : self.year,
+        'image_url' : self.image_url,
+        'description' : self.description ,
+        'image_location' : self.image_location,
+        'annotations' : self.annotations
+    }

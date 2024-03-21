@@ -4,7 +4,7 @@ import '../styles/annotation.module.css'
  {/* One single comment */} 
 const SingleAnnotation = ({ username, comment}) => {
   return (
-    <div className="single-annotation" style={{ marginBottom: '20px' }}>
+    <div className="single-annotation" style={{ marginBottom: '10px' }}>
       <p style={{color: 'gray'}}><b>{username}</b></p>
       <p style={{paddingBottom: '8px'}}>{comment}</p>
       <hr></hr>
