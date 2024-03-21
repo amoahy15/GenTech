@@ -2,6 +2,12 @@ import bcrypt
 from flask import request, jsonify, Blueprint
 from mongoengine import NotUniqueError, ValidationError
 from VirtuosoApp.backend.app.models.user import Users
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
+CORS(app)
 
 user_controller = Blueprint('UserController', __name__)
 @user_controller.route('/users', methods=['POST'])
