@@ -18,7 +18,7 @@ const Register2 = () => {
   
 
   const registerUser = () => {
-      axios.post('http://127.0.0.1:5000/create_user', {
+      axios.post('http://localhost:5000/create_user', {
       email: email,
       password: password,
       firstName: firstName,

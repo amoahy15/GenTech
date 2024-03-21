@@ -10,7 +10,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-CORS(app)
+CORS(app, supports_credentials=True)
 
 # Initialize Blueprint for UserController
 user_controller = Blueprint('user_controller', __name__)
