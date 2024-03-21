@@ -15,6 +15,7 @@ const Register2 = () => {
   const [firstName, setFirstName] = useState ('');
   const [lastName, setLastName] = useState ('');
   const [userName, setUserName] = useState ('');
+
   
 
   const registerUser = () => {
@@ -27,6 +28,7 @@ const Register2 = () => {
     })
     .then(function (response){
       console.log(response);
+      
     })
     .catch(function(error){
       console.log(error, 'error');
