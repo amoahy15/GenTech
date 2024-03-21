@@ -19,7 +19,8 @@ def create_annotation():
             userID=data['userID'],
             message=data['message'],
             x_coordinate=data['x_coordinate'],
-            y_coordinate=data['y_coordinate']
+            y_coordinate=data['y_coordinate'],
+            createdAt = data['createdAt'],
         )
         new_annotation.save()
         logger.info(f"Annotation created successfully by user {new_annotation.userID}.")
