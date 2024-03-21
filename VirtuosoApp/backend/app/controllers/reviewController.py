@@ -9,12 +9,13 @@ review_controller = Blueprint('ReviewController', __name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 @review_controller.route('/review', methods=['POST'])
 def create_review():
     data = request.get_json()
 
     # Required fields list
-    required_fields = ['userID', 'artworkID', 'rating']
+    required_fields = ['reviewID','userID', 'artworkID', 'rating']
 
     # Check if all required fields are present
     missing_fields = [field for field in required_fields if field not in data]
@@ -23,6 +24,7 @@ def create_review():
 
     try:
         new_review = Review(
+            reviewID=data['reviewID'],
             userID=data['userID'],
             artworkID=data['artworkID'],
             rating=data['rating'],
@@ -38,15 +40,17 @@ def create_review():
         logger.error(f"Unexpected error: {e}")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
+
 @review_controller.route('/review/<reviewID>', methods=['GET'])
 def get_review(reviewID):
     review = Review.objects(reviewID=reviewID).first()
     if review:
         logger.info("Review found")
-        return jsonify(review.serialize())  
+        return jsonify(review.serialize())
     else:
         logger.error("Review not found")
         return jsonify({"error": "Review not found"}), 404
+
 
 @review_controller.route('/review/<reviewID>', methods=['PUT'])
 def update_review(reviewID):
@@ -68,6 +72,7 @@ def update_review(reviewID):
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+
 
 @review_controller.route('/review/<reviewID>', methods=['DELETE'])
 def delete_review(reviewID):
