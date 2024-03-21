@@ -5,7 +5,12 @@ from VirtuosoApp.backend.app.models.user import Users
 from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
 from datetime import timedelta
 import os
-import bcrypt
+from flask_bcrypt import Bcrypt
+from flask_cors import CORS
+
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
+CORS(app)
 
 # Initialize Blueprint for UserController
 user_controller = Blueprint('user_controller', __name__)

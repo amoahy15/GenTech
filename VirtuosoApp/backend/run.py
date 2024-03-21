@@ -11,6 +11,7 @@ def create_app(test_config=None):
     # Create the Flask application
     app = Flask(__name__, instance_relative_config=True)
 
+
     # Default configuration that the app will use
     app.config.from_mapping(
         SECRET_KEY=os.environ.get('SECRET_KEY', 'default_secret_key'),
