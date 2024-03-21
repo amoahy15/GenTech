@@ -33,9 +33,9 @@ def create_user():
 
         new_user = Users(
             userID=data['userID'],
-            username=data['username'],
-            first_name=data.get('first_name'),
-            last_name=data.get('last_name'),
+            username=data['userName'],
+            first_name=data.get('firstName'),
+            last_name=data.get('lastName'),
             email=data['email'],
             passwordHash=hashed_password.decode('utf-8'),
             profilePicture=data.get('profilePicture'),

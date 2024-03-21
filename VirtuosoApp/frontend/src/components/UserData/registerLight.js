@@ -16,24 +16,26 @@ const Register2 = () => {
   const [lastName, setLastName] = useState ('');
   const [userName, setUserName] = useState ('');
 
-  
+  const registerUser = async (e) => {
+    e.preventDefault(); // Prevent the default form submit action
 
-  const registerUser = () => {
-      axios.post('http://localhost:5000/create_user', {
+    const userData = {
       email: email,
       password: password,
       firstName: firstName,
       lastName: lastName,
       userName: userName
-    })
-    .then(function (response){
+    };
+
+    axios.post('http://localhost:5000/create_user', userData)
+    .then(function (response) {
       console.log(response);
-      
-    })
-    .catch(function(error){
-      console.log(error, 'error');
-      if(error.response.status === 401){
-        alert("invalid credentials");
+    }).catch(function (error) {
+      console.log(error);
+      if(error.response && error.response.status === 401){
+        alert("Invalid credentials");
+      } else {
+        alert("An error occurred. Please try again.");
       }
     });
 }
