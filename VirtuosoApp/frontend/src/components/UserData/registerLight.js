@@ -16,6 +16,8 @@ const Register2 = () => {
   const [lastName, setLastName] = useState ('');
   const [userName, setUserName] = useState ('');
 
+  const nav = useHistory();
+
   const registerUser = async (e) => {
     e.preventDefault(); // Prevent the default form submit action
 
@@ -30,7 +32,7 @@ const Register2 = () => {
     axios.post('http://localhost:5000/create_user', userData)
     .then(function (response) {
       console.log(response);
-      alert("User Created.")
+      nav.push("/about ");
     }).catch(function (error) {
       console.log(error);
       if(error.response && error.response.status === 401){
@@ -87,4 +89,4 @@ const Register2 = () => {
   )
 }
 
-export default Register2
+export default Register2; 
