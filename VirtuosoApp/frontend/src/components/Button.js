@@ -6,11 +6,11 @@ const Button = ({color, text, onClick}) => {
 
     
 
-  return <button onClick={onClick} style={{background: color, color:'#f6f5f1'}} className={styles.btn}>{text}</button>
+  return <button onClick={onClick} style={{background: color, color:'black'}} className={styles.btn}>{text}</button>
 }
 
 Button.defaultProps = {
-    color: '#990000'
+    color: 'rgba(153,0,0,.1)'
 }
 
 Button.propTypes = {

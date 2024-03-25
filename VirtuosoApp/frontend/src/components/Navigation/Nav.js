@@ -1,5 +1,6 @@
 import Button from "../Button"
 import styles from "../styles/main.module.css";
+import spiral from '../../assets/images/fibonacci.png';
 
 
 const Nav = () => {
@@ -11,20 +12,23 @@ const Nav = () => {
     
     
       <div className={styles.Nav}>
-      <a className={styles.virtuoso} href = './' style = {{textDecoration: 'none'}}>VIRTUOSO</a>
-      <nav className={styles.nav}>
-        <ul>
+     
+      
+      <header className={styles.header}>
+      <a className={styles.virtuoso} href = './' style = {{textDecoration: 'none'}}><span>VIRTUOS</span><span style ={{color: '#990000'}}>O</span></a>
+      <img className={styles.logo} src={spiral}/>
+      <nav className={styles.Nav}>
+
           <a href='./'><Button text='Home' onClick={onClick}/></a>
-          <div class={styles.divider}/>
+
           <a><Button text='Exhibits' onClick={onClick}/></a>
-          <div class={styles.divider}/>
+
           <a><Button text='Profile' onClick={onClick}/></a>
-          <div class={styles.divider}/>
+
           <a href ='./about'><Button text='About' onClick={onClick}/></a> 
-          <div class={styles.divider}/>
-          <a><Button  text='Search' onClick={onClick}/></a> 
-        </ul>
+          
       </nav>
+      </header>  
     </div>
   )
 }

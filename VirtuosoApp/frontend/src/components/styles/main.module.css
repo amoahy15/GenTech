@@ -1,9 +1,7 @@
-* {
-    margin: 0;
-    padding: 0;
+ *{
     font-family: "Big Caslon", serif;
-    background-color: #f6f5f1;
-  }
+ }
+   
   
   .container {
     width: 88%;
@@ -12,12 +10,21 @@
     padding-left: 6%;
     padding-top: 2%;
   }
+
+  .logo {
+    position: absolute;
+    height: 6vh;
+    width: auto;
+    z-index: 1;
+    transform: translate(145%,-20%);
+    
+  }
   
   .Nav { 
     display: flex;
     justify-content: space-between; 
-    align-items: baseline;
-    padding: 30px 60px; 
+    align-items: center;
+    padding: 5px 140px;
   }
   
   .virtuoso {
@@ -25,33 +32,22 @@
     text-align: left;
     font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
     font-size: 32px;
-    line-height: 150%;
+    line-height: 200%;
     position: relative;
+    z-index: 2;
+   
   }
-  
-  nav {
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex; 
-  }
-  
-  nav ul li {
-    margin-left: 15px;
-  }
-  
-  
+
+
   .btn {
     padding: 20px 40px;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
+    font-weight: 700;
+    float: right;
+    margin-left: 15px;
   }
   
   .search-item {
@@ -59,8 +55,17 @@
     line-height: 150%;
     position: relative;
   }
-  .divider{
-    width:5px;
-    height:auto;
-    display:inline-block;
+
+  .header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    position: fixed;
+    height: 7vh;
+    top:0;
+    left:0;
+    width: 100%;
+    padding: 20px 100px;
+    background:rgba(255,255,255,.9);
+    z-index: 1;
   }
