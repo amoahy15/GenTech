@@ -1,35 +1,50 @@
-import Button from "../Button";
+import React, {useState} from "react";
+import Button from "../Button"
 import styles from "../styles/main.module.css";
 import spiral from '../../assets/images/fibonacci.png';
+import {FaSearch} from "react-icons/fa";
+import NavItem from "./NavItem"
+import DropDownMenu from "./DropDownMenu";
 
-import { Link } from "react-router-dom";
 
 const Nav = () => {
     
-    const onClick = (e) => {
-        e.preventDefault();
-        console.log('click');
-    };
+    const onClick = () => {
+        console.log('click')
+    }
+
+    const[input, setInput] = useState("")
 
   return (
-    <div className={styles.Nav}>
+    
+    
+      <div className={styles.Nav}>
+     
+      
       <header className={styles.header}>
-        <Link to="/" className={styles.virtuoso} style={{ textDecoration: 'none' }}>
-          <span>VIRTUOS</span>
-          <span style={{color: '#990000'}}>O</span>
-        </Link>
-        <img className={styles.logo} src={spiral} alt="Fibonacci Spiral" />
-        <nav className={styles.Nav}>
-          {/* Use Link or NavLink from react-router-dom for navigation */}
-          <Link to="/"><Button text='Home' onClick={onClick}/></Link>
-          {/* For actions, not navigation, use button. For navigation without page reload, use Link */}
-          <button onClick={onClick}><Button text='Exhibits' /></button>
-          <button onClick={onClick}><Button text='Profile' /></button>
-          <Link to="/about"><Button text='About' onClick={onClick}/></Link>
-        </nav>
+      <a className={styles.virtuoso} href = './' style = {{textDecoration: 'none'}}><span>VIRTUOS</span><span style ={{color: '#990000'}}>O</span></a>
+      <div className={styles.searchbar}>
+        <FaSearch id = "search-icon" style={{color: 'rgb(153,0,0)'}}/>
+        <input className={styles.searchinput} 
+        placeholder="Search" 
+        value={input} 
+        onChange={(e)=>setInput(e.target.value)}/>
+      </div>
+      {/*<img className={styles.logo} src={spiral}/>*/}
+      <nav className={styles.Nav}>
+
+          <NavItem><DropDownMenu></DropDownMenu></NavItem> 
+
+          <a href='./'><Button text='Community' onClick={onClick}/></a>
+
+          <a href = './About'><Button text='About' onClick={onClick}/></a>
+
+          <a href="./login"><Button text='Log In' onClick={onClick}/></a>
+
+      </nav>
       </header>  
     </div>
   )
 }
 
-export default Nav;
+export default Nav

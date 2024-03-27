@@ -33,7 +33,7 @@ const LoginPage = () => {
         <button className = {styles.btn} type="submit">sign in</button>
 
         <div className={styles.register}>
-          <p className={styles.p}>First time here?<a className ={styles.a2} href="#"> Register</a></p>
+          <p className={styles.p}>First time here?<a className ={styles.a2} href="./register2"> Register</a></p>
         </div>
 
       </form>
