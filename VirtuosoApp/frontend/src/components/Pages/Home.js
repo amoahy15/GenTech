@@ -1,6 +1,7 @@
 import styles from "../styles/homepage.module.css";
 import vid from "../../assets/videos/mixkit-artist-mixing-paint-on-a-palette-41611-medium.mp4"
 import Button from "../Button";
+import Row from "../Navigation/rowScroll";
 
 const Home = () => {
     const onClick = () => {
@@ -25,7 +26,10 @@ const Home = () => {
         </div>
 
         <div>
-          <h1 style={{margin: '11vh'}}>TRENDING</h1>
+          <Row title = 'Trending'/>
+          <Row title = 'Paintings'/>
+          <Row title = 'Architectural'/>
+          <Row title = 'Sculptures And Models'/>
         </div>
         
 

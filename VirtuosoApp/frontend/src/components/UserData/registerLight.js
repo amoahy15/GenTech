@@ -29,7 +29,7 @@ const Register2 = () => {
       userName: userName
     };
 
-    axios.post(' http://127.0.0.1:5000/api/create_user', userData)
+    axios.post('http://localhost:5000/create_user', userData)
     .then(function (response) {
       console.log(response);
       nav.push("/about ");
