@@ -3,6 +3,8 @@ import Button from "../Button"
 import styles from "../styles/main.module.css";
 import spiral from '../../assets/images/fibonacci.png';
 import {FaSearch} from "react-icons/fa";
+import NavItem from "./NavItem"
+import DropDownMenu from "./DropDownMenu";
 
 
 const Nav = () => {
@@ -31,14 +33,14 @@ const Nav = () => {
       {/*<img className={styles.logo} src={spiral}/>*/}
       <nav className={styles.Nav}>
 
-          <a href='./'><Button text='Home' onClick={onClick}/></a>
+          <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a><Button text='Exhibits' onClick={onClick}/></a>
+          <a href='./'><Button text='Community' onClick={onClick}/></a>
 
-          <a><Button text='Profile' onClick={onClick}/></a>
+          <a><Button text='Galleries' onClick={onClick}/></a>
 
-          <a href ='./about'><Button text='About' onClick={onClick}/></a> 
-          
+          <a><Button text='Pieces' onClick={onClick}/></a>
+
       </nav>
       </header>  
     </div>
