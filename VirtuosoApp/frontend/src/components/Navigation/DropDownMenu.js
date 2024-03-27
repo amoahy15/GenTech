@@ -7,9 +7,9 @@ const DropDownMenu = () => {
 
     function DropDownItems(props){
         return (
-            <a className ={styles.item}>
+            <div className ={styles.item}>
                 {props.children}
-            </a>
+            </div>
         )
     }
 
@@ -20,10 +20,10 @@ const DropDownMenu = () => {
        
         <ul className={styles.menu}>  
              <li>
-                <a href='./about'><DropDownItems>About Us</DropDownItems></a>
+               <a href='./about'><DropDownItems>About Us</DropDownItems></a>
              </li>
              <li>
-                <DropDownItems >Terms of Service</DropDownItems>
+             <a><DropDownItems >Terms of Service</DropDownItems></a>
             </li>
          </ul> 
         

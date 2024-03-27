@@ -59,6 +59,10 @@
     list-style-type: none;
   }
 
+.menu a{
+    text-decoration: none;
+}
+
 .animation{
     width: 100%;
 }
