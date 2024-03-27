@@ -15,7 +15,7 @@ const Home = () => {
             <h1 className={styles.h1}><span>Rate</span><span style = {{color: '#990000'}}> Art</span></h1>
             <h1 className={styles.h1} style ={{marginBottom: '50px'}}>Explore Galleries</h1>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>VIRTUOS<span style ={{color: '#990000'}}>O</span> brings art connoisseurs, artists, critics, and enjoyers a social platform that allows you to post art, rate art, and create galleries that exemplify your taste.</p>
-            <p className={styles.p} style ={{marginBottom: '30px', maxWidth:'90%'}}>Explore a variety of genres and styles. Start building your community today and dive into our diverse catalogue!</p>
+            <p className={styles.p} style ={{marginBottom: '30px', maxWidth:'90%'}}>Explore a variety of genres and styles. Start building your community today and dive into our diverse catalogue.</p>
             <div className= {styles.btn}>
             <a href ='./register2'><Button text='Create an Account' onClick={onClick}/></a> 
             </div>
