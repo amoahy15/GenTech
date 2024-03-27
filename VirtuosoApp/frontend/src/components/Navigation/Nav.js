@@ -1,12 +1,7 @@
 import React, {useState} from "react";
 import Button from "../Button"
-import React, {useState} from "react";
-import Button from "../Button"
 import styles from "../styles/main.module.css";
 import spiral from '../../assets/images/fibonacci.png';
-import {FaSearch} from "react-icons/fa";
-import NavItem from "./NavItem"
-import DropDownMenu from "./DropDownMenu";
 import {FaSearch} from "react-icons/fa";
 import NavItem from "./NavItem"
 import DropDownMenu from "./DropDownMenu";
@@ -19,18 +14,8 @@ const Nav = () => {
     }
 
     const[input, setInput] = useState("")
-    const onClick = () => {
-        console.log('click')
-    }
-
-    const[input, setInput] = useState("")
 
   return (
-    
-    
-      <div className={styles.Nav}>
-     
-      
     
     
       <div className={styles.Nav}>
@@ -63,4 +48,4 @@ const Nav = () => {
 }
 
 export default Nav
-export default Nav
+
