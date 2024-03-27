@@ -1,0 +1,71 @@
+ *{
+    font-family: "Big Caslon", serif;
+ }
+   
+  
+  .container {
+    width: 88%;
+    height: 100%;
+    background: #fffff9;
+    padding-left: 6%;
+    padding-top: 2%;
+  }
+
+  .logo {
+    position: absolute;
+    height: 6vh;
+    width: auto;
+    z-index: 1;
+    transform: translate(145%,-20%);
+    
+  }
+  
+  .Nav { 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 5px 140px;
+  }
+  
+  .virtuoso {
+    color: #080808;
+    text-align: left;
+    font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
+    font-size: 32px;
+    line-height: 200%;
+    position: relative;
+    z-index: 2;
+   
+  }
+
+
+  .btn {
+    padding: 20px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    float: right;
+    margin-left: 15px;
+  }
+  
+  .search-item {
+    text-align: right;
+    line-height: 150%;
+    position: relative;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    position: fixed;
+    height: 7vh;
+    top:0;
+    left:0;
+    width: 100%;
+    padding: 20px 100px;
+    background:rgba(255,255,255,.9);
+    z-index: 1;
+  }

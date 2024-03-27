@@ -1,0 +1,24 @@
+.video{
+    float: right;
+    position: relative;
+    width: 50%;
+    height:auto;
+    border-radius: 20px;
+    transform: translate(20%, -105%)
+}
+
+.h1 {
+    font-size: 60px;
+}
+
+.btn{
+    margin-top: 15px;
+    float:left;
+}
+
+.p {
+    font-size: 30px;
+}
+
+
+
