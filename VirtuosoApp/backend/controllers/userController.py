@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 
 from flask import Flask, Blueprint, request, jsonify, current_app
 from models.userModel import Users
@@ -21,47 +22,82 @@ logger = logging.getLogger(__name__)
 
 @user_controller.route('/create_user', methods=['POST'])
 def create_user():
+    logger.info("Attempting to create a new user")
     try:
         data = request.get_json()
         if not data:
+            logger.warning("No JSON payload received")
             raise ValueError("No JSON payload received")
         
-        hashed_password = bcrypt.generate_password_hash(data['password'].encode('utf-8'))
+        # Email validation using regex
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", data['email']):
+            logger.error("Invalid email format provided")
+            return jsonify({"error": "Invalid email format"}), 400
         
-        # Generate a random UUID for the new user
-        unique_user_id = str(uuid.uuid4())
+        # Check if email or username already exists in the database
+        if Users.objects(email=data['email']).first() or Users.objects(userName=data['userName']).first():
+            logger.error("Username or email already exists")
+            return jsonify({"error": "Username or email already exists"}), 409
+
+        # Password complexity check: At least 8 characters
+        if len(data['password']) < 8:
+            logger.error("Password does not meet complexity requirements")
+            return jsonify({"error": "Password must be at least 8 characters long"}), 400
+
+        hashed_password = bcrypt.generate_password_hash(data['password'].encode('utf-8'))
+        unique_user_id = str(uuid.uuid4())  # Generate a unique UUID for the new user
         
         new_user = Users(
-            userID=unique_user_id,  # Use the generated UUID as userID
+            userID=unique_user_id,
             userName=data['userName'],
-            first_name=data.get('firstName'),
-            last_name=data.get('lastName'),
             email=data['email'],
             passwordHash=hashed_password,
-            profilePicture=data.get('profilePicture'),
-            bio=data.get('bio'),
-            location=data.get('location'),
+            first_name=data.get('firstName', ''),
+            last_name=data.get('lastName', ''),
+            profilePicture=data.get('profilePicture', ''),
+            bio=data.get('bio', ''),
+            location=data.get('location', ''),
             favoriteArtworks=data.get('favoriteArtworks', []),
             reviews=data.get('reviews', []),
             friendsList=data.get('friendsList', []),
             socialMediaLinks=data.get('socialMediaLinks', {}),
             verificationStatus=data.get('verificationStatus', False),
             preferences=data.get('preferences', {}),
-            joinedDate=data.get('joinedDate')
+            joinedDate=data.get('joinedDate', datetime.utcnow())  # Use current UTC datetime if not provided
         )
         new_user.save()
-        logger.info(f"User {new_user.userName} created successfully.")
+        logger.info(f"User {new_user.userName} created successfully with ID {unique_user_id}.")
+        
         return jsonify({"message": "User created successfully", "userID": unique_user_id}), 201
     except ValidationError as e:
-        logger.error(f"Validation error: {e}")
+        logger.exception("Data validation failed")
         return jsonify({"error": "Data validation failed"}), 400
     except NotUniqueError:
-        logger.error("User already exists.")
+        logger.exception("Attempted to create a user with existing username or email")
         return jsonify({"error": "User already exists"}), 409
+    except Exception as e:
+        logger.exception("An unexpected error occurred during user creation")
+        return jsonify({"error": "An unexpected error occurred"}), 500
+
+
+@user_controller.route('/login', methods=['POST'])
+def login_user():
+    data = request.get_json()
+    try:
+        # Find user by username
+        user = Users.objects(userName=data['userName']).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+        
+        # Check if the password matches
+        if bcrypt.check_password_hash(user.passwordHash, data['password']):
+            return jsonify({"message": "Login successful", "userID": user.userID}), 200
+        else:
+            return jsonify({"error": "Invalid credentials"}), 401
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
         return jsonify({"error": "An unexpected error occurred"}), 500
-
+    
 
 @user_controller.route('/user/<string:user_id>', methods=['GET'])
 def get_user(user_id):

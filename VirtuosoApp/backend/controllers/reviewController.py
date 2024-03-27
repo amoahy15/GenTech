@@ -1,6 +1,6 @@
 from flask import request, jsonify, Blueprint
 from mongoengine import NotUniqueError, ValidationError
-from VirtuosoApp.backend.app.models.reviews import Reviews
+from models.reviewModel import Reviews
 
 review_controller = Blueprint('ReviewController', __name__)
 
@@ -17,7 +17,7 @@ def create_review():
         return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
 
     try:
-        new_review = Review(
+        new_review = Reviews(
             userID=data['userID'],
             artworkID=data['artworkID'],
             rating=data['rating'],
@@ -32,7 +32,7 @@ def create_review():
 
 @review_controller.route('/reviews/<reviewID>', methods=['GET'])
 def get_review(reviewID):
-    review = Review.objects(reviewID=reviewID).first()
+    review = Reviews.objects(reviewID=reviewID).first()
     if review:
         return jsonify(review.serialize())  
     else:
@@ -42,7 +42,7 @@ def get_review(reviewID):
 def update_review(reviewID):
     data = request.get_json()
     try:
-        review = Review.objects(reviewID=reviewID).first()
+        review = Reviews.objects(reviewID=reviewID).first()
         if review:
             for key, value in data.items():
                 setattr(review, key, value)
@@ -57,7 +57,7 @@ def update_review(reviewID):
 
 @review_controller.route('/reviews/<reviewID>', methods=['DELETE'])
 def delete_review(reviewID):
-    review = Review.objects(reviewID=reviewID).first()
+    review = Reviews.objects(reviewID=reviewID).first()
     if review:
         review.delete()
         return jsonify({"message": "Review deleted successfully"})
