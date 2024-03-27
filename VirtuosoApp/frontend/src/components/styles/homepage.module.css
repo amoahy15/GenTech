@@ -1,24 +1,41 @@
-.video{
-    float: right;
+.container {
     position: relative;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; 
+}
+
+.backgroundImage {
     width: 50%;
-    height:auto;
-    border-radius: 20px;
-    transform: translate(20%, -105%)
+    margin-left: 40%;
+    height: auto;
+    margin-top: 1vh;
+    object-fit: cover;
 }
 
-.h1 {
-    font-size: 60px;
+.content {
+    position: relative;
 }
 
-.btn{
-    margin-top: 15px;
-    float:left;
+.textContainer {
+    margin: 15vh;
+    flex: 2;
+    max-width: 100%;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 5000px;
+    overflow-y: auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8); /* Adjust the background color and opacity as needed */
 }
 
-.p {
-    font-size: 30px;
+.h2 {
+    font-size: 100px;
 }
-
-
-

@@ -40,7 +40,7 @@
 
 
   .btn {
-    font-family: "Poppins", sans-serif;
+    font-family: "Nunito", sans-serif;
     padding: 12px 40px;
     border: none;
     border-radius: 5px;
@@ -52,10 +52,10 @@
     background-color: rgba(153,0,0,.1);
     color:black;
     transition: background 700ms;
+    text-decoration: None;
   }
 
   .btn:hover{
-    text-decoration: underline;
     background-color: rgba(255,255,255,.6);
     color: rgba(153,0,0,1);
   }
@@ -93,7 +93,7 @@
   }
 
   .searchinput{
-    font-family: "Poppins", sans-serif;
+    font-family: "Nunito", sans-serif;
     background-color: transparent;
     border: none;
     height: 100%;
