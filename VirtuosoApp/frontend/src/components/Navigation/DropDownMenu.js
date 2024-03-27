@@ -7,7 +7,7 @@ const DropDownMenu = () => {
 
     function DropDownItems(props){
         return (
-            <a href="./about" className ={styles.item}>
+            <a className ={styles.item}>
                 {props.children}
             </a>
         )
@@ -20,7 +20,7 @@ const DropDownMenu = () => {
        
         <ul className={styles.menu}>  
              <li>
-                <DropDownItems>About Us</DropDownItems>
+                <a href='./about'><DropDownItems>About Us</DropDownItems></a>
              </li>
              <li>
                 <DropDownItems >Terms of Service</DropDownItems>
