@@ -1,0 +1,8 @@
+.clickableArea {
+    cursor: pointer;
+}
+
+.username{
+    font-weight: bold;
+    color: blue;
+}
