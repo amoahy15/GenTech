@@ -6,7 +6,7 @@ from models.userModel import User
 from mongoengine.errors import NotUniqueError, ValidationError
 from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -151,4 +151,30 @@ def list_users():
         return jsonify(users_data), 200
     except Exception as e:
         logger.error(f"Unexpected error: {e}")
+        return jsonify({"error": "An unexpected error occurred"}), 500
+
+
+@user_controller.route('/details', methods=['GET'])
+@jwt_required()
+def get_user_details():
+    logger.info("Fetching user details")
+    # Get the username from the JWT token
+    current_user = get_jwt_identity()
+    logger.debug(f"Current user identified: {current_user}")
+
+    try:
+        # Query the user details from the database
+        user = User.objects(user_id=current_user).first()
+        logger.debug(f"Current user ID: {current_user}")
+        if not user:
+            logger.warning(f"User not found: {current_user}")
+            return jsonify({"error": "User not found"}), 404
+
+        # Assuming 'bio' is a field in your User model
+        user_details = {"username": user.user_name, "bio": user.bio}
+        logger.info(f"User details fetched successfully for: {current_user}")
+        
+        return jsonify(user_details), 200
+    except Exception as e:
+        logger.error(f"Error fetching user details for {current_user}: {e}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
