@@ -4,6 +4,8 @@ from datetime import timedelta
 from flask_cors import CORS  # Ensure this is imported
 from util.database import connect_db
 from controllers.userController import user_controller
+from controllers.reviewController import review_controller
+from controllers.artworkController import artwork_controller
 import os
 
 def create_app():
@@ -23,7 +25,10 @@ def create_app():
     connect_db(app)
 
     # Register Blueprints
-    app.register_blueprint(user_controller, url_prefix='/api')
+    app.register_blueprint(user_controller, url_prefix='/api/user')
+    app.register_blueprint(artwork_controller, url_prefix='/api/artwork')
+    app.register_blueprint(review_controller, url_prefix='/api/review')
+
 
     return app
 
