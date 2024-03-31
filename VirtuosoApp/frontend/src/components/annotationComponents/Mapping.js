@@ -3,7 +3,7 @@ import placeholderImage from '../../assets/images/art5.webp';
 
 const ImageWithMap = ({ onClick }) => {
   const handleAreaClick = () => {
-    onClick(); // Invoke the onClick handler provided by the parent component
+    onClick();
   };
 
   return (
@@ -16,7 +16,6 @@ const ImageWithMap = ({ onClick }) => {
       />
       <map name="image-map">
         <area shape="rect" coords="0,0,100,100" onClick={handleAreaClick} />
-        {/* Define other clickable areas as needed */}
       </map>
     </div>
   );

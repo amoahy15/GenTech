@@ -8,6 +8,7 @@ import LoginPage2 from "./components/UserData/loginPageLight";
 import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
 import Collection from "./components/Pages/Collections";
+import Footer from "./components/Footer";
 
 function App() {
 
@@ -21,14 +22,17 @@ function App() {
         <Route exact path = "/">
           <Nav/>
           <Home/>
+          <Footer/>
         </Route>
         <Route path="/about">
           <Nav/>
           <AboutPage/>
+          <Footer/>
         </Route> 
         <Route path="/reviews">
           <Nav/>
           <ReviewPage/>
+          <Footer/>
         </Route> 
         <Route path="/login">
           <LoginPage/>
@@ -42,10 +46,12 @@ function App() {
         <Route path="/profile">
           <Nav/>
           <Profile/>
+          <Footer/>
         </Route> 
         <Route path="/collections">
           <Nav/>
           <Collection/>
+          <Footer/>
         </Route>
       </Switch> 
       </div>
