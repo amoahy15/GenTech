@@ -5,7 +5,7 @@ import Home from "./components/Pages/Home";
 import ReviewPage from "./components/Pages/ReviewPage";
 import LoginPage from "./components/UserData/loginPageDark";
 import LoginPage2 from "./components/UserData/loginPageLight";
-import Register2 from "./components/UserData/registerLight";
+import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
 import Collection from "./components/Pages/Collections";
 
@@ -36,8 +36,8 @@ function App() {
         <Route path="/login2">
           <LoginPage2/>
         </Route> 
-        <Route path="/register2">
-          <Register2/>
+        <Route path="/register">
+          <Register/>
         </Route> 
         <Route path="/profile">
           <Nav/>
