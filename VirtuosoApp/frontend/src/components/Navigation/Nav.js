@@ -35,9 +35,9 @@ const Nav = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='./'><Button text='Community' onClick={onClick}/></a>
+          <a href='./reviews'><Button text='Community' onClick={onClick}/></a>
 
-          <a href = './collections'><Button text='Galleries' onClick={onClick}/></a>
+          <a href = './collections'><Button text='Collections' onClick={onClick}/></a>
 
           <a href="./profile"><Button text='Profile' onClick={onClick}/></a>
 

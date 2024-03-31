@@ -28,7 +28,7 @@ const AboutPage = () => {
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}><span style ={{color: '#990000'}}>their artistic self</span></p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Well thats enough words.</p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Much like art we invite you to just</p>
-            <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>see it for yourself  ; )</p>
+            <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>see it for yourself.</p>
             
             </div>
             <div className={styles.background}>

@@ -21,7 +21,7 @@ const Footer = () => {
                 <ul className={styles.box}>
                     <li className={styles.linkname}>MEET  GENTECH</li>
                     <li><a href="https://github.com/amoahy15/GenTech">Github</a></li>
-                    <li><a href="./reviews">Contact Us</a></li>
+                    <li><a href="./about">Contact Us</a></li>
                 </ul>
                 <ul className={styles.box}>
                 <li className={styles.linkname}>RESOURCES</li>
@@ -40,7 +40,7 @@ const Footer = () => {
                 <span className={styles.txt}>Copyright 2024</span>
                 <span>
                     <a href="./" className={styles.txt}>Privacy policy</a>
-                    <a href="./" className={styles.txt}>Terms and Conditions</a>
+                    <a href="./" className={styles.txt}>Terms of Service</a>
                 </span>
             </div>
         </div>
