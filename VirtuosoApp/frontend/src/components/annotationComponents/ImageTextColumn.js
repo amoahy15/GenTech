@@ -31,8 +31,8 @@ const ArtTextCols = ({ text }) => {
   const buttonText = showAnnotations ? 'View Information' : 'View Annotations';
 
   return (
-    <div style={{ width: '90%', margin: 'auto', marginTop: '0px'}}>
-      
+    <div style={{ width: '90%', margin: 'auto' }}>
+      <hr style={{ width: '100%', margin: 'auto' }} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', padding: '40px' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', maxWidth: '50%' }}>
             <ImageDisplay imageUrl={placeholderImage} onClick={handleImageClick} allowDotPlacement={allowDotPlacement} clickCoordinates={clickCoordinates}  style={{ maxWidth: '100%', height: 'auto' }} />
