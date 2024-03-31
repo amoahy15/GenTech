@@ -1,5 +1,6 @@
 .container {
     position: relative;
+    width: 100vw;
 }
 
 .background {
@@ -13,7 +14,7 @@
 
 .backgroundImage {
     width: 50%;
-    margin-left: 40%;
+    margin-left: 40vw;
     height: auto;
     margin-top: 1vh;
     object-fit: cover;
@@ -38,4 +39,11 @@
 
 .h2 {
     font-size: 100px;
+}
+.p {
+    font-size: 25px;
+}
+.h1{
+    font-size: 45px;
+    padding-bottom: 20px;
 }

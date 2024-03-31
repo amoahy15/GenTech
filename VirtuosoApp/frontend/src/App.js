@@ -7,7 +7,7 @@ import LoginPage from "./components/UserData/loginPageDark";
 import LoginPage2 from "./components/UserData/loginPageLight";
 import Register2 from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
-
+import Collection from "./components/Pages/Collections";
 
 function App() {
 
@@ -43,6 +43,10 @@ function App() {
           <Nav/>
           <Profile/>
         </Route> 
+        <Route path="/collections">
+          <Nav/>
+          <Collection/>
+        </Route>
       </Switch> 
       </div>
     </div>

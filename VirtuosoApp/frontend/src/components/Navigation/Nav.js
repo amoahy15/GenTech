@@ -37,7 +37,7 @@ const Nav = () => {
 
           <a href='./'><Button text='Community' onClick={onClick}/></a>
 
-          <a><Button text='Galleries' onClick={onClick}/></a>
+          <a href = './collections'><Button text='Galleries' onClick={onClick}/></a>
 
           <a href="./profile"><Button text='Profile' onClick={onClick}/></a>
 
