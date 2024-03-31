@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/profile.modules.css';
 import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg'; 
 import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg'; 
-import Carousel from '../Carousel';
+import Carousel from '../carouselcomponents/Carousel';
 import img1 from '../../assets/images/Edgar_Degas/Edgar_Degas_1.jpg';
 import img2 from '../../assets/images/Edgar_Degas/Edgar_Degas_8.jpg';
 import img3 from '../../assets/images/Edgar_Degas/Edgar_Degas_4.jpg';

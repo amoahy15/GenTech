@@ -1,5 +1,5 @@
 import ArtTextCols from "../annotationComponents/ImageTextColumn";
-import Carousel from '../Carousel.js'
+import Carousel from '../carouselcomponents/Carousel.js'
 import img from '../../assets/images/Frida_Kahlo/Frida_Kahlo_10.jpg'
 import img2 from '../../assets/images/Frida_Kahlo/Frida_Kahlo_11.jpg'
 import img3 from '../../assets/images/Frida_Kahlo/Frida_Kahlo_12.jpg'
