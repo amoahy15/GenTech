@@ -24,7 +24,7 @@
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    padding: 5px 140px;
+    padding: 7vh 16vh;
   }
   
   .virtuoso {
@@ -71,7 +71,7 @@
     justify-content: space-between; 
     align-items: center;
     position: fixed;
-    height: 7vh;
+    height: 9vh;
     top:0;
     left:0;
     width: 100%;
