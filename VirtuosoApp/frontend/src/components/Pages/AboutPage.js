@@ -1,6 +1,6 @@
 import styles from "../styles/homepage.module.css";
 import VirtuosoLogo from "../../assets/images/VirtuosoLogo.png"
-import Button from "../Button";
+import Button from "../Navigation/Button";
 const AboutPage = () => {
   const onClick = () => {
     console.log('click')

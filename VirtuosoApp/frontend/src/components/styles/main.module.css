@@ -31,7 +31,7 @@
     color: #080808;
     text-align: left;
     font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
-    font-size: calc(2.0*(1vh + 1vw));
+    font-size: calc(1.9*(1vh + 1vw));
     line-height: 200%;
     position: relative;
     z-index: 2;

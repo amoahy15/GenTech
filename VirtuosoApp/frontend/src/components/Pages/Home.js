@@ -1,6 +1,6 @@
 import styles from "../styles/homepage.module.css";
 import HomeBackground from "../../assets/images/HomeBackground.png";
-import Button from "../Button";
+import Button from "../Navigation/Button";
 import Row from "../Navigation/rowScroll";
 
 const Home = () => {

@@ -39,7 +39,7 @@ const Nav = () => {
 
           <a href = './collections'><Button2 text='Collections' onClick={onClick}/></a>
 
-          <a href="./profile"><Button2 text='Profile' onClick={onClick}/></a>
+          <a href="./"><Button2 text='Forum' onClick={onClick}/></a>
 
       </nav>
       </header>  
