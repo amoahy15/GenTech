@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import Button from "../Button"
 import styles from "../styles/main.module.css";
 import spiral from '../../assets/images/fibonacci.png';
 import {FaSearch} from "react-icons/fa";
 import NavItem from "./NavItem"
 import DropDownMenu from "./DropDownMenu";
+import Button2 from "./navButton";
 
 
 const Nav = () => {
@@ -35,11 +35,11 @@ const Nav = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='./reviews'><Button text='Community' onClick={onClick}/></a>
+          <a href='./reviews'><Button2 text='Community' onClick={onClick}/></a>
 
-          <a href = './collections'><Button text='Collections' onClick={onClick}/></a>
+          <a href = './collections'><Button2 text='Collections' onClick={onClick}/></a>
 
-          <a href="./profile"><Button text='Profile' onClick={onClick}/></a>
+          <a href="./profile"><Button2 text='Profile' onClick={onClick}/></a>
 
       </nav>
       </header>  
