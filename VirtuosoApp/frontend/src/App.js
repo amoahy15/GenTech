@@ -10,6 +10,7 @@ import Profile from "./components/Pages/Profile";
 import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
 import Forum from "./components/Pages/Forum";
+import Authenticator from "..";
 
 function App() {
 

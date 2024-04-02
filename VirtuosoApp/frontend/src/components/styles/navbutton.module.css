@@ -5,7 +5,7 @@
     border-radius: 5px;
     cursor: pointer;
     font-size: calc(.85*(1vh + 1vw));
-    font-weight: 525;
+    font-weight: 500;
     float: right;
     margin-left: 2vh;
     background-color: rgba(153,0,0,.1);
