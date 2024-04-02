@@ -19,7 +19,7 @@ const provider = ({children}) => {
         const isAuth = async () => {
             try {
                 const res = await axios.get(
-                    'http://localhost:5000/api/logged-user/',
+                    'http://localhost:5000/api/authenticate_user/',
                     { withCredentials: true }
                   );
                 
