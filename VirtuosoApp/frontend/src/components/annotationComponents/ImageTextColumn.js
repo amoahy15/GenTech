@@ -6,6 +6,8 @@ import AnnotationComments from './AnnotationComments.js';
 import placeholderImage from '../../assets/images/art5.webp';
 import ImageDisplay from './ClickableImg.js';
 
+//todo: pass in info directly from reviewpage.js
+
 const ArtTextCols = ({ text }) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
@@ -49,6 +51,7 @@ const ArtTextCols = ({ text }) => {
         <div style={{ margin: '20px', position: 'relative', width: '50%' }}>
           <div style={{ width: '100%' }}>
             {showAnnotations ? (
+
               <AnnotationComments comments={[]} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
             ) : (
               <TextColumn header="TITLE" text={text} info="Author, date, medium" />

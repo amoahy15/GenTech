@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SingleAnnotation from "./annotationText";
 
+//for annotations (when toggled)
 const AnnotationComments = ({ comments, clickCoordinates, onAddCommentClick }) => {
   const [showCoordinates, setShowCoordinates] = useState(false);
   const [annotationText, setAnnotationText] = useState("");
