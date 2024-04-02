@@ -9,6 +9,7 @@ import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
 import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
+import Forum from "./components/Pages/Forum";
 
 function App() {
 
@@ -51,6 +52,11 @@ function App() {
         <Route path="/collections">
           <Nav/>
           <Collection/>
+          <Footer/>
+        </Route>
+        <Route path="/forum">
+          <Nav/>
+          <Forum/>
           <Footer/>
         </Route>
       </Switch> 
