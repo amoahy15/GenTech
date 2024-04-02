@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styles from '../styles/dropdown.module.css'
 
-const userDropDown = () => {
+const UserDropDown = () => {
 
     const [activeMenu, setActiveMenu] = useState('main')
 
@@ -31,4 +31,4 @@ const userDropDown = () => {
   )
 }
 
-export default userDropDown
+export default UserDropDown

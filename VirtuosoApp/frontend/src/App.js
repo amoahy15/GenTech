@@ -9,11 +9,11 @@ import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
 import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
-import Forum from "./components/Pages/Forum";
-import Authenticator from "..";
+import NavUser from "./components/Navigation/NavUser"
 
 function App() {
 
+  const token = localStorage.getItem('token');
 
   return (
 
@@ -22,17 +22,17 @@ function App() {
       <div className="Content">
       <Switch>
         <Route exact path = "/">
-          <Nav/>
+          {token ? <NavUser/> : <Nav/>} 
           <Home/>
           <Footer/>
         </Route>
         <Route path="/about">
-          <Nav/>
+          {token ? <NavUser/> : <Nav/>}
           <AboutPage/>
           <Footer/>
         </Route> 
         <Route path="/reviews">
-          <Nav/>
+          {token ? <NavUser/> : <Nav/>}
           <ReviewPage/>
           <Footer/>
         </Route> 
@@ -46,18 +46,13 @@ function App() {
           <Register/>
         </Route> 
         <Route path="/profile">
-          <Nav/>
+          {token ? <NavUser/> : <Nav/>}
           <Profile/>
           <Footer/>
         </Route> 
         <Route path="/collections">
-          <Nav/>
+          {token ? <NavUser/> : <Nav/>}
           <Collection/>
-          <Footer/>
-        </Route>
-        <Route path="/forum">
-          <Nav/>
-          <Forum/>
           <Footer/>
         </Route>
       </Switch> 

@@ -4,10 +4,11 @@ import spiral from '../../assets/images/fibonacci.png';
 import {FaSearch} from "react-icons/fa";
 import NavItem from "./NavItem";
 import Button2 from "./navButton";
-import UserDropDown from "./UserData/UserDropDown";
+import DropDownMenu from "./DropDownMenu";
+import UserDropDown from "../UserData/UserDropDown";
 
 
-const navUser = () => {
+const NavUser = () => {
     
     const onClick = () => {
         console.log('click')
@@ -51,5 +52,5 @@ const navUser = () => {
   )
 }
 
-export default navUser
+export default NavUser
 

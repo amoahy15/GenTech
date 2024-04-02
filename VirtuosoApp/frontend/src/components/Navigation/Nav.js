@@ -41,7 +41,7 @@ const Nav = () => {
 
           <a href="./"><Button2 text='Forum' onClick={onClick}/></a>
 
-          <ul className={styles.userlist}>
+          <ul className={styles.userlist} style ={{marginBottom: "1vh"}}>
             <li><a href="./login2"><button onClick={onClick} className={styles.userbtn}>
               Login</button></a></li>
             <li><a href="./register"><button onClick={onClick} className={styles.userbtn2}>
