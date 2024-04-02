@@ -4,7 +4,7 @@ import mainstyles from './styles/main.module.css'
 
 const Footer = () => {
   return (
-      <footer>
+      <footer style={{marginTop: '25px'}}>
         <div className={styles.content}>
             <div className={styles.top}>
                 <div>
