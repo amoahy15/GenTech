@@ -231,3 +231,5 @@ VirtuosoApp/backend/__init__.py
 VirtuosoApp/backend/config.py
 /VirtuosoApp/backend/tests/
 /VirtuosoApp/backend/app/utils/db_scriipts.txt
+/VirtuosoApp/backend/VirtuosoBackend
+/backend/VirtuosoBackend/
