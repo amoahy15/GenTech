@@ -41,6 +41,7 @@ const Footer = () => {
                 <span>
                     <a href="./" className={styles.txt}>Privacy policy</a>
                     <a href="./" className={styles.txt}>Terms of Service</a>
+                    <a href="./disclaimer" className={styles.txt}>Disclaimer</a>
                 </span>
             </div>
         </div>
