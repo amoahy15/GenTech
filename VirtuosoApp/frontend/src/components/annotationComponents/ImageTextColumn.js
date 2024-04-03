@@ -30,6 +30,16 @@ const ArtTextCols = ({ text }) => {
     }
   };
 
+{/* todo: comment out */}
+  const annotations = [
+    { username: "user1", comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam" },
+    { username: "user2", comment: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
+    { username: "user3", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
+    { username: "user5", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
+    { username: "user6", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
+    { username: "user4", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }
+  ];
+
   const buttonText = showAnnotations ? 'View Information' : 'View Annotations';
 
   return (
@@ -50,9 +60,9 @@ const ArtTextCols = ({ text }) => {
         </div>
         <div style={{ margin: '20px', position: 'relative', width: '50%' }}>
           <div style={{ width: '100%' }}>
+            {/* toggle functionality */}
             {showAnnotations ? (
-
-              <AnnotationComments comments={[]} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+              <AnnotationComments comments={annotations} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
             ) : (
               <TextColumn header="TITLE" text={text} info="Author, date, medium" />
             )}
