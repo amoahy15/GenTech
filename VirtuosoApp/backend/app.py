@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from datetime import timedelta
-from flask_cors import CORS  # Ensure this is imported
+from flask_cors import CORS 
 from util.database import connect_db
 from controllers.userController import user_controller
 from controllers.reviewController import review_controller
