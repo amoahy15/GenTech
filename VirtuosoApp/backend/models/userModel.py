@@ -7,13 +7,16 @@ class User(Document):
     first_name = StringField(max_length=50)
     last_name = StringField(max_length=50)
     email = EmailField(required=True)
-    password_hash = StringField(required=True) 
+    password_hash = StringField(required=True)
     profile_picture = StringField()
     bio = StringField()
     location = StringField()
     favorite_artworks = ListField()
     reviews = ListField()
-    friends_list = ListField()
+    followers = ListField()  # Track followers
+    following = ListField()  # New field to track who the user is following
+    pending_follow_requests = ListField(StringField(), default=list) 
+    is_private = BooleanField(default=False)  # Indicates if user's page is private
     social_media_links = DictField()
     verification_status = BooleanField(default=False)
     preferences = DictField()
@@ -31,7 +34,10 @@ class User(Document):
             "location": self.location,
             "favorite_artworks": self.favorite_artworks,
             "reviews": self.reviews,
-            "friends_list": self.friends_list,
+            "followers": self.followers,
+            "following": self.following,  # Include in serialization
+            "pending_follow_requests": [str(user_id) for user_id in self.pending_follow_requests],
+            "is_private": self.is_private,
             "social_media_links": self.social_media_links,
             "verification_status": self.verification_status,
             "preferences": self.preferences,
