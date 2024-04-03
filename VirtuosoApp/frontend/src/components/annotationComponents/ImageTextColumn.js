@@ -7,7 +7,7 @@ import placeholderImage from '../../assets/images/art5.webp';
 import ImageDisplay from './ClickableImg.js';
 
 //todo: pass in info directly from reviewpage.js
-
+//todo: top priority refactoring
 const ArtTextCols = ({ text }) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);

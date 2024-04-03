@@ -17,8 +17,8 @@ function ReviewPage() {
     const fetchReviews = async () => {
       try {
         const reviewid = "23a";
-        const response = await axios.get("http://127.0.0.1:5000/api/reviews/" + reviewid); // Use backticks for template literals
-        const backendReviews = response.data; // Assuming the response contains an array of reviews
+        const response = await axios.get("http://127.0.0.1:5000/api/reviews/" + reviewid); 
+        const backendReviews = response.data;
         const formattedReviews = backendReviews.map(review => ({
           rating: review.rating,
           user: review.userID,
@@ -36,7 +36,7 @@ function ReviewPage() {
   return (
   <div>
     <div>
-        <div style={{paddingBottom: '75px'}}>
+        <div>
             
         </div>
           <div>
