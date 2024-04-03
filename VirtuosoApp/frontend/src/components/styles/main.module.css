@@ -70,7 +70,7 @@
     font-weight: 600;
     float: right;
     margin-left: 2vh;
-    background-color: rgba(255,255,255,.6);
+    background-color: rgba(255,255,255,.1);
     color: black;
     transition: background 700ms;
     text-decoration: None;
@@ -93,7 +93,7 @@
     font-weight: 600;
     float: right;
     margin-left: 2vh;
-    background-color: rgba(255,255,255,.6);
+    background-color: rgba(255,255,255,.1);
     color: black;
     transition: background 700ms;
     text-decoration: None;
