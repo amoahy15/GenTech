@@ -1,11 +1,17 @@
 from flask import request, jsonify, Blueprint
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine import NotUniqueError, ValidationError
 from models.artworkModel import Artwork
 
 artwork_controller = Blueprint('artwork_controller', __name__)
 
+
 @artwork_controller.route('/artwork', methods=['POST'])
+@jwt_required()  # Require authentication to create artwork
 def create_artwork():
+    # Optionally, get the current user's ID if you need to associate the artwork with the user
+    # current_user_id = get_jwt_identity()
+
     data = request.get_json()
     required_fields = ['artworkID', 'title', 'artist', 'year', 'image_url']
     missing_fields = [field for field in required_fields if field not in data]
@@ -28,26 +34,30 @@ def create_artwork():
     except Exception as e:
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
+
 @artwork_controller.route('/artwork/<string:artworkID>', methods=['GET'])
 def get_artwork(artworkID):
     artwork = Artwork.objects(artworkID=artworkID).first()
     if artwork:
-        return jsonify(artwork.to_mongo().to_dict()), 200  # Ensure your model has a method to serialize or use to_mongo().to_dict()
+        return jsonify(artwork.to_mongo().to_dict()), 200
     else:
         return jsonify({"error": "Artwork not found"}), 404
 
+
 @artwork_controller.route('/artwork/<string:artworkID>', methods=['PUT'])
+@jwt_required()  # Require authentication to update artwork
 def update_artwork(artworkID):
+    # current_user_id = get_jwt_identity()
     data = request.get_json()
     try:
         artwork = Artwork.objects(artworkID=artworkID).first()
         if not artwork:
             return jsonify({"error": "Artwork not found"}), 404
-        
+
         for field in ['title', 'artist', 'tags', 'description', 'image_location']:
             if field in data:
                 setattr(artwork, field, data[field])
-        
+
         artwork.save()
         return jsonify({"message": "Artwork updated successfully"}), 200
     except ValidationError as e:
@@ -55,8 +65,11 @@ def update_artwork(artworkID):
     except Exception as e:
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
 
+
 @artwork_controller.route('/artwork/<string:artworkID>', methods=['DELETE'])
+@jwt_required()  # Require authentication to delete artwork
 def delete_artwork(artworkID):
+    # current_user_id = get_jwt_identity()
     artwork = Artwork.objects(artworkID=artworkID).first()
     if artwork:
         artwork.delete()
