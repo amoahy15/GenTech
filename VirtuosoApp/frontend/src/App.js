@@ -9,8 +9,8 @@ import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
 import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
-import NavUser from "./components/Navigation/navUser"
-import Disclaimer from './components/Pages/Disclaimer'
+import NavUser from "./components/Navigation/NavUsers";
+import Disclaimer from './components/Pages/Disclaimer';
 function App() {
 
   const token = localStorage.getItem('token');
