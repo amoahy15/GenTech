@@ -21,7 +21,7 @@ const Footer = () => {
                 <ul className={styles.box}>
                     <li className={styles.linkname}>MEET  GENTECH</li>
                     <li><a href="https://github.com/amoahy15/GenTech">Github</a></li>
-                    <li><a href="./about">Contact Us</a></li>
+                    <li><a href="mailto:gentech.emory@gmail.com">Contact Us</a></li>
                 </ul>
                 <ul className={styles.box}>
                 <li className={styles.linkname}>RESOURCES</li>
