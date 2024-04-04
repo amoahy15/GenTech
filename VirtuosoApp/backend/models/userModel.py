@@ -27,6 +27,8 @@ class User(Document):
     favorite_artworks = ListField()
     # List of reviews made by the user, can be empty
     reviews = ListField()
+    # List of artwork ids made by the user, can be empty
+    artwork_created = ListField()
     # List of user IDs for the user's followers
     followers = ListField()  
     # List of user IDs that the user is following
@@ -56,6 +58,7 @@ class User(Document):
             "bio": self.bio,
             "location": self.location,
             "favorite_artworks": self.favorite_artworks,
+            "artwork_created" : self.artwork_created,
             "reviews": self.reviews,
             "followers": self.followers,
             "following": self.following,
@@ -64,5 +67,5 @@ class User(Document):
             "social_media_links": self.social_media_links,
             "verification_status": self.verification_status,
             "preferences": self.preferences,
-            "joined_date": self.joined_date.isoformat()  # Convert datetime to ISO format string
+            "joined_date": self.joined_date.isoformat()
         }

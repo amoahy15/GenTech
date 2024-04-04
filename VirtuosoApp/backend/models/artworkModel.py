@@ -2,6 +2,8 @@
 from mongoengine import Document, StringField, ListField, FloatField, ReferenceField
 # Import the User model for referencing in the artist field
 from .userModel import User  
+# Import the Review model for referencing in the review field
+from .reviewModel import Review
 
 # Define the Artwork class that inherits from Document, to model an artwork in a MongoDB collection
 class Artwork(Document):
@@ -29,6 +31,8 @@ class Artwork(Document):
     average_rating = FloatField()
     # Genre of the artwork, optional
     genre = StringField()
+    # Reviews on artwork
+    reviews = ListField(ReferenceField('Review'))
 
     # Method to serialize artwork data for easy JSON conversion or API responses
     def serialize(self):
