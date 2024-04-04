@@ -1,6 +1,6 @@
 import styles from "../styles/homepage.module.css";
 import VirtuosoLogo from "../../assets/images/VirtuosoLogo.png"
-import Button from "../Button";
+import Button from "../Navigation/Button";
 const AboutPage = () => {
   const onClick = () => {
     console.log('click')
@@ -28,14 +28,14 @@ const AboutPage = () => {
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}><span style ={{color: '#990000'}}>their artistic self</span></p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Well thats enough words.</p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Much like art we invite you to just</p>
-            <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>see it for yourself  ; )</p>
+            <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>see it for yourself.</p>
             
             </div>
             <div className={styles.background}>
                 <img src={VirtuosoLogo} alt="Home Background" className={styles.backgroundImage}style={{marginTop: '100px', width: '40vw', paddingLeft: '10vw', paddingTop: '10vh'}} />
             </div>
             <div className= {styles.btn}>
-            <a href ='./register2'><Button text='Review Sneak Peak' onClick={onClick}/></a> <a href ='./register2'><Button text='Trending Sneak Peak' onClick={onClick}/></a> <a href ='./register2'><Button text='Annotations Sneak Peak' onClick={onClick}/></a> 
+            <a href ='./register'><Button text='Review Sneak Peak' onClick={onClick}/></a> <a href ='./register'><Button text='Trending Sneak Peak' onClick={onClick}/></a> <a href ='./register'><Button text='Annotations Sneak Peak' onClick={onClick}/></a> 
             </div>
 
             <div className="about-section-image-container">

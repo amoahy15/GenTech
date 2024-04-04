@@ -10,28 +10,28 @@ footer{
   footer .content .top{
     margin-bottom: 10px;
   }
-  .content .link-boxes .box .link_name{
-    color: #4d0000;
+  .content .boxes .box {
+    color: #000000;
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 10px;
     position: relative;
   }
-  footer .content .link-boxes{
+  footer .content .boxes{
     width: 100%;
     display: flex;
     justify-content: space-between;
     gap: 10px;
   }
-  footer .content .link-boxes .box{
+  footer .content .boxes .box{
     width: 60%;
     flex-wrap: wrap;
   }
-  .content .link-boxes .box li{
+  .content .boxes .box li{
     margin: 6px 0;
     list-style: none;
   }
-  .content .link-boxes .box li a{
+  .content .boxes .box li a{
     color: #000000;
     font-size: 14px;
     font-weight: 400;
@@ -39,23 +39,15 @@ footer{
     opacity: 0.8;
     transition: all 0.4s ease
   }
-  .content .link-boxes .box li a:hover{
+  .content .boxes .box li a:hover{
     opacity: 1;
     text-decoration: underline;
   }
-  .content .link-boxes .input-box{
+  .content .boxes .input-box{
     margin-right: 55px;
     flex-wrap: wrap;
   }
 
-
-  footer .bottom-details .bottom_text{
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-  }
   .bottom-details .bottom_text span,
   .bottom-details .bottom_text a{
     font-size: 14px;
@@ -76,14 +68,14 @@ footer{
 
   /*responsiveness*/
   @media (max-width: 700px) {
-    footer .content .link-boxes{
+    footer .content .boxes{
       flex-wrap: wrap;
     }
     .box{
       width: 80%;
       margin-top: 10px;
     }
-    footer .content .link-boxes .input-box{
+    footer .content .boxes .input-box{
       width: 40%;
       margin-top: 10px;
     }
@@ -93,7 +85,9 @@ footer{
     width: 175px;
     border-color: black;
   }
-
-  .bottom-text .txt {
+.txt {
     color: rgb(0, 0, 0);
+    margin-right: 2vw;
+    text-decoration: none;
+
   }

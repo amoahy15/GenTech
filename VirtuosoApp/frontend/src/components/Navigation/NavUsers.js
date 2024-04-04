@@ -2,12 +2,13 @@ import React, {useState} from "react";
 import styles from "../styles/main.module.css";
 import spiral from '../../assets/images/fibonacci.png';
 import {FaSearch} from "react-icons/fa";
-import NavItem from "./NavItem"
-import DropDownMenu from "./DropDownMenu";
+import NavItem from "./NavItem";
 import Button2 from "./navButton";
+import DropDownMenu from "./DropDownMenu";
+import UserDropDown from "../UserData/UserDropDown";
 
 
-const Nav = () => {
+const NavUser = () => {
     
     const onClick = () => {
         console.log('click')
@@ -41,12 +42,7 @@ const Nav = () => {
 
           <a href="./"><Button2 text='Forum' onClick={onClick}/></a>
 
-          <ul className={styles.userlist} style ={{marginBottom: "1vh"}}>
-            <li><a href="./login2"><button onClick={onClick} className={styles.userbtn}>
-              Login</button></a></li>
-            <li><a href="./register"><button onClick={onClick} className={styles.userbtn2}>
-              Sign Up</button></a></li>
-          </ul>
+          <NavItem><UserDropDown></UserDropDown></NavItem>
 
       </nav>
       </header>  
@@ -56,5 +52,5 @@ const Nav = () => {
   )
 }
 
-export default Nav
+export default NavUser
 
