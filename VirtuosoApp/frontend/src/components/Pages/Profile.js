@@ -12,7 +12,10 @@ function Profile() {
   // State to hold user data
   const [userData, setUserData] = useState({
     user_name: 'Loading...', 
-    bio:'Loading...'
+    bio:'Loading...',
+    followers:"0",
+    following:"0"
+
   });
   const [bioText, setBioText] = useState('');
 
@@ -28,6 +31,8 @@ function Profile() {
         setUserData({
           user_name: response.data.user_name,
           bio: response.data.bio,
+          followers: response.data.followers,
+          following: response.data.following
         });
         setBioText(response.data.bio);
       } catch (error) {
@@ -58,6 +63,8 @@ function Profile() {
     ...prevState,
     user_name: response.data.user_name, 
     bio: response.data.bio,
+    followers: response.data.followers,
+    following: response.data.following
   }));
   setBioText('');
 } catch (error) {
