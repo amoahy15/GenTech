@@ -96,3 +96,16 @@ def get_artwork(artwork_id):
         return jsonify({"error": "Artwork not found"}), 404
     
     return jsonify(artwork.serialize()), 200
+
+@artwork_controller.route('/artworks/collection/<string:collection_name>', methods=['GET'])
+def get_artworks_by_collection(collection_name):
+    artworks = Artwork.objects(collection=collection_name)
+    if artworks:
+        # Wrap the serialized artworks in an object under the 'images' key
+        response = {
+            "images": [artwork.serialize() for artwork in artworks]
+        }
+        return jsonify(response), 200
+    else:
+        return jsonify({"error": "No artworks found in this collection"}), 404
+
