@@ -21,10 +21,34 @@ const PopupForm = ({ onSubmit, onClose }) => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    console.log("Text:", annotationText, "Coordinates:", clickCoordinates);
-    onSubmit(annotationText, clickCoordinates); //TODO: backend
-    setAnnotationText("");
-    onClose();
+    // Construct the payload with text and coordinates
+    const payload = {
+      text: annotationText,
+      coordinates: clickCoordinates, // Assuming your backend model accepts these fields
+    };
+  
+    try {
+      const response = await fetch('/create_annotation', { // Adjust the URL as necessary, e.g., http://localhost:5000/create_annotation if running locally
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("Success:", data);
+      // Here, handle any actions after successful submission, like showing a success message
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    }
+  
+    setAnnotationText(""); // Clear the form
+    onClose(); // Close the popup
   };
 
   return (

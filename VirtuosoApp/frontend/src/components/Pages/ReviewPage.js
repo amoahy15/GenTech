@@ -18,8 +18,9 @@ function ReviewPage() {
       try {
         const reviewid = "23a";
         const response = await axios.get("http://127.0.0.1:5000/api/reviews/" + reviewid); 
-        const backendReviews = response.data;
-        const formattedReviews = backendReviews.map(review => ({
+        const thisdata = response.data;
+
+        const formattedReviews = thisdata.map(review => ({
           rating: review.rating,
           user: review.userID,
           review: review.comment
