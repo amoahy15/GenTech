@@ -15,7 +15,7 @@ import img3 from '../../assets/images/testImage3.jpeg'
 function Profile() {
   // State to hold user data
   const [userData, setUserData] = useState({
-    username: 'Loading...', 
+    user_name: 'Loading...', 
     bio:'Loading...'
   });
   const [bioText, setBioText] = useState('');
@@ -30,7 +30,7 @@ function Profile() {
           },
         });
         setUserData({
-          username: response.data.username,
+          user_name: response.data.user_name,
           bio: response.data.bio,
         });
         setBioText(response.data.bio);
@@ -60,6 +60,7 @@ function Profile() {
    // Update user data and reset the bio text being edited
    setUserData(prevState => ({
     ...prevState,
+    user_name: response.data.user_name, 
     bio: response.data.bio,
   }));
   setBioText('');
@@ -80,7 +81,7 @@ function Profile() {
           <img src={profilephoto} alt="Profile" />
         </div>
         <div className="profile-details" style={{ alignItems: 'baseline' }}>
-          <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.username}</div>
+          <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
           <button className="username-button">0 Followers</button>
           <button className="username-button">0 Following</button>
         </div>
