@@ -111,7 +111,7 @@ function Profile() {
       </div>
 
       <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
-          <Carousel images={[img, img2, img3]}></Carousel>
+          {/*<Carousel images={[img, img2, img3]}></Carousel>*/}
       </div>
       
     </div>
