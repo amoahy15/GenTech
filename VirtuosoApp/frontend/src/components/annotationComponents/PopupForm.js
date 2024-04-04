@@ -11,44 +11,49 @@ const PopupForm = ({ onSubmit, onClose }) => {
   };
 
   const handleImageClick = (event) => {
-    //limit to image: 
     const rect = imgref.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     setClickCoordinates({ x, y });
-    console.log(`Clicked coordinates:(${x}, ${y})`);
+    console.log(`Clicked coordinates: (${x}, ${y})`);
   };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // Construct the payload with text and coordinates
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("token");
+      return;
+    } else{
+      console.log({token})
+    }
     const payload = {
-      text: annotationText,
-      coordinates: clickCoordinates, // Assuming your backend model accepts these fields
+      artworkID: "8ff2a788-58f6-4cdb-86ff-797b7138c567", //TODO: not static
+      message: annotationText,
+      x_coordinate: String(clickCoordinates.x),
+      y_coordinate: String(clickCoordinates.y),
     };
-  
     try {
-      const response = await fetch('/create_annotation', { // Adjust the URL as necessary, e.g., http://localhost:5000/create_annotation if running locally
+      const response = await fetch('/annotations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
       const data = await response.json();
       console.log("Success:", data);
-      // Here, handle any actions after successful submission, like showing a success message
     } catch (error) {
       console.error("Error during form submission:", error);
     }
-  
-    setAnnotationText(""); // Clear the form
-    onClose(); // Close the popup
+
+    setAnnotationText("");
+    onClose();
   };
 
   return (
