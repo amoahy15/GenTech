@@ -11,7 +11,7 @@ const Authenticator = createContext({
 
 export const userAuth = () => useContext(Authenticator)
 
-const provider = ({children}) => {
+const AuthProvider = ({children}) => {
     const[auth, setAuth] = useState(null);
     const[user, setUser] = useState(null);
 
@@ -19,7 +19,7 @@ const provider = ({children}) => {
         const isAuth = async () => {
             try {
                 const res = await axios.get(
-                    'http://localhost:5000/api/authenticate_user/',
+                    'http://localhost:5000/api/logsin/',
                     { withCredentials: true }
                   );
                 
