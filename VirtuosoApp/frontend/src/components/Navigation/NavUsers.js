@@ -2,10 +2,11 @@ import React, {useState} from "react";
 import styles from "../styles/main.module.css";
 import spiral from '../../assets/images/fibonacci.png';
 import {FaSearch} from "react-icons/fa";
-import NavItem from "./NavItem";
+import UserIcon from "./UserIcon";
 import Button2 from "./navButton";
 import DropDownMenu from "./DropDownMenu";
 import UserDropDown from "../UserData/UserDropDown";
+import NavItem from "./NavItem";
 
 
 const NavUser = () => {
@@ -42,7 +43,7 @@ const NavUser = () => {
 
           <a href="./"><Button2 text='Forum' onClick={onClick}/></a>
 
-          <NavItem><UserDropDown></UserDropDown></NavItem>
+          <UserIcon><UserDropDown></UserDropDown></UserIcon>
 
       </nav>
       </header>  

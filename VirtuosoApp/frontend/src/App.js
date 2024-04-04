@@ -22,7 +22,7 @@ function App() {
       <div className="Content">
       <Switch>
         <Route exact path = "/">
-          {token ? <NavUser/> : <Nav/>} 
+          {token ? <NavUser/> : <Nav/>}
           <Home/>
           <Footer/>
         </Route>

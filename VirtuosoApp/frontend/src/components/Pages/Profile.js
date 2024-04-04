@@ -41,7 +41,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Ensure Axios is installed or use fetch as an alternative
 import '../styles/profile.modules.css';
-import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
+import ProfilePic from '../UserData/ProfilePic';
 import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg';
 
 function Profile() {
@@ -80,7 +80,7 @@ function Profile() {
 
       <div className="profile-container">
         <div className="profile-photo">
-          <img src={profilephoto} alt="Profile" />
+          <ProfilePic/>
         </div>
         <div className="profile-details" style={{ alignItems: 'baseline' }}>
           <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.username}</div>
