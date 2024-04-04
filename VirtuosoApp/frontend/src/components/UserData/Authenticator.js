@@ -16,10 +16,10 @@ const Authenticator = () => {
     setUser(userObj)
 
     const userData = {
-      email: userObj.email,
-      firstName: userObj.given_name, 
-      lastName: userObj.family_name,
-      userName: userObj.name,
+      email: user.email,
+      firstName: user.given_name, 
+      lastName: user.family_name,
+      userName: user.name,
     };
 
     Backend(userData);
