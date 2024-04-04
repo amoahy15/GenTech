@@ -29,7 +29,7 @@ const Authenticator = () => {
     }
   }
 
-  async function Backend(userData) {
+  const Backend = async (userData) => {
     try {
       const response = await axios.post('http://127.0.0.1:5000/api/user/create_user', userData);
       console.log(response);
