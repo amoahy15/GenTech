@@ -52,7 +52,7 @@ def create_user():
             location=data.get('location', ''),
             favorite_artworks=data.get('favorite_artworks', []),
             reviews=data.get('reviews', []),
-            friends_list=data.get('friends_list', []),
+            is_private=data.get('is_private', False), 
             social_media_links=data.get('social_media_links', {}),
             verification_status=data.get('verification_status', False),
             preferences=data.get('preferences', {}),
@@ -81,6 +81,7 @@ def login_user():
         
         if bcrypt.check_password_hash(user.password_hash, data['password']):
             access_token = create_access_token(identity=str(user.user_id))
+            logger.info(f"Access token is: {access_token}")
             return jsonify({"message": "Login successful", "access_token": access_token}), 200
         else:
             return jsonify({"error": "Invalid credentials"}), 401
@@ -178,3 +179,64 @@ def get_user_details():
     except Exception as e:
         logger.error(f"Error fetching user details for {current_user}: {e}", exc_info=True)
         return jsonify({"error": "An unexpected error occurred"}), 500
+    
+@user_controller.route('/follow', methods=['POST'])
+@jwt_required()
+def follow_user():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+
+    target_user_id = data.get('target_user_id')
+    if not target_user_id:
+        return jsonify({"error": "Target user ID is required"}), 400
+
+    if current_user_id == target_user_id:
+        return jsonify({"error": "You cannot follow yourself"}), 400
+
+    current_user = User.objects(user_id=current_user_id).first()
+    target_user = User.objects(user_id=target_user_id).first()
+
+    if not current_user or not target_user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Check if already following or request is pending
+    if target_user_id in current_user.following or target_user_id in target_user.pending_follow_requests:
+        return jsonify({"error": "Already following this user or request pending"}), 400
+
+    if target_user.is_private:
+        # Add current user's ID to target user's pending requests if account is private
+        target_user.update(add_to_set__pending_follow_requests=current_user_id)
+        return jsonify({"message": "Follow request sent"}), 200
+    else:
+        # Proceed to follow if account is not private
+        current_user.update(add_to_set__following=target_user_id)
+        target_user.update(add_to_set__followers=current_user_id)
+        return jsonify({"message": "Successfully followed the user"}), 200
+
+@user_controller.route('/unfollow', methods=['POST'])
+@jwt_required()
+def unfollow_user():
+    current_user_id = get_jwt_identity()
+    data = request.get_json()
+
+    target_user_id = data.get('target_user_id')
+    if not target_user_id:
+        return jsonify({"error": "Target user ID is required"}), 400
+
+    current_user = User.objects(user_id=current_user_id).first()
+    target_user = User.objects(user_id=target_user_id).first()
+
+    if not current_user or not target_user:
+        return jsonify({"error": "User not found"}), 404
+
+    if target_user_id in current_user.following:
+        # Remove target user from current user's following list
+        current_user.update(pull__following=target_user_id)
+        target_user.update(pull__followers=current_user_id)
+        return jsonify({"message": "Successfully unfollowed the user"}), 200
+    elif target_user_id in target_user.pending_follow_requests:
+        # Cancel a pending follow request if found in target user's pending requests
+        target_user.update(pull__pending_follow_requests=current_user_id)
+        return jsonify({"message": "Follow request canceled"}), 200
+    else:
+        return jsonify({"error": "You are not following this user or no pending request found"}), 400
