@@ -11,6 +11,7 @@ import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
+import Authenticator from "./components/UserData/Authenticator";
 function App() {
 
   const token = localStorage.getItem('token');

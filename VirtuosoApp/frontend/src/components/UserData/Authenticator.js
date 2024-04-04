@@ -1,42 +1,60 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
+import { useHistory } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 import axios from 'axios';
 
+const Authenticator = () => {
 
-const Authenticator = createContext({
- auth:null,
- setAuth: () => {},
- user: null,
-});
+  const [user, setUser] = useState({});
+  const nav = useHistory(); 
 
+  function handleCallbackResponse(response) {
+    try{
+    console.log("Encoded JWT ID token " + response.credential);
+    var userObj = jwtDecode(response.credential);
+    console.log(userObj);
+    setUser(userObj)
 
-export const userAuth = () => useContext(Authenticator)
+    const userData = {
+      email: userObj.email,
+      firstName: userObj.given_name, 
+      lastName: userObj.family_name,
+      userName: userObj.name,
+    };
 
-const AuthProvider = ({children}) => {
-    const[auth, setAuth] = useState(null);
-    const[user, setUser] = useState(null);
+    Backend(userData);
+    
+    } catch (error){
+      console.error("Error decoding JWT", error);
+    }
+  }
 
-    useEffect(() => {
-        const isAuth = async () => {
-            try {
-                const res = await axios.get(
-                    'http://localhost:5000/api/logsin/',
-                    { withCredentials: true }
-                  );
-                
-                  setUser(res.data);
-                } catch(error) {
-                  setUser(null);
-                };
-            };
+  async function Backend(userData) {
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/api/user/create_user', userData);
+      console.log(response);
+      nav.push('./'); 
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
-            isAuth();
-        }, [auth]);
+  useEffect(() => {/* global google */ google.accounts.id.initialize({
+    client_id: "535693072951-dbvsehbrrtp6frmub9k199naus9nikg2.apps.googleusercontent.com",
+    callback: handleCallbackResponse 
+  });
+  google.accounts.id.renderButton(
+    document.getElementById("signInDiv"),
+    { theme: "outline", size: "large" }
+  )
 
-        return (
-            <AuthContext.Provider value={{ auth, setAuth, user }}>
-              {children}
-            </AuthContext.Provider>
-          );
-        };
-        
-export default AuthProvider;
+  }, []);
+
+  return (
+    <div id="signInDiv">
+
+    </div>
+  )
+}
+
+export default Authenticator
