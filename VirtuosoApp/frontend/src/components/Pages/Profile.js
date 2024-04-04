@@ -10,7 +10,7 @@ import styles from '../styles/carousel.module.css';
 import img from '../../assets/images/testImage.jpeg'
 import img2 from '../../assets/images/testImage2.jpeg'
 import img3 from '../../assets/images/testImage3.jpeg'
-
+import Carousel from '../carouselcomponents/Carousel'
 
 function Profile() {
   // State to hold user data
@@ -111,7 +111,7 @@ function Profile() {
       </div>
 
       <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
-          {/*<Carousel images={[img, img2, img3]}></Carousel>*/}
+          <Carousel images={[img, img2, img3]}></Carousel>
       </div>
       
     </div>

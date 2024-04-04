@@ -61,7 +61,7 @@ const PopupForm = ({ onSubmit, onClose }) => {
       y_coordinate: String(clickCoordinates.y),
     };
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/annotations', payload, {
+      const response = await axios.post('http://127.0.0.1:5000/api/annotations/annotation', payload, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
