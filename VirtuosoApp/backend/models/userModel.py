@@ -27,6 +27,8 @@ class User(Document):
     favorite_artworks = ListField()
     # List of reviews made by the user, can be empty
     reviews = ListField()
+    # List of artwork ids made by the user, can be empty
+    artwork_created = ListField()
     # List of user IDs for the user's followers
     followers = ListField()  
     # List of user IDs that the user is following
@@ -46,6 +48,7 @@ class User(Document):
 
     # Method to serialize user data for easy JSON conversion or API responses
     def serialize(self):
+        reviews = [review.serialize() for review in self.reviews]
         return {
             "user_id": self.user_id,
             "user_name": self.user_name,
@@ -56,7 +59,8 @@ class User(Document):
             "bio": self.bio,
             "location": self.location,
             "favorite_artworks": self.favorite_artworks,
-            "reviews": self.reviews,
+            "artwork_created" : self.artwork_created,
+            "reviews": reviews,
             "followers": self.followers,
             "following": self.following,
             "pending_follow_requests": [str(user_id) for user_id in self.pending_follow_requests],
@@ -64,5 +68,5 @@ class User(Document):
             "social_media_links": self.social_media_links,
             "verification_status": self.verification_status,
             "preferences": self.preferences,
-            "joined_date": self.joined_date.isoformat()  # Convert datetime to ISO format string
+            "joined_date": self.joined_date.isoformat()
         }

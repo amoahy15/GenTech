@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'; // Ensure Axios is installed or use fetch as an alternative
 import '../styles/profile.modules.css';
+import Carousel from '../carouselcomponents/Carousel.js'
 import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
 import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import styles from '../styles/carousel.module.css';
 import img from '../../assets/images/testImage.jpeg'
 import img2 from '../../assets/images/testImage2.jpeg'
 import img3 from '../../assets/images/testImage3.jpeg'
@@ -15,8 +12,11 @@ import Carousel from '../carouselcomponents/Carousel'
 function Profile() {
   // State to hold user data
   const [userData, setUserData] = useState({
-    username: 'Loading...', 
-    bio:'Loading...'
+    user_name: 'Loading...', 
+    bio:'Loading...',
+    followers:"0",
+    following:"0"
+
   });
   const [bioText, setBioText] = useState('');
 
@@ -30,8 +30,10 @@ function Profile() {
           },
         });
         setUserData({
-          username: response.data.username,
+          user_name: response.data.user_name,
           bio: response.data.bio,
+          followers: response.data.followers,
+          following: response.data.following
         });
         setBioText(response.data.bio);
       } catch (error) {
@@ -60,7 +62,10 @@ function Profile() {
    // Update user data and reset the bio text being edited
    setUserData(prevState => ({
     ...prevState,
+    user_name: response.data.user_name, 
     bio: response.data.bio,
+    followers: response.data.followers,
+    following: response.data.following
   }));
   setBioText('');
 } catch (error) {
@@ -80,7 +85,7 @@ function Profile() {
           <img src={profilephoto} alt="Profile" />
         </div>
         <div className="profile-details" style={{ alignItems: 'baseline' }}>
-          <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.username}</div>
+          <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
           <button className="username-button">0 Followers</button>
           <button className="username-button">0 Following</button>
         </div>
@@ -111,7 +116,7 @@ function Profile() {
       </div>
 
       <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
-          <Carousel images={[img, img2, img3]}></Carousel>
+          {<Carousel images={[img, img2, img3]}></Carousel>}
       </div>
       
     </div>
