@@ -24,14 +24,14 @@
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    padding: 5px 140px;
+    padding-right: 16vh;
   }
   
   .virtuoso {
     color: #080808;
     text-align: left;
     font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
-    font-size: 32px;
+    font-size: calc(1.9*(1vh + 1vw));
     line-height: 200%;
     position: relative;
     z-index: 2;
@@ -59,7 +59,58 @@
     background-color: rgba(255,255,255,.6);
     color: rgba(153,0,0,1);
   }
+
+  .userbtn{
+    font-family: "Nunito", sans-serif;
+    padding: .75vh 3.85vh;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: calc(.5*(1vh + 1vw));
+    font-weight: 600;
+    float: right;
+    margin-left: 2vh;
+    background-color: rgba(255,255,255,.1);
+    color: black;
+    transition: background 700ms;
+    text-decoration: None;
+    margin-bottom: .75vh;
+  }
+
+  .userbtn:hover{
+    background-color: rgba(153,0,0,.1);
+    color: rgba(153,0,0,1);
+    text-decoration: underline;
+  }
   
+  .userbtn2{
+    font-family: "Nunito", sans-serif;
+    padding: .75vh 3vh;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: calc(.5*(1vh + 1vw));
+    font-weight: 600;
+    float: right;
+    margin-left: 2vh;
+    background-color: rgba(255,255,255,.1);
+    color: black;
+    transition: background 700ms;
+    text-decoration: None;
+  }
+
+  .userbtn2:hover{
+    background-color: rgba(153,0,0,.1);
+    color: rgba(153,0,0,1);
+    text-decoration: underline;
+  }
+
+  .userlist{
+    list-style-type: none;
+  }
+  
+
+
   .search-item {
     text-align: right;
     line-height: 150%;
@@ -71,7 +122,7 @@
     justify-content: space-between; 
     align-items: center;
     position: fixed;
-    height: 7vh;
+    height: 9vh;
     top:0;
     left:0;
     width: 100%;
@@ -97,7 +148,7 @@
     background-color: transparent;
     border: none;
     height: 100%;
-    font-size: 20px;
+    font-size: calc(1.0*(1vh + 1vw));
     width: 100%;
     margin-left: 1vh;
   }

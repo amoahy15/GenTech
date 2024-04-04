@@ -31,8 +31,6 @@ class Artwork(Document):
     average_rating = FloatField()
     # Genre of the artwork, optional
     genre = StringField()
-    # Reviews on artwork
-    reviews = ListField(ReferenceField('Review'))
 
     # Method to serialize artwork data for easy JSON conversion or API responses
     def serialize(self):

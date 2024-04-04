@@ -1,6 +1,19 @@
+<<<<<<< HEAD
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine import ValidationError, NotUniqueError, DoesNotExist
+=======
+import logging
+import uuid
+import re
+from flask import Flask, Blueprint, request, jsonify
+from models.userModel import User
+from mongoengine.errors import NotUniqueError, ValidationError
+from datetime import datetime, timezone
+from flask_bcrypt import Bcrypt
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+>>>>>>> 60360e7b0cadbd82726798d400406a0536408624
 from models.reviewModel import Review
 from models.artworkModel import Artwork
 from models.userModel import User
@@ -8,12 +21,22 @@ from datetime import datetime
 import logging
 import uuid
 
+<<<<<<< HEAD
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 review_controller = Blueprint('review_controller', __name__)
 @review_controller.route('/create_review', methods=['POST'])
 @jwt_required()
+=======
+app = Flask(__name__)
+bcrypt = Bcrypt(app)
+
+review_controller = Blueprint('ReviewController', __name__)
+
+@review_controller.route('/reviews', methods=['POST'])
+@jwt_required() 
+>>>>>>> 60360e7b0cadbd82726798d400406a0536408624
 def create_review():
     user_id = get_jwt_identity()
     data = request.get_json()
