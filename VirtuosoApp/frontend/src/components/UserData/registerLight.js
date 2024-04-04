@@ -44,10 +44,11 @@ const Register = () => {
     <div className={styles.main}>
       <video className={styles.videobg} src={bgVid} autoPlay muted loop />
       <div className={styles.wrapper}>
+        <div className={styles.container}>
         <form onSubmit={registerUser}> {/* Updated to use onSubmit event */}
 
           <div className={styles.header}>
-            <h1><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></h1>
+            <h1><a href='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
           </div>
 
           <div className={styles.center}>
@@ -77,6 +78,7 @@ const Register = () => {
           <button className={styles.btn} type="submit">Create Account</button> {/* Changed to type="submit" */}
 
         </form>
+      </div>
       </div>
     </div>
   )
