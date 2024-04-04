@@ -28,7 +28,7 @@ class Artwork(Document):
     # Average rating for the artwork, calculated from reviews
     average_rating = FloatField()
     # Genre of the artwork, optional
-    genre = StringField()
+    collection = StringField()
 
     # Method to serialize artwork data for easy JSON conversion or API responses
     def serialize(self):
