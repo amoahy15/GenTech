@@ -9,7 +9,6 @@ import img2 from '../../assets/images/testImage2.jpeg'
 import img3 from '../../assets/images/testImage3.jpeg'
 
 function Profile() {
-  // State to hold user data
   const [userData, setUserData] = useState({
     user_name: 'Loading...', 
     bio:'Loading...',
@@ -20,7 +19,7 @@ function Profile() {
   const [bioText, setBioText] = useState('');
 
   useEffect(() => {
-    // Fetch user details from the backend
+    //Fetch user details from the backend
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
@@ -41,7 +40,7 @@ function Profile() {
     };
 
     fetchUserDetails();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []); 
 
   const handleBioChange = event => {
     setBioText(event.target.value);
@@ -58,7 +57,7 @@ function Profile() {
           },
         }
       );
-   // Update user data and reset the bio text being edited
+   //Update user data and reset the bio text being edited
    setUserData(prevState => ({
     ...prevState,
     user_name: response.data.user_name, 
