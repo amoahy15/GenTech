@@ -8,3 +8,4 @@ class Annotation(Document):
     x_coordinate = StringField(required=True)
     y_coordinate = StringField(required=True)
     createdAt = DateTimeField(default=datetime.now)
+    annotationID = StringField(required=True, unique=True)

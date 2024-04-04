@@ -82,7 +82,6 @@ const PopupForm = ({ onSubmit, onClose }) => {
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
             <img ref={imgref} src="https://media.nga.gov/iiif/b4ee3d5d-4397-4e7e-b946-20a22c878230/full/!384,384/0/default.jpg" style={{ maxWidth: '100%'}}/>
 
-            {/* unsure how to integrate this w the css folder :/*/}
             {clickCoordinates.x !== null && clickCoordinates.x >= 0 && clickCoordinates.y !== null && clickCoordinates.y >= 0 && (
             <span className={styles["annotation-icon]"]} style={{top: `${clickCoordinates.y}px`, left: `${clickCoordinates.x}px`, position: 'absolute',
             width: '10px',
