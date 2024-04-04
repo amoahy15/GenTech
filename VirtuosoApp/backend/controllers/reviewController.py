@@ -1,53 +1,32 @@
-<<<<<<< HEAD
 from flask import request, jsonify, Blueprint
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine import ValidationError, NotUniqueError, DoesNotExist
-=======
-import logging
-import uuid
-import re
-from flask import Flask, Blueprint, request, jsonify
-from models.userModel import User
-from mongoengine.errors import NotUniqueError, ValidationError
-from datetime import datetime, timezone
-from flask_bcrypt import Bcrypt
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-
->>>>>>> 60360e7b0cadbd82726798d400406a0536408624
 from models.reviewModel import Review
 from models.artworkModel import Artwork
 from models.userModel import User
-from datetime import datetime
 import logging
 import uuid
 
-<<<<<<< HEAD
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
 review_controller = Blueprint('review_controller', __name__)
+
 @review_controller.route('/create_review', methods=['POST'])
 @jwt_required()
-=======
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
-
-review_controller = Blueprint('ReviewController', __name__)
-
-@review_controller.route('/reviews', methods=['POST'])
-@jwt_required() 
->>>>>>> 60360e7b0cadbd82726798d400406a0536408624
 def create_review():
     user_id = get_jwt_identity()
     data = request.get_json()
     review_id = str(uuid.uuid4())  # Generate a UUID for the review ID
-    logger.info(f"Creating review {review_id} by user {user_id} for artwork {data.get('artwork_id')}")
+    logger.info(f"Attempting to create review {review_id} by user {user_id} for artwork {data.get('artwork_id')}")
 
     try:
-        user = User.objects.get(user_id=user_id)
+        logger.debug("Fetching user and artwork from the database.")
+        user = User.objects.get(id=user_id)
         artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
-        
-        # Assign the generated UUID as the review_id
+        logger.debug("User and artwork successfully fetched.")
+
         new_review = Review(
             review_id=review_id,  
             user=user,
@@ -56,56 +35,67 @@ def create_review():
             comment=data.get('comment', '')
         )
         new_review.save()
+        logger.info(f"Review {review_id} successfully created.")
 
-         # Update the user's and artwork's list of reviews
+        logger.debug("Updating user and artwork with new review.")
         user.update(push__reviews=new_review)
         artwork.update(push__reviews=new_review)
-        artwork.reload()  # Reload the artwork document to ensure the list of reviews is updated
+        artwork.reload()  # Ensure the artwork document reflects the recent update
+        logger.info("User and artwork updated with new review.")
 
-        # Update the average rating of the artwork
+        logger.debug("Updating average rating for the artwork.")
         artwork.update_average_rating()
+        logger.info(f"Average rating updated for artwork {data.get('artwork_id')}.")
 
-        logger.info(f"Review {review_id} created successfully for artwork {data.get('artwork_id')}")
         return jsonify({"msg": "Review created successfully", "review": new_review.serialize()}), 201
 
     except DoesNotExist as e:
-        logger.error(f"Error: {str(e)}")
+        logger.error(f"User or Artwork not found: {str(e)}")
         return jsonify({"error": "User or Artwork not found"}), 404
     except ValidationError as e:
-        logger.error(f"Validation error: {str(e)}")
+        logger.error(f"Validation error during review creation: {str(e)}")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        logger.exception("An unexpected error occurred")
+        logger.exception("Unexpected error occurred during review creation.")
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
-
 @review_controller.route('/reviews/<string:review_id>', methods=['GET'])
 @jwt_required()
 def get_review(review_id):
+    logger.info(f"Fetching review {review_id}")
     try:
         review = Review.objects.get(id=review_id)
+        logger.info(f"Review {review_id} fetched successfully")
         return jsonify(review.serialize()), 200
     except DoesNotExist:
+        logger.error(f"Review {review_id} not found")
         return jsonify({"error": "Review not found"}), 404
 
 @review_controller.route('/reviews/<string:review_id>', methods=['PUT'])
 @jwt_required()
 def update_review(review_id):
+    logger.info(f"Attempting to update review {review_id}")
     try:
         data = request.get_json()
         Review.objects(id=review_id).update_one(**data)
         review = Review.objects.get(id=review_id)
+        logger.info(f"Review {review_id} updated successfully")
         return jsonify({"msg": "Review updated successfully", "review": review.serialize()}), 200
     except ValidationError as e:
+        logger.error(f"Validation error while updating review {review_id}: {str(e)}")
         return jsonify({"error": str(e)}), 400
     except DoesNotExist:
+        logger.error(f"Review {review_id} not found for update")
         return jsonify({"error": "Review not found"}), 404
 
 @review_controller.route('/reviews/<string:review_id>', methods=['DELETE'])
 @jwt_required()
 def delete_review(review_id):
+    logger.info(f"Attempting to delete review {review_id}")
     try:
         review = Review.objects.get(id=review_id)
         review.delete()
+        logger.info(f"Review {review_id} deleted successfully")
         return jsonify({"msg": "Review deleted successfully"}), 200
     except DoesNotExist:
+        logger.error(f"Review {review_id} not found for deletion")
         return jsonify({"error": "Review not found"}), 404
