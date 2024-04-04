@@ -291,3 +291,37 @@ def unfollow_user():
     else:
         logger.warning("User is not following this user or no pending request found")
         return jsonify({"error": "You are not following this user or no pending request found"}), 400
+
+@user_controller.route('/followers', methods=['GET'])
+@jwt_required()
+def get_followers():
+    current_user_id = get_jwt_identity()
+    user = User.objects(user_id=current_user_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Assuming each follower's info needs to be fetched separately
+    followers_info = []
+    for follower_id in user.followers:
+        follower = User.objects(user_id=follower_id).first()
+        if follower:
+            followers_info.append(follower.serialize())
+
+    return jsonify({"followers": followers_info}), 200
+
+@user_controller.route('/following', methods=['GET'])
+@jwt_required()
+def get_following():
+    current_user_id = get_jwt_identity()
+    user = User.objects(user_id=current_user_id).first()
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    # Assuming each following user's info needs to be fetched separately
+    following_info = []
+    for following_id in user.following:
+        following_user = User.objects(user_id=following_id).first()
+        if following_user:
+            following_info.append(following_user.serialize())
+
+    return jsonify({"following": following_info}), 200
