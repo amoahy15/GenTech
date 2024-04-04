@@ -48,6 +48,7 @@ class User(Document):
 
     # Method to serialize user data for easy JSON conversion or API responses
     def serialize(self):
+        reviews = [review.serialize() for review in self.reviews]
         return {
             "user_id": self.user_id,
             "user_name": self.user_name,
@@ -59,7 +60,7 @@ class User(Document):
             "location": self.location,
             "favorite_artworks": self.favorite_artworks,
             "artwork_created" : self.artwork_created,
-            "reviews": self.reviews,
+            "reviews": reviews,
             "followers": self.followers,
             "following": self.following,
             "pending_follow_requests": [str(user_id) for user_id in self.pending_follow_requests],
