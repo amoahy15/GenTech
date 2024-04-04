@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/profile.modules.css';
 import Carousel from '../carouselcomponents/Carousel';
-import axios from 'axios'; // Ensure axios is installed or use fetch API
+import axios from 'axios';
 
 function Collection() {
   const [collections, setCollections] = useState({
@@ -11,18 +11,16 @@ function Collection() {
   });
 
   useEffect(() => {
-    // Example fetching function for a collection
     const fetchCollection = async (collectionName) => {
       try {
         const response = await axios.get(`/api/artwork/collection/${collectionName}`);
-        return response.data.images; // Assuming the endpoint returns an object with an images array
+        return response.data.images;
       } catch (error) {
         console.error('Failed to fetch collection:', collectionName, error);
         return [];
       }
     };
 
-    // Fetch all collections
     const fetchAllCollections = async () => {
       const impressionism = await fetchCollection('impressionism');
       const surrealism = await fetchCollection('surrealism');
