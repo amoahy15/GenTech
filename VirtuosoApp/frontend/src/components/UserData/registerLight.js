@@ -5,6 +5,7 @@ import { IoLockClosedSharp } from "react-icons/io5";
 import bgVid from '../../assets/videos/lightvid.mp4';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import Authenticator from './Authenticator';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -44,10 +45,11 @@ const Register = () => {
     <div className={styles.main}>
       <video className={styles.videobg} src={bgVid} autoPlay muted loop />
       <div className={styles.wrapper}>
+        <div className={styles.container}>
         <form onSubmit={registerUser}> {/* Updated to use onSubmit event */}
 
           <div className={styles.header}>
-            <h1><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></h1>
+            <h1><a href='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
           </div>
 
           <div className={styles.center}>
@@ -75,8 +77,9 @@ const Register = () => {
           </div>
 
           <button className={styles.btn} type="submit">Create Account</button> {/* Changed to type="submit" */}
-
+          <Authenticator/>
         </form>
+      </div>
       </div>
     </div>
   )

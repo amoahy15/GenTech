@@ -28,10 +28,22 @@
   background-color: rgba(255,255,255,.3);
 }
 
+.container {
+  padding: 6vh 10vh;
+  background-color: rgba(255,255,255,.2);
+  border: none;
+  border-radius: 20px;
+}
+
 .header {
   font-size: 28px;
   text-align: center;
   font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
+  margin-bottom: 7vh;
+}
+
+.header a{
+  text-decoration: none;
 }
 
 .h2 {
@@ -117,6 +129,13 @@
   font-size: 18px;
   color: black;
   font-weight: 800;
+  transition: background 700ms ease;
+  transition: color 700ms ease;
+}
+
+.btn:hover {
+  background: rgba(255,255,255,.5);
+  color:#990000;
 }
 
 .register {

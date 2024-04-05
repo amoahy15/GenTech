@@ -3,8 +3,6 @@ import styles from '../styles/dropdown.module.css'
 
 const DropDownMenu = () => {
 
-    const [activeMenu, setActiveMenu] = useState('main')
-
     function DropDownItems(props){
         return (
             <div className ={styles.item}>

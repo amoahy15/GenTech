@@ -7,10 +7,8 @@ from models.userModel import User
 import logging
 import uuid
 
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
-
 review_controller = Blueprint('review_controller', __name__)
 
 @review_controller.route('/create_review', methods=['POST'])
@@ -40,7 +38,7 @@ def create_review():
         logger.debug("Updating user and artwork with new review.")
         user.update(push__reviews=new_review)
         artwork.update(push__reviews=new_review)
-        artwork.reload()  # Ensure the artwork document reflects the recent update
+        artwork.reload() 
         logger.info("User and artwork updated with new review.")
 
         logger.debug("Updating average rating for the artwork.")

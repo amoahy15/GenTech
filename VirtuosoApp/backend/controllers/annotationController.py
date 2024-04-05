@@ -4,6 +4,7 @@ from mongoengine.errors import ValidationError, DoesNotExist
 from models.annotationModel import Annotation
 from models.userModel import User
 import datetime
+import uuid
 
 annotation_controller = Blueprint('annotation_controller', __name__)
 
@@ -17,8 +18,10 @@ def create_annotation():
     if missing_fields:
         return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
     try:
+        uniqueAnnotationID = str(uuid.uuid4())
         new_annotation = Annotation(
             userID=user_id,
+            annotationID = uniqueAnnotationID,
             artworkID=data['artworkID'],
             message=data['message'],
             x_coordinate=data['x_coordinate'],
@@ -38,11 +41,9 @@ def create_annotation():
 def get_annotation(annotation_id):
     annotation = Annotation.objects(id=annotation_id).first()
     if annotation:
-        # Assuming Annotation model has a method to serialize or you manually select fields to return
         annotation_data = {
             "annotationID": annotation.id,
             "userID": annotation.userID,
-            # Include other fields as needed
         }
         return jsonify(annotation_data)
     else:
@@ -51,10 +52,29 @@ def get_annotation(annotation_id):
 @annotation_controller.route('/annotations/<annotation_id>', methods=['DELETE'])
 @jwt_required()
 def delete_annotation(annotation_id):
-    user_id = get_jwt_identity()  # Get the ID of the user making the request
-    annotation = Annotation.objects(id=annotation_id, userID=user_id).first()  # Ensure user owns the annotation
+    user_id = get_jwt_identity()
+    annotation = Annotation.objects(id=annotation_id, userID=user_id).first()
     if annotation:
         annotation.delete()
         return jsonify({"message": "Annotation deleted successfully"})
     else:
         return jsonify({"error": "Annotation not found or access denied"}), 404
+
+
+@annotation_controller.route('/artwork/<artwork_id>', methods=['GET'])
+def get_annotations(artwork_id):
+    try:
+        annotations = Annotation.objects(artworkID = artwork_id)
+        annotations_list = [{
+            'annotationID': str(annotation.id),
+            'userID': str(annotation.userID),
+            'message': annotation.message,
+            'x_coordinate': annotation.x_coordinate,
+            'y_coordinate': annotation.y_coordinate,
+        } for annotation in annotations]
+
+        return jsonify(annotations_list)
+    except DoesNotExist:
+        return jsonify({"error": "Artwork not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500

@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react'
-import styles from "../styles/dropdown.module.css"
-import { HiDotsHorizontal } from "react-icons/hi";
+import ProfilePic from '../UserData/ProfilePic';
 
-const NavItem = (props) => {
+const UserIcon = (props) => {
 
-    const child = <HiDotsHorizontal className={styles.btn} size={30}/>;
+  
+    const child = <ProfilePic size={10}/>;
     const[open, setOpen] = useState(false);
     const ref = useRef();
 
@@ -24,14 +24,14 @@ const NavItem = (props) => {
 
   return (
     <div ref = {ref}>
-   
+        <div className="profile-photo-nav">
         <a className='icon-button' onClick={() => setOpen(!open)}>
              {child}
         </a>
-
+        </div>
          {open && props.children}
     </div>
   )
 }
 
-export default NavItem
+export default UserIcon
