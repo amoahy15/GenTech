@@ -11,6 +11,7 @@ import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
+import Authenticator from "./components/UserData/Authenticator";
 function App() {
 
   const token = localStorage.getItem('token');
@@ -22,7 +23,7 @@ function App() {
       <div className="Content">
       <Switch>
         <Route exact path = "/">
-          {token ? <NavUser/> : <Nav/>} 
+          {token ? <NavUser/> : <Nav/>}
           <Home/>
           <Footer/>
         </Route>
