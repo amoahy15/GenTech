@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect} from "react";
 import styles from '../styles/popup.module.css'
 import axios from "axios";
+import { useHistory } from 'react-router-dom';
 
+//TODO: Undo hardcoding of artworkid
 const PopupForm = ({ onSubmit, onClose }) => {
   const [annotationText, setAnnotationText] = useState("");
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
   const token = localStorage.getItem('token');
+  const nav = useHistory();
 
   const handleTextChange = (event) => {
     const newText = event.target.value;    
@@ -18,6 +21,7 @@ const PopupForm = ({ onSubmit, onClose }) => {
     }
   };
 
+  //to be sent
   const handleImageClick = (event) => {
     const rect = imgref.current.getBoundingClientRect();
     const x = event.clientX - rect.left;
@@ -46,14 +50,14 @@ const PopupForm = ({ onSubmit, onClose }) => {
   }, []);
 
   
+  
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    if(! userData){
-      console.error("Not logged in")
+    if (!userData) {
+      console.error("Not logged in");
+      nav.push("/login");
+      return;
     }
-    //TODO:
-    console.log({token})
-    console.log({userData})
     const payload = {
       artworkID: "20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",
       message: annotationText,
@@ -61,14 +65,18 @@ const PopupForm = ({ onSubmit, onClose }) => {
       y_coordinate: String(clickCoordinates.y),
     };
     try {
-      const response = await axios.post('http://127.0.0.1:5000/api/annotations/annotation', payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      console.log("Successful submission:", response.data);
+      await axios.post(
+        "http://127.0.0.1:5000/api/annotations/annotation",
+        payload,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Successful submission");
+      onSubmit(); //the submit/fetch function in fetchannotate.js
     } catch (error) {
       console.error("Error during submission:", error);
     }
