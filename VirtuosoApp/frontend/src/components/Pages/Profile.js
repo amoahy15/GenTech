@@ -10,24 +10,22 @@ import img3 from '../../assets/images/testImage3.jpeg'
 
 function Profile() {
   const [userData, setUserData] = useState({
-    user_name: 'Loading...', // Default username
-    bio: 'Loading bio...', // Default bio
+    user_name: 'Loading...',
+    bio: 'Loading bio...',
 
   });
   const [bioText, setBioText] = useState('');
 
   useEffect(() => {
-    //Fetch user details from the backend
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Using the token from localStorage
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        // Adjusted to match the backend response
         setUserData({
-          user_name: response.data.user_name, // Corrected to use 'user_name'
+          user_name: response.data.user_name, 
 
           bio: response.data.bio,
           followers: response.data.followers,
@@ -57,7 +55,6 @@ function Profile() {
           },
         }
       );
-   //Update user data and reset the bio text being edited
    setUserData(prevState => ({
     ...prevState,
     user_name: response.data.user_name, 
