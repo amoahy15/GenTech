@@ -209,12 +209,15 @@ def get_user_details():
             logger.warning(f"Logged-in user {current_user_id} not found")
             return jsonify({"error": "User not found"}), 404
 
-        user_details = user.serialize()
+        # Assuming the serialize method correctly handles the serialization,
+        # including that of any subdocuments like reviews that might be causing the issue.
+        user_details = user.serialize()  
         logger.info(f"Details fetched successfully for user: {current_user_id}")
         return jsonify(user_details), 200
     except Exception as e:
-        logger.exception(f"Error fetching details for logged-in user: {current_user_id} ")
+        logger.exception(f"Error fetching details for logged-in user: {current_user_id}, Error: {e}")
         return jsonify({"error": "An unexpected error occurred"}), 500
+
 @user_controller.route('/follow', methods=['POST'])
 @jwt_required()
 def follow_user():

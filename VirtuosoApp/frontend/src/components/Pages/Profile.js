@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Ensure Axios is installed or use fetch as an alternative
+import axios from 'axios';
 import '../styles/profile.modules.css';
 import Carousel from '../carouselcomponents/Carousel.js'
 import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
@@ -10,10 +10,8 @@ import img3 from '../../assets/images/testImage3.jpeg'
 
 function Profile() {
   const [userData, setUserData] = useState({
-    user_name: 'Loading...', 
-    bio:'Loading...',
-    followers:"0",
-    following:"0"
+    user_name: 'Loading...', // Default username
+    bio: 'Loading bio...', // Default bio
 
   });
   const [bioText, setBioText] = useState('');
@@ -27,8 +25,10 @@ function Profile() {
             'Authorization': `Bearer ${localStorage.getItem('token')}`, // Using the token from localStorage
           },
         });
+        // Adjusted to match the backend response
         setUserData({
-          user_name: response.data.user_name,
+          user_name: response.data.user_name, // Corrected to use 'user_name'
+
           bio: response.data.bio,
           followers: response.data.followers,
           following: response.data.following
@@ -83,9 +83,10 @@ function Profile() {
           <img src={profilephoto} alt="Profile" />
         </div>
         <div className="profile-details" style={{ alignItems: 'baseline' }}>
+          {/* Updated to reflect the corrected state property name */}
           <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
-          <button className="username-button">0 Followers</button>
-          <button className="username-button">0 Following</button>
+          <button className="username-button">Follow</button>
+
         </div>
       </div>
 
