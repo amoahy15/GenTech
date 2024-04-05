@@ -108,4 +108,3 @@ def get_artworks_by_collection(collection_name):
         return jsonify(response), 200
     else:
         return jsonify({"error": "No artworks found in this collection"}), 404
-

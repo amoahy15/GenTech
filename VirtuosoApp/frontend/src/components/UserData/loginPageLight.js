@@ -124,9 +124,10 @@ const LoginPage2 = () => {
     <div className={styles.main}>
       <video className={styles.videobg} src={bgVid} autoPlay muted loop /> 
       <div className={styles.wrapper}>
+        <div className={styles.container}>
         <form action=""> 
           <div className={styles.header}> 
-            <h1><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></h1>
+            <h1><a href ='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
           </div>
           <div className={styles.inputbox}> 
             <input className ={styles.input} value={email || userName} onChange={(e) => setEmail(e.target.value) || setUserName(e.target.value)} type="text" placeholder='Username' required/> 
@@ -145,6 +146,7 @@ const LoginPage2 = () => {
             <p className={styles.p}>First time here?<a className ={styles.a2} href = './register2'> Register</a></p>
           </div>
         </form>
+      </div>
       </div>
     </div>
   )

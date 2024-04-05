@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/profile.modules.css';
+import Carousel from '../carouselcomponents/Carousel.js'
 import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
 import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg';
+import img from '../../assets/images/testImage.jpeg'
+import img2 from '../../assets/images/testImage2.jpeg'
+import img3 from '../../assets/images/testImage3.jpeg'
 
 function Profile() {
-  // State to hold user data
   const [userData, setUserData] = useState({
     user_name: 'Loading...', // Default username
     bio: 'Loading bio...', // Default bio
+
   });
+  const [bioText, setBioText] = useState('');
 
   useEffect(() => {
-    // Fetch user details from the backend
+    //Fetch user details from the backend
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
@@ -23,15 +28,49 @@ function Profile() {
         // Adjusted to match the backend response
         setUserData({
           user_name: response.data.user_name, // Corrected to use 'user_name'
+
           bio: response.data.bio,
+          followers: response.data.followers,
+          following: response.data.following
         });
+        setBioText(response.data.bio);
       } catch (error) {
         console.error('Error fetching user details:', error);
       }
     };
 
     fetchUserDetails();
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []); 
+
+  const handleBioChange = event => {
+    setBioText(event.target.value);
+  };
+
+  const handleUpdateBio = async () => {
+    try {
+      const response = await axios.put(
+        'http://127.0.0.1:5000/api/user/bio',
+        { bio: bioText },
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      );
+   //Update user data and reset the bio text being edited
+   setUserData(prevState => ({
+    ...prevState,
+    user_name: response.data.user_name, 
+    bio: response.data.bio,
+    followers: response.data.followers,
+    following: response.data.following
+  }));
+  setBioText('');
+} catch (error) {
+  console.error('Error updating bio:', error);
+}
+};
+
 
   return (
     <div>
@@ -47,6 +86,7 @@ function Profile() {
           {/* Updated to reflect the corrected state property name */}
           <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
           <button className="username-button">Follow</button>
+
         </div>
       </div>
 
@@ -57,12 +97,27 @@ function Profile() {
             <h3 style={{ fontSize: '15px', paddingTop: '5px' }}>
               {userData.bio}
             </h3>
+
+            <div className= 'textEntry'>
+              <input 
+                type="text" 
+                value={bioText} 
+                onChange={handleBioChange} 
+                placeholder="Edit your bio"
+              />
+               <button onClick={handleUpdateBio}>Save</button>
+          </div>
           </div>
           <div className="long-card">
             <h2 style={{ fontSize: '20px' }}>UPDATES</h2>
           </div>
         </div>
       </div>
+
+      <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
+          {<Carousel images={[img, img2, img3]}></Carousel>}
+      </div>
+      
     </div>
   );
 }

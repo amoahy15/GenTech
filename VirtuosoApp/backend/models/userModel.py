@@ -70,3 +70,4 @@ class User(Document):
             "preferences": self.preferences,
             "joined_date": self.joined_date.isoformat()
         }
+
