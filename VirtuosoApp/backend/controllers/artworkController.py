@@ -6,10 +6,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 import uuid
 import logging
 
-# Initialize blueprint for artwork_controller
 artwork_controller = Blueprint('artwork_controller', __name__)
-
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
