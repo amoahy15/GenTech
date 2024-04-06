@@ -8,7 +8,7 @@ const Footer = () => {
         <div className={styles.content}>
             <div className={styles.top}>
                 <div>
-                    <a className={mainstyles.virtuoso} href = './' style = {{fontStyle: 'normal', textDecoration: 'none'}}><span>VIRTUOS</span><span style ={{color: '#990000'}}>O</span></a>
+                    <a className={styles.title} href = './' style = {{fontStyle: 'normal', textDecoration: 'none', color: 'black', fontSize: '28px'}}><span>VIRTUOS</span><span style ={{color: '#990000'}}>O</span></a>
                 </div>
             </div>
             <div className={styles['boxes']}>
@@ -28,11 +28,11 @@ const Footer = () => {
                     <li><a href="https://www.nga.gov/open-access-images.html">National Gallery of Art</a></li>
                     <li><a href="https://www.metmuseum.org/">The MET</a></li>
                 </ul>
-                <ul className={styles.box}>
+                {/*<ul className={styles.box}>
                     <li className={styles.title}>Let's get connected!</li>
                     <li><input type="text" placeholder="Enter your email" /></li>
                     <li><input type="button" value="SUBSCRIBE" /></li>
-                </ul>
+                </ul>*/}
             </div>
         </div>
         <div className={styles['boxes']} style={{textAlign: 'right'}}>
