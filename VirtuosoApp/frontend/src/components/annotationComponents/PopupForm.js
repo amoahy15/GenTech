@@ -1,13 +1,21 @@
-import React, { useState, useRef} from "react";
+import React, { useState, useRef, useEffect} from "react";
 import styles from '../styles/popup.module.css'
+import axios from "axios";
 
 const PopupForm = ({ onSubmit, onClose }) => {
   const [annotationText, setAnnotationText] = useState("");
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
   const imgref = useRef(null);
+  const [userData, setUserData] = useState();
+  const token = localStorage.getItem('token');
 
   const handleTextChange = (event) => {
-    setAnnotationText(event.target.value);
+    const newText = event.target.value;    
+    if (newText.length <= 500) { 
+      setAnnotationText(newText);
+    } else {
+      console.error("The annotation text is too long.");
+    }
   };
 
   const handleImageClick = (event) => {
@@ -18,40 +26,52 @@ const PopupForm = ({ onSubmit, onClose }) => {
     console.log(`Clicked coordinates: (${x}, ${y})`);
   };
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+        setUserData({
+          user_id: response.data.user_id,
+        });
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
+
+  
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error("token");
-      return;
-    } else{
-      console.log({token})
+    if(! userData){
+      console.error("Not logged in")
     }
+    //TODO:
+    console.log({token})
+    console.log({userData})
     const payload = {
-      artworkID: "8ff2a788-58f6-4cdb-86ff-797b7138c567", //TODO: not static
+      artworkID: "20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",
       message: annotationText,
       x_coordinate: String(clickCoordinates.x),
       y_coordinate: String(clickCoordinates.y),
     };
     try {
-      const response = await fetch('/annotations', {
-        method: 'POST',
+      const response = await axios.post('http://127.0.0.1:5000/api/annotations/annotation', payload, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("Success:", data);
+      console.log("Successful submission:", response.data);
     } catch (error) {
-      console.error("Error during form submission:", error);
+      console.error("Error during submission:", error);
     }
-
     setAnnotationText("");
     onClose();
   };
@@ -62,7 +82,6 @@ const PopupForm = ({ onSubmit, onClose }) => {
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
             <img ref={imgref} src="https://media.nga.gov/iiif/b4ee3d5d-4397-4e7e-b946-20a22c878230/full/!384,384/0/default.jpg" style={{ maxWidth: '100%'}}/>
 
-            {/* unsure how to integrate this w the css folder :/*/}
             {clickCoordinates.x !== null && clickCoordinates.x >= 0 && clickCoordinates.y !== null && clickCoordinates.y >= 0 && (
             <span className={styles["annotation-icon]"]} style={{top: `${clickCoordinates.y}px`, left: `${clickCoordinates.x}px`, position: 'absolute',
             width: '10px',

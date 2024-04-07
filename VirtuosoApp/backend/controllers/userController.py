@@ -8,46 +8,37 @@ from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
-# Initialize Flask app, Bcrypt, and user_controller blueprint
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 user_controller = Blueprint('user_controller', __name__)
-
-# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Route for creating a new user
 @user_controller.route('/create_user', methods=['POST'])
 def create_user():
     logger.info("Attempting to create a new user")
     try:
-        # Parse and validate request data
         data = request.get_json()
+        #password requirement: 
         if not data:
             logger.warning("No JSON payload received")
             return jsonify({"error": "No JSON payload received"}), 400
         
-        # Validate email format
         if not re.match(r"[^@]+@[^@]+\.[^@]+", data['email']):
             logger.error("Invalid email format provided")
             return jsonify({"error": "Invalid email format"}), 400
         
-        # Check for existing user with same email or username
         if User.objects(email=data['email']).first() or User.objects(user_name=data['user_name']).first():
             logger.error("Username or email already exists")
             return jsonify({"error": "Username or email already exists"}), 409
         
-        # Check password complexity
         if len(data['password']) < 8:
             logger.error("Password does not meet complexity requirements")
             return jsonify({"error": "Password must be at least 8 characters long"}), 400
 
-        # Hash password and create new user document
         hashed_password = bcrypt.generate_password_hash(data['password'].encode('utf-8')).decode('utf-8')
         unique_user_id = str(uuid.uuid4())
         
-        # Create and save new user document
         new_user = User(
             user_id=unique_user_id,
             user_name=data['user_name'],
@@ -209,12 +200,15 @@ def get_user_details():
             logger.warning(f"Logged-in user {current_user_id} not found")
             return jsonify({"error": "User not found"}), 404
 
-        user_details = user.serialize()
+        # Assuming the serialize method correctly handles the serialization,
+        # including that of any subdocuments like reviews that might be causing the issue.
+        user_details = user.serialize()  
         logger.info(f"Details fetched successfully for user: {current_user_id}")
         return jsonify(user_details), 200
     except Exception as e:
-        logger.exception(f"Error fetching details for logged-in user: {current_user_id} ")
+        logger.exception(f"Error fetching details for logged-in user: {current_user_id}, Error: {e}")
         return jsonify({"error": "An unexpected error occurred"}), 500
+
 @user_controller.route('/follow', methods=['POST'])
 @jwt_required()
 def follow_user():
