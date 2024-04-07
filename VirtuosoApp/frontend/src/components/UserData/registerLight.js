@@ -30,7 +30,7 @@ const Register = () => {
     axios.post('http://127.0.0.1:5000/api/user/create_user', userData)
       .then(function (response) {
         console.log(response);
-        nav.push("/about");
+        nav.push("./profile");
       }).catch(function (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
