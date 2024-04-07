@@ -1,5 +1,6 @@
 import React from 'react'
 import { useHistory } from 'react-router-dom';
+import styles from "../styles/dropdownbtn.module.css"
 
 const Logout = () => {
 
@@ -12,7 +13,10 @@ const Logout = () => {
     }
 
     return(
-        <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogout}  className = {styles.btn} style ={{fontFamily: "Poppins, sans-serif", 
+        fontSize:"calc(.75*(1vh + 1vw))", 
+        fontWeight: "525", 
+        height: "50px", }}>Logout</button>
     )
 }
 
