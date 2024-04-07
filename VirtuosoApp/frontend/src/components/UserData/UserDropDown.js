@@ -2,6 +2,7 @@ import React, {useState, useRef, useEffect} from 'react'
 import styles from '../styles/userdropdown.module.css'
 import { CSSTransition } from 'react-transition-group';
 import { BiArrowBack } from "react-icons/bi";
+import Logout from './Logout';
  
 
 const UserDropDown = () => {
@@ -17,8 +18,7 @@ const UserDropDown = () => {
     function calcHeight(el) {
       const height = el.offsetHeight;
       setMenuHeight(height);
-    }  
-
+    } 
 
 
     function DropDownItems(props){
@@ -52,7 +52,7 @@ const UserDropDown = () => {
              <a><DropDownItems goToMenu = 'settings'>Settings</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'settings'>Logout</DropDownItems></a>
+             <a><DropDownItems goToMenu = 'settings'><button onClick={Logout}>Logout</button></DropDownItems></a>
             </li>
          </ul> 
         </div>
