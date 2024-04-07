@@ -1,8 +1,14 @@
+
+import os
+import certifi
+
 import mongoengine
 from dotenv import load_dotenv
 import os
 
 def connect_db(app):
+   
+    os.environ['SSL_CERT_FILE'] = certifi.where()
     load_dotenv()
     try:
         mongoengine.connect(
