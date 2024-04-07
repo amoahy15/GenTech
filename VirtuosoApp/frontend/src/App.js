@@ -15,6 +15,7 @@ import Authenticator from "./components/UserData/Authenticator";
 function App() {
 
   const token = localStorage.getItem('token');
+  
 
   return (
 
@@ -23,7 +24,7 @@ function App() {
       <div className="Content">
       <Switch>
         <Route exact path = "/">
-          <NavUser/>
+          {token ? <NavUser/> : <Nav/>}
           <Home/>
           <Footer/>
         </Route>

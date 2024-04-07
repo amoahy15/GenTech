@@ -28,6 +28,7 @@ const LoginPage2 = () => {
         const token = response.data.auth ? response.data.auth.token : response.data.access_token;
         localStorage.setItem('token', token); // Set token in local storage
         nav.push("./profile"); // Navigate to profile page
+        window.location.reload();
       }).catch(function (error) {
         console.log(error);
         if (error.response && error.response.status === 401) {
