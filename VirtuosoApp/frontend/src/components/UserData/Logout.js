@@ -3,11 +3,17 @@ import { useHistory } from 'react-router-dom';
 
 const Logout = () => {
 
-
     const nav = useHistory();
-    localStorage.removeItem('token');
-    nav.push('/login');
 
+    const handleLogout = () =>{
+        
+        localStorage.removeItem('token');
+        nav.push('./login2');
+    }
+
+    return(
+        <button onClick={handleLogout}>Logout</button>
+    )
 }
 
 export default Logout
