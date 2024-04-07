@@ -11,7 +11,7 @@ import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
-import Authenticator from "./components/UserData/Authenticator";
+import TestSearch from "./components/Pages/TestSearch";
 function App() {
 
   const token = localStorage.getItem('token');
@@ -59,6 +59,9 @@ function App() {
         </Route>
         <Route path="/disclaimer">
           <Disclaimer/>
+        </Route>
+        <Route path="/test">
+          <TestSearch/>
         </Route>
       </Switch> 
       </div>

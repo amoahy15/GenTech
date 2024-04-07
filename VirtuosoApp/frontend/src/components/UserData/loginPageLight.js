@@ -23,11 +23,10 @@ const LoginPage2 = () => {
     };
 
     axios.post('http://127.0.0.1:5000/api/user/login', userData)
-      .then(function (response) {
-        // Adjust this line according to your backend response structure
+        .then(function (response) {
         const token = response.data.auth ? response.data.auth.token : response.data.access_token;
-        localStorage.setItem('token', token); // Set token in local storage
-        nav.push("./profile"); // Navigate to profile page
+        localStorage.setItem('token', token); 
+        nav.push("./profile"); 
         window.location.reload();
       }).catch(function (error) {
         console.log(error);
