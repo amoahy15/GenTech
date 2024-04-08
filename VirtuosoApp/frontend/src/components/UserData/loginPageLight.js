@@ -61,7 +61,7 @@ const LoginPage2 = () => {
           </div>
           <button className = {styles.btn} type="submit" onClick ={loginUser}>sign in</button>
           <div className={styles.register}>
-            <p className={styles.p}>First time here?<a className ={styles.a2} href = './register2'> Register</a></p>
+            <p className={styles.p}>First time here?<a className ={styles.a2} href = './register'> Register</a></p>
           </div>
         </form>
       </div>

@@ -77,13 +77,13 @@ const UserDropDown = () => {
              <a><DropDownItems goToMenu = 'main'><BiArrowBack /></DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'main'>Filler 2</DropDownItems></a>
+             <a><DropDownItems>Filler 2</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'main'>Filler 3</DropDownItems></a>
+             <a><DropDownItems>Filler 3</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'main'>Filler 4</DropDownItems></a>
+             <a><DropDownItems>Filler 4</DropDownItems></a>
             </li>
         </ul>
         </div>
