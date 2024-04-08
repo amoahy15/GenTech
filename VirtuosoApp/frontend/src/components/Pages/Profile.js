@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../styles/profile.modules.css';
-import Carousel from '../carouselcomponents/Carousel.js'
+import Carousel from '../carouselcomponents/Carousel.js';
 import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
 import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg';
-import img from '../../assets/images/testImage.jpeg'
-import img2 from '../../assets/images/testImage2.jpeg'
-import img3 from '../../assets/images/testImage3.jpeg'
+import img from '../../assets/images/testImage.jpeg';
+import img2 from '../../assets/images/testImage2.jpeg';
+import img3 from '../../assets/images/testImage3.jpeg';
 
 function Profile() {
   const [userData, setUserData] = useState({
     user_name: 'Loading...',
     bio: 'Loading bio...',
-
+    followers_count: 0, // Initialize followers_count
+    following_count: 0, // Initialize following_count
   });
   const [bioText, setBioText] = useState('');
 
@@ -26,10 +27,9 @@ function Profile() {
         });
         setUserData({
           user_name: response.data.user_name, 
-
           bio: response.data.bio,
-          followers: response.data.followers,
-          following: response.data.following
+          followers_count: response.data.followers_count, // Set followers_count
+          following_count: response.data.following_count, // Set following_count
         });
         setBioText(response.data.bio);
       } catch (error) {
@@ -55,19 +55,18 @@ function Profile() {
           },
         }
       );
-   setUserData(prevState => ({
-    ...prevState,
-    user_name: response.data.user_name, 
-    bio: response.data.bio,
-    followers: response.data.followers,
-    following: response.data.following
-  }));
-  setBioText('');
-} catch (error) {
-  console.error('Error updating bio:', error);
-}
-};
-
+      setUserData(prevState => ({
+        ...prevState,
+        user_name: response.data.user_name, 
+        bio: response.data.bio,
+        followers_count: response.data.followers_count, // Update followers_count
+        following_count: response.data.following_count, // Update following_count
+      }));
+      setBioText('');
+    } catch (error) {
+      console.error('Error updating bio:', error);
+    }
+  };
 
   return (
     <div>
@@ -80,10 +79,13 @@ function Profile() {
           <img src={profilephoto} alt="Profile" />
         </div>
         <div className="profile-details" style={{ alignItems: 'baseline' }}>
-          {/* Updated to reflect the corrected state property name */}
           <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
           <button className="username-button">Follow</button>
-
+          {/* Displaying followers_count and following_count */}
+          <div style={{ paddingTop: '10px' }}>
+            <span>{`Followers: ${userData.followers_count}`}</span>
+            <span style={{ paddingLeft: '15px' }}>{`Following: ${userData.following_count}`}</span>
+          </div>
         </div>
       </div>
 
@@ -95,7 +97,7 @@ function Profile() {
               {userData.bio}
             </h3>
 
-            <div className= 'textEntry'>
+            <div className='textEntry'>
               <input 
                 type="text" 
                 value={bioText} 
