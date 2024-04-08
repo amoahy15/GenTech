@@ -10,6 +10,7 @@ const Review = ({ reviews }) => {
   const rows = (reviewsArray, chunkSize) => {
     const rows = [];
     for (let i = 0; i < reviewsArray.length; i += chunkSize) {
+      //formatting
       rows.push(reviewsArray.slice(i, i + chunkSize));
     }
     return rows;

@@ -5,7 +5,7 @@ import TextColumn from './TextCol.js';
 import AnnotationComments from './AnnotationComments.js';
 import placeholderImage from '../../assets/images/art5.webp';
 import ImageDisplay from './ClickableImg.js';
-
+import FetchAnnotate from './FetchAnnotate.js'
 //todo: pass in info directly from reviewpage.js
 //todo: top priority refactoring
 const ArtTextCols = ({ text }) => {
@@ -62,7 +62,8 @@ const ArtTextCols = ({ text }) => {
           <div style={{ width: '100%' }}>
             {/* toggle functionality */}
             {showAnnotations ? (
-              <AnnotationComments comments={annotations} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+              //<AnnotationComments comments={annotations} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+              <FetchAnnotate artworkID={"20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3"}></FetchAnnotate>
             ) : (
               <TextColumn header="TITLE" text={text} info="Author, date, medium" />
             )}

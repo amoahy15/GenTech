@@ -199,9 +199,7 @@ def get_user_details():
         if not user:
             logger.warning(f"Logged-in user {current_user_id} not found")
             return jsonify({"error": "User not found"}), 404
-
-        # Assuming the serialize method correctly handles the serialization,
-        # including that of any subdocuments like reviews that might be causing the issue.
+        
         user_details = user.serialize()  
         logger.info(f"Details fetched successfully for user: {current_user_id}")
         return jsonify(user_details), 200
@@ -215,7 +213,7 @@ def follow_user():
     current_user_id = get_jwt_identity()
     data = request.get_json()
     logger.info(f"User {current_user_id} attempting to follow another user")
-    
+
     target_user_id = data.get('target_user_id')
     if not target_user_id:
         logger.error("Target user ID is required")
@@ -232,20 +230,17 @@ def follow_user():
         logger.error("Either current user or target user not found")
         return jsonify({"error": "User not found"}), 404
 
-    # Check if already following or request is pending
     if target_user_id in current_user.following or target_user_id in target_user.pending_follow_requests:
         logger.warning("User is already following this user or request is pending")
         return jsonify({"error": "Already following this user or request pending"}), 400
 
     if target_user.is_private:
-        # Add current user's ID to target user's pending requests if account is private
         target_user.update(add_to_set__pending_follow_requests=current_user_id)
         logger.info("Follow request sent to target user")
         return jsonify({"message": "Follow request sent"}), 200
     else:
-        # Proceed to follow if account is not private
-        current_user.update(add_to_set__following=target_user_id)
-        target_user.update(add_to_set__followers=current_user_id)
+        current_user.update(add_to_set__following=target_user_id, inc__following_count=1)
+        target_user.update(add_to_set__followers=current_user_id, inc__followers_count=1)
         logger.info("User successfully followed another user")
         return jsonify({"message": "Successfully followed the user"}), 200
 
@@ -255,7 +250,7 @@ def unfollow_user():
     current_user_id = get_jwt_identity()
     data = request.get_json()
     logger.info(f"User {current_user_id} attempting to unfollow another user")
-    
+
     target_user_id = data.get('target_user_id')
     if not target_user_id:
         logger.error("Target user ID is required")
@@ -269,13 +264,11 @@ def unfollow_user():
         return jsonify({"error": "User not found"}), 404
 
     if target_user_id in current_user.following:
-        # Remove target user from current user's following list
-        current_user.update(pull__following=target_user_id)
-        target_user.update(pull__followers=current_user_id)
+        current_user.update(pull__following=target_user_id, dec__following_count=1)
+        target_user.update(pull__followers=current_user_id, dec__followers_count=1)
         logger.info("User successfully unfollowed another user")
         return jsonify({"message": "Successfully unfollowed the user"}), 200
     elif target_user_id in target_user.pending_follow_requests:
-        # Cancel a pending follow request if found in target user's pending requests
         target_user.update(pull__pending_follow_requests=current_user_id)
         logger.info("Cancelled pending follow request")
         return jsonify({"message": "Follow request canceled"}), 200
