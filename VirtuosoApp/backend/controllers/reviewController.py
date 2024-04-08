@@ -18,11 +18,21 @@ def create_review():
     data = request.get_json()
     review_id = str(uuid.uuid4())
     logger.info(f"Attempting to create review {review_id} by user {user_id} for artwork {data.get('artwork_id')}")
+    logging.getLogger().setLevel(logging.INFO)
 
     try:
         logger.debug("Fetching user and artwork from the database.")
-        user = User.objects.get(id=user_id)
-        artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
+        try:
+            user = User.objects.get(user_id=user_id)
+        except DoesNotExist:
+            logger.error(f"User not found: {user_id}")
+            return jsonify({"error": "User not found"}), 404
+
+        try:
+            artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
+        except DoesNotExist:
+            logger.error(f"Artwork not found: {data.get('artwork_id')}")
+            return jsonify({"error": "Artwork not found"}), 404
         logger.debug("User and artwork successfully fetched.")
 
         new_review = Review(
@@ -46,17 +56,12 @@ def create_review():
         logger.info(f"Average rating updated for artwork {data.get('artwork_id')}.")
 
         return jsonify({"msg": "Review created successfully", "review": new_review.serialize()}), 201
-
-    except DoesNotExist as e:
-        logger.error(f"User or Artwork not found: {str(e)}")
-        return jsonify({"error": "User or Artwork not found"}), 404
     except ValidationError as e:
         logger.error(f"Validation error during review creation: {str(e)}")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         logger.exception("Unexpected error occurred during review creation.")
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
-
 
 @review_controller.route('/reviews/<string:review_id>', methods=['GET'])
 @jwt_required()
@@ -99,3 +104,22 @@ def delete_review(review_id):
     except DoesNotExist:
         logger.error(f"Review {review_id} not found for deletion")
         return jsonify({"error": "Review not found"}), 404
+    
+@review_controller.route('/artwork/<artwork_id>', methods=['GET'])
+def get_annotations(artwork_id):
+    try:
+        artwork = Artwork.objects.get(artwork_id=artwork_id)
+        reviews = Review.objects(artwork=artwork)
+        review_list = [{
+            'review_id': review.review_id,
+            'user_id': str(review.user.id),
+            'rating': review.rating,
+            'comment': review.comment,
+            'created_at': review.created_at.isoformat()
+        } for review in reviews]
+
+        return jsonify(review_list), 200
+    except DoesNotExist:
+        return jsonify({"error": "Artwork not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500

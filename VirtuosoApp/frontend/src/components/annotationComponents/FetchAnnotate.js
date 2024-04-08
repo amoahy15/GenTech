@@ -4,17 +4,26 @@ import axios from "axios";
 import PopupForm from "./PopupForm";
 import SingleAnnotation from "./annotationText";
 
-const FetchAnnotate = ({ artworkID }) => {
+const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
   const [annotations, setAnnotations] = useState([]);
   const [clickCoordinates, setClickCoordinates] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
 
+  //const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null });
 
-//get user info here (incl username)
+
+  const handleAnnotationHover = (x, y) => {
+    setHoverCoordinates({ x, y });
+  };
+
+//get user info here (incl username) 
+//TODO: profile pic? (in info)
+
+
   const fetchAnnotations = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:5000/api/annotations/artwork/${artworkID}`);
-      const annotationsWithUsernames = await Promise.all(
+      const info = await Promise.all(
         response.data.map(async (annotation) => {
           const userResponse = await axios.get(`http://127.0.0.1:5000/api/user/user/${annotation.userID}`);
           return {
@@ -23,7 +32,7 @@ const FetchAnnotate = ({ artworkID }) => {
           };
         })
       );
-      setAnnotations(annotationsWithUsernames);
+      setAnnotations(info);
     } catch (error) {
       console.error("Error fetching annotations:", error);
     }
@@ -55,10 +64,10 @@ const FetchAnnotate = ({ artworkID }) => {
         <div style={{ textAlign: 'left', marginBottom: '20px', cursor: 'pointer' }}>
           <span style={{ fontSize: '24px', fontWeight: 'bold'}} onClick={handleAddAnnotationClick}>+</span>
           <hr style={{marginTop: '10px', color: 'gray'}}></hr>
-          {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} />}
+          {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} url={url} />}
         </div>
         {annotations.map((annotation, index) => (
-          <SingleAnnotation key={index} username={annotation.username} comment={annotation.message} />
+          <SingleAnnotation key={index} username={annotation.username} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>
         ))}
       </div>
     </div>

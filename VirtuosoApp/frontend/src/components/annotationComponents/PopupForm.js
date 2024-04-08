@@ -4,9 +4,10 @@ import axios from "axios";
 import { useHistory } from 'react-router-dom';
 
 //TODO: Undo hardcoding of artworkid
-const PopupForm = ({ onSubmit, onClose }) => {
+const PopupForm = ({ onSubmit, onClose, url }) => {
   const [annotationText, setAnnotationText] = useState("");
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
+  const [realclickCoordinates, setrealClickCoordinates] = useState({ x: null, y: null });
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
   const token = localStorage.getItem('token');
@@ -21,13 +22,13 @@ const PopupForm = ({ onSubmit, onClose }) => {
     }
   };
 
-  //to be sent
   const handleImageClick = (event) => {
     const rect = imgref.current.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    setClickCoordinates({ x, y });
-    console.log(`Clicked coordinates: (${x}, ${y})`);
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+    setClickCoordinates({ x, y }); 
+    setrealClickCoordinates({ x, y }); //now storing as %
+    console.log(`Clicked coordinates: (${x}%, ${y}%)`);
   };
 
   useEffect(() => {
@@ -61,8 +62,8 @@ const PopupForm = ({ onSubmit, onClose }) => {
     const payload = {
       artworkID: "20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",
       message: annotationText,
-      x_coordinate: String(clickCoordinates.x),
-      y_coordinate: String(clickCoordinates.y),
+      x_coordinate: String(realclickCoordinates.x),
+      y_coordinate: String(realclickCoordinates.y),
     };
     try {
       await axios.post(
@@ -88,16 +89,15 @@ const PopupForm = ({ onSubmit, onClose }) => {
     <div className={styles['popup-background']}>
       <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
-            <img ref={imgref} src="https://media.nga.gov/iiif/b4ee3d5d-4397-4e7e-b946-20a22c878230/full/!384,384/0/default.jpg" style={{ maxWidth: '100%'}}/>
-
-            {clickCoordinates.x !== null && clickCoordinates.x >= 0 && clickCoordinates.y !== null && clickCoordinates.y >= 0 && (
-            <span className={styles["annotation-icon]"]} style={{top: `${clickCoordinates.y}px`, left: `${clickCoordinates.x}px`, position: 'absolute',
-            width: '10px',
-            height: '10px',
-            backgroundColor: 'red',
-            borderRadius: '50%',
-            transform: 'translate(-50%, -50%)'}}/>
-            )}
+            <img ref={imgref} src={url} style={{ maxWidth: '100%'}}/>
+            {
+            realclickCoordinates.x !== null && realclickCoordinates.x >= 0 &&
+            realclickCoordinates.y !== null && realclickCoordinates.y >= 0 && (
+              //todo: refactoring here
+              <span className={styles["annotation-icon"]} style={{top: `${realclickCoordinates.y}%`, left: `${realclickCoordinates.x}%`, position: 'absolute', transform: 'translate(-50%, -50%)'
+              }}/>
+            )
+          }
         </div>
         <form onSubmit={handleFormSubmit}>
             <input className={styles["input"]} type="text" value={annotationText} onChange={handleTextChange} placeholder="Type your annotation here"/>
