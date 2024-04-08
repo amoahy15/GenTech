@@ -16,7 +16,7 @@ review_controller = Blueprint('review_controller', __name__)
 def create_review():
     user_id = get_jwt_identity()
     data = request.get_json()
-    review_id = str(uuid.uuid4())  # Generate a UUID for the review ID
+    review_id = str(uuid.uuid4())
     logger.info(f"Attempting to create review {review_id} by user {user_id} for artwork {data.get('artwork_id')}")
 
     try:
@@ -26,7 +26,7 @@ def create_review():
         logger.debug("User and artwork successfully fetched.")
 
         new_review = Review(
-            review_id=review_id,  
+            review_id=review_id,
             user=user,
             artwork=artwork,
             rating=data['rating'],
@@ -36,7 +36,7 @@ def create_review():
         logger.info(f"Review {review_id} successfully created.")
 
         logger.debug("Updating user and artwork with new review.")
-        user.update(push__reviews=new_review)
+        user.update(push__reviews=new_review, inc__review_count=1)
         artwork.update(push__reviews=new_review)
         artwork.reload() 
         logger.info("User and artwork updated with new review.")
@@ -56,6 +56,8 @@ def create_review():
     except Exception as e:
         logger.exception("Unexpected error occurred during review creation.")
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+
+
 @review_controller.route('/reviews/<string:review_id>', methods=['GET'])
 @jwt_required()
 def get_review(review_id):

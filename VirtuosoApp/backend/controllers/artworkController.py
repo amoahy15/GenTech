@@ -40,6 +40,10 @@ def create_artwork():
         )
         new_artwork.save()
         logger.info("Artwork created successfully")
+
+        user.update(inc__artwork_count=1)  
+        logger.info("Artwork count updated for user.")
+
         return jsonify({"message": "Artwork created successfully!"}), 201
     except ValidationError as e:
         logger.exception("Validation error during artwork creation")
