@@ -1,77 +1,49 @@
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import ImageCard from './ImageCard';
+import axios from 'axios';
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 import '../styles/carouselarrow.module.css';
+import ImageCard from './ImageCard';
+import ImageCardHover from './ImageCardHover';
 
-function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, zIndex: '1', display: "block", color: "gray", width: "40px", height: "20px", textAlign: "center", lineHeight: "20px", fontSize: "36px"}}
-        onClick={onClick}
-      >
-        {'>'}
-      </div>
-    );
+
+const fetchImagesFromS3 = async () => {
+    try {
+        const response = await axios.get('http://127.0.0.1:5000/api/s3/images');
+        return response.data; 
+    } catch (error) {
+        console.error('Error fetching images:', error);
+        return [];
     }
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, zIndex: '1', display: "block", color: "gray", width: "40px", height: "20px", textAlign: "center", lineHeight: "20px", fontSize: "36px"}}
-        onClick={onClick}
-      >
-        {'<'}
-      </div>
-    );
-  }
+};
 
-const Carousel = ({ images }) => {
+const Carousel = () => {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+      fetchImagesFromS3().then(urls => setImages(urls.map(url => ({ url: url, alt: 'Image from S3' }))));
+  }, []);
+
   const settings = {
-    dots: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplaySpeed: 2000,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow/>,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        }
-      }
-    ]
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
   };
 
   return (
-    
-    <Slider {...settings}>
-        {images.map((image, index) => (
-        <div key={index}>
-          <a href = './reviews'><ImageCard src={image} alt={`Slide ${index + 1}`} /></a>
-          
-        </div>
-      ))}
-    </Slider>
-  );
+    <div className="carousel-container"> 
+        <Slider {...settings}>
+            {images.map((image, index) => (
+                <div key={index} className="carousel-slide">
+                    <ImageCard image={image} />
+                </div>
+            ))}
+        </Slider>
+    </div>
+);
 };
 
 export default Carousel;

@@ -7,6 +7,7 @@ from controllers.userController import user_controller
 from controllers.reviewController import review_controller
 from controllers.artworkController import artwork_controller
 from controllers.annotationController import annotation_controller
+from controllers.s3controller import s3_controller
 from dotenv import load_dotenv
 
 import os
@@ -27,6 +28,7 @@ app.register_blueprint(user_controller, url_prefix='/api/user')
 app.register_blueprint(artwork_controller, url_prefix='/api/artwork')
 app.register_blueprint(review_controller, url_prefix='/api/review')
 app.register_blueprint(annotation_controller, url_prefix='/api/annotations')
+app.register_blueprint(s3_controller, url_prefix='/api/s3')
 
 gunicorn_logger = logging.getLogger('gunicorn.error')
 app.logger.handlers = gunicorn_logger.handlers
