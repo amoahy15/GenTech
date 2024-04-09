@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine.errors import ValidationError, DoesNotExist
 from models.annotationModel import Annotation
