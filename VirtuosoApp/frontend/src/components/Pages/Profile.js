@@ -10,6 +10,7 @@ import EditUser from '../UserData/EditUser.js';
 import EditItem from '../UserData/EditItem.js';
 import styles from '../styles/user.module.css';
 import Collections from './Collections.js';
+import Row from '../Navigation/rowScroll.js';
 
 
 function Profile() {
@@ -103,8 +104,10 @@ function Profile() {
     </div>
 
 
-        <div className={styles.containerColl}>
-          <Collections/>
+        <div>
+          <Row title ='Trending'>
+          <Collections category='trending'/>
+          </Row>
         </div>
 
     </div>
