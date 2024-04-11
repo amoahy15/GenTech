@@ -75,13 +75,14 @@ function Profile() {
   
       setUserData(prevState => ({
         ...prevState,
-        bio: bioText,
+        bio: response.bioText,
       }));
   
       alert('Bio updated successfully!');
     } catch (error) {
       console.error('Error updating bio:', error.response ? error.response.data : error);
       alert('Failed to update bio. Please try again.');
+      console.log(userData.id);
     }
   };
   

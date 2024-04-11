@@ -1,5 +1,8 @@
 import React, {useState} from 'react'
 import styles from '../styles/profiledropdown.module.css'
+import ChangeUserName from '../API/ChangeUserName'
+import ChangePassword from '../API/ChangePassword'
+
 
 const EditUser = () => {
 
@@ -18,10 +21,10 @@ const EditUser = () => {
        
         <ul className={styles.menu}>  
              <li>
-               <a><DropDownItems>About Us</DropDownItems></a>
+               <a><DropDownItems><ChangeUserName/></DropDownItems></a>
              </li>
              <li>
-             <a><DropDownItems >Terms of Service</DropDownItems></a>
+             <a><DropDownItems ><ChangePassword/></DropDownItems></a>
             </li>
          </ul> 
         

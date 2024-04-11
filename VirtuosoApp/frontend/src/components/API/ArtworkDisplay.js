@@ -5,21 +5,21 @@ import { useParams } from 'react-router-dom';
 function ArtworkDisplay() {
   const [artwork, setArtwork] = useState(null);
   const [error, setError] = useState('');
-  const { artworkId } = useParams();  // Assuming `:artworkId` is the URL parameter
+  const { artworkId } = useParams();  
 
   useEffect(() => {
     const fetchArtwork = async () => {
-      console.log('Fetching artwork with ID:', artworkId);  // Debugging output
+      console.log('Fetching artwork with ID:', artworkId);  
       try {
         const response = await axios.get(`http://127.0.0.1:5000/api/artwork/get_artwork/${artworkId}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        console.log('Received data:', response.data);  // Debugging output
+        console.log('Received data:', response.data);  
         setArtwork(response.data);
       } catch (err) {
-        console.error('Error fetching artwork:', err);  // Debugging output
+        console.error('Error fetching artwork:', err);  
         if (err.response && err.response.data) {
           setError(err.response.data.error);
         } else {
@@ -29,8 +29,7 @@ function ArtworkDisplay() {
     };
 
     fetchArtwork();
-}, [artworkId]);  // Dependency array to ensure effect runs when artworkId changes
- // Dependency array to ensure effect runs when artworkId changes
+}, [artworkId]);  
 
   if (error) {
     return <div>Error: {error}</div>;
