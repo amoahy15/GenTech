@@ -1,6 +1,8 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, current_app, request
+from werkzeug.utils import secure_filename
 import boto3
 import os
+
 
 s3_controller = Blueprint('s3_controller', __name__)
 s3_client = boto3.client(
@@ -11,6 +13,36 @@ s3_client = boto3.client(
 )
 bucket_name = os.getenv('S3_BUCKET_NAME')
 
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@s3_controller.route('/upload', methods=['POST'])
+def upload_image():
+    if 'image' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        # Optionally, save file to a local directory for further processing before uploading
+        # file.save(os.path.join('/path/to/the/uploads', filename))
+        
+        # Include the folder path in the key for S3
+        s3_folder_path = "User Created Images/" + filename
+        try:
+            # In-memory upload to S3 without saving file locally
+            s3_client.upload_fileobj(file, bucket_name, s3_folder_path)
+            file_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_folder_path}"
+            return jsonify({'message': 'File uploaded successfully', 'url': file_url}), 200
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+    else:
+        return jsonify({'error': 'File type not allowed'}), 400
+    
 def get_images_from_folder(folder_prefix):
     try:
         images_urls = []
