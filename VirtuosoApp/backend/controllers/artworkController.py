@@ -2,6 +2,7 @@ from flask import request, jsonify, Blueprint, current_app
 from mongoengine import NotUniqueError, ValidationError
 from models.artworkModel import Artwork
 from models.userModel import User
+from models.annotationModel import Annotation
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import uuid
 import logging
@@ -86,6 +87,7 @@ def update_artwork(artwork_id):
     return jsonify({"message": "Artwork updated successfully"}), 200
 
 @artwork_controller.route('/get_artwork/<string:artwork_id>', methods=['GET'])
+@jwt_required()  
 def get_artwork(artwork_id):
     current_app.logger.info("Attempting to fetch artwork")
     artwork = Artwork.objects(artwork_id=artwork_id).first()
@@ -97,6 +99,7 @@ def get_artwork(artwork_id):
     return jsonify(artwork.serialize()), 200
 
 @artwork_controller.route('/artworks/collection/<string:collection_name>', methods=['GET'])
+@jwt_required()  
 def get_artworks_by_collection(collection_name):
     artworks = Artwork.objects(collection=collection_name)
     if artworks:
@@ -107,3 +110,54 @@ def get_artworks_by_collection(collection_name):
         return jsonify(response), 200
     else:
         return jsonify({"error": "No artworks found in this collection"}), 404
+
+@artwork_controller.route('/get_artwork_url/<string:artwork_id>', methods=['GET'])
+@jwt_required()  
+def get_artwork_url(artwork_id):
+    current_app.logger.info("Attempting to fetch artwork URL")
+    artwork = Artwork.objects(artwork_id=artwork_id).first()
+    
+    if not artwork:
+        current_app.logger.error("Artwork not found")
+        return jsonify({"error": "Artwork not found"}), 404
+
+    # Assuming the image_url field contains the direct URL to the image in S3
+    image_url = artwork.image_url
+    
+    return jsonify({"image_url": image_url}), 200
+
+@artwork_controller.route('/add_annotation/<string:artwork_id>', methods=['POST'])
+@jwt_required()
+def add_annotation(artwork_id):
+    current_user_id = get_jwt_identity()
+    artwork = Artwork.objects(artwork_id=artwork_id).first()
+    
+    if not artwork:
+        current_app.logger.error("Artwork not found")
+        return jsonify({"error": "Artwork not found"}), 404
+
+    data = request.get_json()
+    required_fields = ['message', 'x_coordinate', 'y_coordinate']
+    missing_fields = [field for field in required_fields if field not in data]
+
+    if missing_fields:
+        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
+
+    try:
+        new_annotation = Annotation(
+            artworkID=artwork_id,
+            userID=current_user_id,
+            message=data['message'],
+            x_coordinate=data['x_coordinate'],
+            y_coordinate=data['y_coordinate'],
+            annotationID=str(uuid.uuid4())  # Generate a unique ID for the annotation
+        ).save()
+
+        artwork.update(push__annotations=new_annotation)
+        artwork.reload()
+
+        return jsonify({"message": "Annotation added successfully", "annotation": new_annotation}), 201
+    except ValidationError as e:
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": "Unexpected error", "details": str(e)}), 500

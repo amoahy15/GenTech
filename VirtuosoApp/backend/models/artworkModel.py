@@ -16,7 +16,7 @@ class Artwork(Document):
     # Description of the artwork, optional
     description = StringField()
     image_location = StringField()
-    annotations = StringField() #optional
+    annotations = ListField(StringField()) #optional
     average_rating = FloatField()
     genre = StringField()
     reviews = ListField(ReferenceField(Review))
