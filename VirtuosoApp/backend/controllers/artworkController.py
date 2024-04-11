@@ -86,6 +86,7 @@ def update_artwork(artwork_id):
     return jsonify({"message": "Artwork updated successfully"}), 200
 
 @artwork_controller.route('/get_artwork/<string:artwork_id>', methods=['GET'])
+@jwt_required()  
 def get_artwork(artwork_id):
     current_app.logger.info("Attempting to fetch artwork")
     artwork = Artwork.objects(artwork_id=artwork_id).first()
@@ -97,6 +98,7 @@ def get_artwork(artwork_id):
     return jsonify(artwork.serialize()), 200
 
 @artwork_controller.route('/artworks/collection/<string:collection_name>', methods=['GET'])
+@jwt_required()  
 def get_artworks_by_collection(collection_name):
     artworks = Artwork.objects(collection=collection_name)
     if artworks:
@@ -109,6 +111,7 @@ def get_artworks_by_collection(collection_name):
         return jsonify({"error": "No artworks found in this collection"}), 404
 
 @artwork_controller.route('/get_artwork_url/<string:artwork_id>', methods=['GET'])
+@jwt_required()  
 def get_artwork_url(artwork_id):
     current_app.logger.info("Attempting to fetch artwork URL")
     artwork = Artwork.objects(artwork_id=artwork_id).first()
