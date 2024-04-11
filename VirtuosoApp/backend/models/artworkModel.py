@@ -7,7 +7,7 @@ class Artwork(Document):
     title = StringField(required=True)
     user_id = StringField(required=True) 
     # Reference to the User document of the artist, required
-    artist = StringField(equired=True) 
+    artist = StringField(required=True) 
     year = StringField(required=True)
     # URL to the image of the artwork, required
     image_url = StringField(required=True)
