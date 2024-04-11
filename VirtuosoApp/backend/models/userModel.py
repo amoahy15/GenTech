@@ -42,6 +42,7 @@ class User(Document):
             "favorite_artworks": self.favorite_artworks,
             "artwork_created" : self.artwork_created,
             "artwork_count": self.artwork_count,
+            "reviews": reviews,
             "review_count": self.review_count,
             "followers": self.followers,
             "following": self.following,
@@ -53,4 +54,5 @@ class User(Document):
             "verification_status": self.verification_status,
             "preferences": self.preferences,
             "joined_date": self.joined_date.isoformat(),
+        }
         }

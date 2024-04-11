@@ -1,7 +1,7 @@
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import ImageCard from './ImageCard';
+import ImageCardHover from './ImageCardHover';
 import '../styles/carouselarrow.module.css';
 
 function SampleNextArrow(props) {
@@ -66,7 +66,7 @@ const Carousel = ({ images }) => {
     <Slider {...settings}>
         {images.map((image, index) => (
         <div key={index}>
-          <a href = './reviews'><ImageCard src={image} alt={`Slide ${index + 1}`} /></a>
+          <a href = './reviews'><ImageCardHover src={image} alt={`Slide ${index + 1}`} /></a>
           
         </div>
       ))}

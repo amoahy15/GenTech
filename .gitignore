@@ -255,3 +255,7 @@ VirtuosoApp/backend/VirtuosoBackend/bin/rst2s5.py
 VirtuosoApp/backend/VirtuosoBackend/bin/rst2xetex.py
 VirtuosoApp/backend/VirtuosoBackend/bin/rst2xml.py
 VirtuosoApp/backend/VirtuosoBackend/bin/rstpep2html.py
+VirtuosoApp/backend/cert.pem
+.gitignore
+.gitignore
+VirtuosoApp/backend/key.pem

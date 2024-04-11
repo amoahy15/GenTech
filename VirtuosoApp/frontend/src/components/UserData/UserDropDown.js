@@ -2,6 +2,8 @@ import React, {useState, useRef, useEffect} from 'react'
 import styles from '../styles/userdropdown.module.css'
 import { CSSTransition } from 'react-transition-group';
 import { BiArrowBack } from "react-icons/bi";
+import Logout from "./Logout"
+
  
 
 const UserDropDown = () => {
@@ -17,8 +19,7 @@ const UserDropDown = () => {
     function calcHeight(el) {
       const height = el.offsetHeight;
       setMenuHeight(height);
-    }  
-
+    } 
 
 
     function DropDownItems(props){
@@ -31,6 +32,7 @@ const UserDropDown = () => {
 
 
   return (
+
     
     <div className={styles.dropdown} style={{ height: menuHeight }} ref={dropdownRef}>
        <CSSTransition in={activeMenu === 'main'} 
@@ -52,7 +54,7 @@ const UserDropDown = () => {
              <a><DropDownItems goToMenu = 'settings'>Settings</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'settings'>Logout</DropDownItems></a>
+             <a><DropDownItems><Logout/></DropDownItems></a>
             </li>
          </ul> 
         </div>
@@ -75,13 +77,13 @@ const UserDropDown = () => {
              <a><DropDownItems goToMenu = 'main'><BiArrowBack /></DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'main'>Filler 2</DropDownItems></a>
+             <a><DropDownItems>Filler 2</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'main'>Filler 3</DropDownItems></a>
+             <a><DropDownItems>Filler 3</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems goToMenu = 'main'>Filler 4</DropDownItems></a>
+             <a><DropDownItems>Filler 4</DropDownItems></a>
             </li>
         </ul>
         </div>

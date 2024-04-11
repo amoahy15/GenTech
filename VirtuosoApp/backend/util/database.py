@@ -1,8 +1,14 @@
+
+import os
+import certifi
+
 import mongoengine
 from dotenv import load_dotenv
 import os
 
 def connect_db(app):
+   
+    os.environ['SSL_CERT_FILE'] = certifi.where()
     load_dotenv()
     try:
         mongoengine.connect(
@@ -10,6 +16,6 @@ def connect_db(app):
             host=os.environ.get("MONGODB_URI"),
             alias='default'
         )
-        print("Successful connection to MongoDB Atlas.")
+        print(f"Successful connection to MongoDB Atlas at {os.environ.get("MONGODB_URI")}.")
     except Exception as e:
         print(f"An error occurred while connecting to MongoDB: {e}")

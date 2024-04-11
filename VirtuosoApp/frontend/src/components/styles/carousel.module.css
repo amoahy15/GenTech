@@ -1,3 +1,7 @@
+.image-card-container {
+  position: relative;
+  display: inline-block; 
+}
 .image-card {
     width: 16vw;
     height: 16vw;
@@ -11,3 +15,23 @@
     height: 100%;
     object-fit: cover;
   }
+
+.image-card {
+    position: relative;
+}
+
+.hoverContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(177, 66, 66, 0.553); 
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    color: white; 
+    font-size: 16px; 
+}
+
+.image-card:hover .hoverContent {
+    display: block;
+}

@@ -11,10 +11,13 @@ import Collection from "./components/Pages/Collections";
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
-import Authenticator from "./components/UserData/Authenticator";
+import TestSearch from "./components/Pages/TestSearch";
+import ArtworkDisplay from "./components/API/ArtworkDisplay";
+
 function App() {
 
   const token = localStorage.getItem('token');
+  
 
   return (
 
@@ -59,6 +62,10 @@ function App() {
         <Route path="/disclaimer">
           <Disclaimer/>
         </Route>
+        <Route path="/test">
+          <TestSearch/>
+        </Route>
+        <Route path="/artwork/:artworkId" component={ArtworkDisplay} />
       </Switch> 
       </div>
     </div>

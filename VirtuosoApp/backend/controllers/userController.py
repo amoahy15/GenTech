@@ -12,6 +12,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 user_controller = Blueprint('user_controller', __name__)
 
+
 @user_controller.route('/create_user', methods=['POST'])
 def create_user():
     current_app.logger.info("Attempting to create a new user")
@@ -132,6 +133,7 @@ def update_user(user_id):
             current_app.logger.warning(f"User {user_id} not found for update")
             return jsonify({"error": "User not found"}), 404
 
+
         allowed_updates = {'first_name', 'last_name', 'bio', 'location', 'profile_picture',
                            'is_private', 'social_media_links', 'preferences'}
 
@@ -175,6 +177,7 @@ def delete_user(user_id):
     except Exception as e:
         current_app.logger.exception(f"Unexpected error during deletion for user {user_id}")
         return jsonify({"error": "An unexpected error occurred"}), 500
+    
 # Route for authenticating a user
 @user_controller.route('/authenticate_user', methods=['POST'])
 def authenticate_user():
@@ -296,3 +299,4 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user or no pending request found")
         return jsonify({"error": "You are not following this user or no pending request found"}), 400
+

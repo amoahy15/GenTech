@@ -1,17 +1,16 @@
 import React from 'react'
 import styles from "../styles/row.module.css"
-import Images from '../API/Images'
-import {HiChevronRight, HiChevronLeft} from 'react-icons/hi'
 
-const Row = ({title}) => {
+
+const Row = ({ title, children }) => {
   return (
-    <div>
+    <div className={styles.rowContainer}>
       <h2 className={styles.h2}>{title}</h2>
-      <HiChevronLeft size={45} className ={styles.arrows}/>
-      <Images/>
-      <HiChevronRight size={45} className ={styles.arrows}/>
+      <div className={styles.rowContent}>
+        {children}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Row
+export default Row;
