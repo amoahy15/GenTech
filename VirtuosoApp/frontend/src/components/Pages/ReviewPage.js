@@ -16,8 +16,9 @@ function ReviewPage() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/api/review/artwork/20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",); 
+        const response = await axios.get("http://127.0.0.1:5000/api/review/artwork/ddb2cbad-e00c-43fc-b317-41ad1148efdc",); 
         const thisdata = response.data;
+        console.log(response.data);
 
         const formattedReviews = thisdata.map(review => ({
           rating: review.rating,

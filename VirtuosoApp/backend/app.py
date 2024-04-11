@@ -8,7 +8,8 @@ from controllers.reviewController import review_controller
 from controllers.artworkController import artwork_controller
 from controllers.annotationController import annotation_controller
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 def create_app():
     app = Flask(__name__)
 
@@ -30,7 +31,6 @@ def create_app():
     app.register_blueprint(artwork_controller, url_prefix='/api/artwork')
     app.register_blueprint(review_controller, url_prefix='/api/review')
     app.register_blueprint(annotation_controller, url_prefix='/api/annotations')
-
     return app
 
 if __name__ == '__main__':

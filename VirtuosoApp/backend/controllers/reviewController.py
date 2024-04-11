@@ -16,49 +16,25 @@ review_controller = Blueprint('review_controller', __name__)
 def create_review():
     user_id = get_jwt_identity()
     data = request.get_json()
-    review_id = str(uuid.uuid4())  # Generate a UUID for the review ID
-    logger.info(f"Attempting to create review {review_id} by user {user_id} for artwork {data.get('artwork_id')}")
-    logging.getLogger().setLevel(logging.INFO)
-
     try:
-        logger.debug("Fetching user and artwork from the database.")
-        try:
-            user = User.objects.get(user_id=user_id)
-        except DoesNotExist:
-            logger.error(f"User not found: {user_id}")
-            return jsonify({"error": "User not found"}), 404
-
-        try:
-            artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
-        except DoesNotExist:
-            logger.error(f"Artwork not found: {data.get('artwork_id')}")
-            return jsonify({"error": "Artwork not found"}), 404
-        logger.debug("User and artwork successfully fetched.")
-
+        user = User.objects.get(user_id=user_id)
         new_review = Review(
-            review_id=review_id,  
+            review_id=str(uuid.uuid4()),
             user=user,
-            artwork=artwork,
             rating=data['rating'],
             comment=data.get('comment', '')
         )
         new_review.save()
-        logger.info(f"Review {review_id} successfully created.")
 
-        logger.debug("Updating user and artwork with new review.")
-        user.update(push__reviews=new_review)
-        artwork.update(push__reviews=new_review)
-        artwork.reload() 
-        logger.info("User and artwork updated with new review.")
-
-        logger.debug("Updating average rating for the artwork.")
-        artwork.update_average_rating()
-        logger.info(f"Average rating updated for artwork {data.get('artwork_id')}.")
-
+        logger.info(f"Review {new_review.review_id} successfully created.")
         return jsonify({"msg": "Review created successfully", "review": new_review.serialize()}), 201
+
+    except DoesNotExist as e:
+        logger.error(f"DoesNotExist error during review creation: {e}")
+        return jsonify({"error": "User or Artwork not found", "details": str(e)}), 404
     except ValidationError as e:
-        logger.error(f"Validation error during review creation: {str(e)}")
-        return jsonify({"error": str(e)}), 400
+        logger.error(f"Validation error during review creation: {e}")
+        return jsonify({"error": "Validation error", "details": str(e)}), 400
     except Exception as e:
         logger.exception("Unexpected error occurred during review creation.")
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
@@ -106,17 +82,11 @@ def delete_review(review_id):
         return jsonify({"error": "Review not found"}), 404
     
 @review_controller.route('/artwork/<artwork_id>', methods=['GET'])
-def get_annotations(artwork_id):
+def get_reviews(artwork_id):
     try:
-        artwork = Artwork.objects.get(artwork_id=artwork_id)
+        artwork = Artwork.objects(artwork_id=artwork_id)
         reviews = Review.objects(artwork=artwork)
-        review_list = [{
-            'review_id': review.review_id,
-            'user_id': str(review.user.id),
-            'rating': review.rating,
-            'comment': review.comment,
-            'created_at': review.created_at.isoformat()
-        } for review in reviews]
+        review_list = [review.serialize() for review in reviews]
 
         return jsonify(review_list), 200
     except DoesNotExist:

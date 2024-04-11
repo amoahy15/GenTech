@@ -71,7 +71,7 @@ const ArtTextCols = ({ text }) => {
             {showAnnotations ? (
 
               //<AnnotationComments comments={annotations} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-              <FetchAnnotate artworkID={"20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3"} setHoverCoordinates={setHoverCoordinates} url = {placeholderImage}></FetchAnnotate>
+              <FetchAnnotate artworkID={"ddb2cbad-e00c-43fc-b317-41ad1148efdc"} setHoverCoordinates={setHoverCoordinates} url = {placeholderImage}></FetchAnnotate>
             ) : (
               <TextColumn header="TITLE" text={text} info="Author, date, medium" />
             )}

@@ -60,7 +60,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
       return;
     }
     const payload = {
-      artworkID: "20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",
+      artworkID: "ddb2cbad-e00c-43fc-b317-41ad1148efdc",
       message: annotationText,
       x_coordinate: String(realclickCoordinates.x),
       y_coordinate: String(realclickCoordinates.y),
