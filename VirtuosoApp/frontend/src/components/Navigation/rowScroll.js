@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "../styles/row.module.css"
-import Images from '../API/Images'
+
 
 const Row = ({ title, children }) => {
   return (

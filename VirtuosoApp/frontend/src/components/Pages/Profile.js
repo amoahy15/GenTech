@@ -106,7 +106,7 @@ function Profile() {
 
         <div>
           <Row title ='Trending'>
-          <Collections category='trending'/>
+            <Collections category='trending'/>
           </Row>
         </div>
 

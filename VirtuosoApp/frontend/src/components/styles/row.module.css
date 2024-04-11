@@ -1,21 +1,10 @@
 *{
     font-family: "Big Caslon", serif;
-    font-weight: 400;
+    font-weight: 500;
  }
 
 .h2{
-    margin: 15vh;
+    margin-left: 15vh;
     color: black;
     font-size: 30px;
-}
-
-.arrows{
-    color:rgba(0, 0, 0, .7);
-    background-color: rgba(0, 0, 0, .1);
-    border-radius: 9999px;
-    position: relative;
-}
-
-.arrows:hover{
-    background-color: rgba(0, 0, 0, .5);
 }
