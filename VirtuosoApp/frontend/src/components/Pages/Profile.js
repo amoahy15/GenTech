@@ -11,9 +11,11 @@ import EditItem from '../UserData/EditItem.js';
 import styles from '../styles/user.module.css';
 import Collections from './Collections.js';
 import Row from '../Navigation/rowScroll.js';
-
+import Post from '../API/Post.js';
 
 function Profile() {
+
+
   const [userData, setUserData] = useState({
     user_name: 'Loading...',
     bio: 'Loading bio...',
@@ -98,7 +100,7 @@ function Profile() {
       <div className={styles.container}>
         <div>Updates</div>
         <div>
-          <button>post</button>
+          <Post/>
         </div>
       </div>  
     </div>
