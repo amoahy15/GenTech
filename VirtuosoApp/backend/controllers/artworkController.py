@@ -6,6 +6,13 @@ from models.annotationModel import Annotation
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 import uuid
 import logging
+import pandas as pd
+import os
+
+image_data_path = os.path.join(current_app.root_path, 'data', 'published_images.csv')
+df_images = pd.read_csv(image_data_path)
+image_dict = df_images.set_index('depictstmsobjectid')['iiifurl'].to_dict()
+
 
 artwork_controller = Blueprint('artwork_controller', __name__)
 
@@ -161,3 +168,13 @@ def add_annotation(artwork_id):
         return jsonify({"error": str(e)}), 400
     except Exception as e:
         return jsonify({"error": "Unexpected error", "details": str(e)}), 500
+
+@artwork_controller.route('/get_image_url/<int:artwork_id>', methods=['GET'])
+@jwt_required()
+def get_image_url(artwork_id):
+    """Fetch the IIIF image URL for a given artwork ID."""
+    try:
+        image_url = image_dict[artwork_id]
+        return jsonify({'image_url': image_url}), 200
+    except KeyError:
+        return jsonify({'error': 'Artwork image not found'}), 404
