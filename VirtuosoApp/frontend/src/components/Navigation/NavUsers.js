@@ -37,7 +37,7 @@ const NavUser = () => {
 
           <a href="./"><Button2 text='Forum' onClick={onClick}/></a>
 
-          <UserIcon><UserDropDown></UserDropDown></UserIcon>
+          {/*<UserIcon><UserDropDown></UserDropDown></UserIcon>*/}
 
       </nav>
       </header>  
