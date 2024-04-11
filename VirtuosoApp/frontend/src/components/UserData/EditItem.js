@@ -3,7 +3,7 @@ import { HiMiniPaintBrush } from "react-icons/hi2";
 
 const EditItem = (props) => {
 
-    const child = <HiMiniPaintBrush style = {{alignItems:'center', marginLeft: '1vh'}} size = {25} />;
+    const child = <HiMiniPaintBrush size = {25} />;
     const[open, setOpen] = useState(false);
     const ref = useRef();
 

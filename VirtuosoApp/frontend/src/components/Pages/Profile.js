@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from '../styles/profile.modules.css';
 import Carousel from '../carouselcomponents/Carousel.js';
 import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
 import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg';
@@ -9,7 +8,8 @@ import img2 from '../../assets/images/testImage2.jpeg';
 import img3 from '../../assets/images/testImage3.jpeg';
 import EditUser from '../UserData/EditUser.js';
 import EditItem from '../UserData/EditItem.js';
-
+import styles from '../styles/user.module.css';
+import Collections from './Collections.js';
 
 
 function Profile() {
@@ -74,33 +74,16 @@ function Profile() {
 
   return (
     <div>
-      <div className="header">
-        <img src={background} alt="Background" style={{ minWidth: '100%', height: '300px', objectFit: 'cover' }} />
-      </div>
-
-      <div className="profile-container">
-        <div className="profile-photo">
-          <img src={profilephoto} alt="Profile" />
+    <div className={styles.info}>
+     <div className={styles.container}>
+        <div className={styles.info}>
+        <div style = {{paddingRight: '2vh', fontSize: '20px'}}>{userData.user_name}</div>
+        <div>
+          <EditItem><EditUser/></EditItem>
         </div>
-        <div className="profile-details" style={{ alignItems: 'baseline' }}>
-          <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
-          <button className="username-button">Follow</button>
-          <div style={{ paddingTop: '10px' }}>
-            <span>{`Followers: ${userData.followers_count}`}</span>
-            <span style={{ paddingLeft: '15px' }}>{`Following: ${userData.following_count}`}</span>
-          </div>
         </div>
-      </div>
-
-      <div style={{ marginTop: '60px' }}>
-        <div className="card-container">
-          <div className="card">
-            <h2 style={{ fontSize: '20px' }}>BIO</h2>
-            <h3 style={{ fontSize: '15px', paddingTop: '5px' }}>
-              {userData.bio}
-            </h3>
-
-            <div className='textEntry'>
+        <div>{userData.bio}</div>
+        <div className='textEntry'>
               <input 
                 type="text" 
                 value={bioText} 
@@ -109,17 +92,21 @@ function Profile() {
               />
                <button onClick={handleUpdateBio}>Save</button>
           </div>
-          </div>
-          <div className="long-card">
-            <h2 style={{ fontSize: '20px' }}>UPDATES</h2>
-          </div>
-        </div>
       </div>
 
-      <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
-       <Carousel category="trending" />
-      </div>
-      
+      <div className={styles.container}>
+        <div>Updates</div>
+        <div>
+          <button>post</button>
+        </div>
+      </div>  
+    </div>
+
+
+        <div className={styles.containerColl}>
+          <Collections/>
+        </div>
+
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import styles from '../styles/dropdown.module.css'
+import styles from '../styles/profiledropdown.module.css'
 
 const EditUser = () => {
 
@@ -18,7 +18,7 @@ const EditUser = () => {
        
         <ul className={styles.menu}>  
              <li>
-               <a href='./about'><DropDownItems>About Us</DropDownItems></a>
+               <a><DropDownItems>About Us</DropDownItems></a>
              </li>
              <li>
              <a><DropDownItems >Terms of Service</DropDownItems></a>

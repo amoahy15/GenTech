@@ -1,0 +1,88 @@
+.btn{
+    padding: 1.25vh 2vh;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 3vh;
+    color:rgba(153, 0, 0, .7);
+    background-color: transparent;
+    position: relative;
+    transition: background 1200ms;
+}
+
+.btn:hover{
+    padding: 1.25vh 2vh;
+    border: none;
+    border-radius: 5px;
+    color:rgba(153, 0, 0, 1);
+    background-color: rgba(153, 0, 0, .1);
+    position: relative;
+}
+
+.dropdown{
+    position: absolute;
+    top: 270px;
+    width: 30vh;
+    transform: translateX(-30%);
+    background-color: rgba(255,255,255,.9);
+    border: none;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0px 0px 5px rgba(0,0,0,.1);
+    overflow: hidden;
+    z-index: 2;
+}
+
+
+.item{
+    text-decoration: none;
+    font-weight: 525;
+    font-family: "Poppins", sans-serif;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0.5rem;
+    color: black;
+    transition: background 700ms;
+}
+
+.item:hover{
+    color: rgba(153, 0, 0, 1);
+    background-color: rgba(153, 0, 0, .1);
+    text-decoration: underline;
+}
+
+
+.menu li{
+    list-style-type: none;
+  }
+
+.menu a{
+    text-decoration: none;
+}
+
+.animation{
+    width: 100%;
+}
+
+.animation-primary-enter{
+    position: absolute;
+    transform: translateX(-110%);
+}
+
+.animation-primary-enter-active{
+    transform: translateX(0%);
+    transition: all 1s ease;
+}
+
+.animation-primary-exit{
+    position: absolute;
+}
+
+.animation-primary-exit-active{
+    transform: translateX(-110%);
+    transition: all 1s ease;
+}
