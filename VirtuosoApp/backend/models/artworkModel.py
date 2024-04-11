@@ -5,9 +5,9 @@ from .reviewModel import Review
 class Artwork(Document):
     artwork_id = StringField(required=True, unique=True)
     title = StringField(required=True)
-    artist_name = StringField(required=True) 
+    user_id = StringField(required=True) 
     # Reference to the User document of the artist, required
-    artist = ReferenceField(User, required=True) 
+    artist = StringField(equired=True) 
     year = StringField(required=True)
     # URL to the image of the artwork, required
     image_url = StringField(required=True)
