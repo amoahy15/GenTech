@@ -7,7 +7,7 @@ import uuid
 class Review(Document):
     review_id = StringField(primary_key=True, default=lambda: str(uuid.uuid4()))
     artwork_id  = ReferenceField('Artwork', required=True)
-    user = ReferenceField('User', required=True)
+    user_id = ReferenceField('User', required=True)
     rating = FloatField(required=True, min_value=0, max_value=5)
     comment = StringField()
     created_at = DateTimeField(default=datetime.now)
