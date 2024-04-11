@@ -17,6 +17,7 @@ function Profile() {
 
 
   const [userData, setUserData] = useState({
+    id: '',
     user_name: 'Loading...',
     bio: 'Loading bio...',
     followers_count: 0, 
@@ -33,6 +34,7 @@ function Profile() {
           },
         });
         setUserData({
+          id: response.data.user_id,
           user_name: response.data.user_name, 
           bio: response.data.bio,
           followers_count: response.data.followers_count, // Set followers_count
@@ -52,28 +54,37 @@ function Profile() {
   };
 
   const handleUpdateBio = async () => {
+    if (!userData.id) {
+      alert('User ID is undefined. Please ensure you are logged in and try again.');
+      return;
+    }
+  
     try {
+      const token = localStorage.getItem('token');
+      const url = `http://127.0.0.1:5000/api/update_user/${userData.id}`;
+  
       const response = await axios.put(
-        'http://127.0.0.1:5000/api/user/bio',
+        url,
         { bio: bioText },
         {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Authorization': `Bearer ${token}`,
           },
         }
       );
+  
       setUserData(prevState => ({
         ...prevState,
-        user_name: response.data.user_name, 
-        bio: response.data.bio,
-        followers_count: response.data.followers_count, // Update followers_count
-        following_count: response.data.following_count, // Update following_count
+        bio: bioText,
       }));
-      setBioText('');
+  
+      alert('Bio updated successfully!');
     } catch (error) {
-      console.error('Error updating bio:', error);
+      console.error('Error updating bio:', error.response ? error.response.data : error);
+      alert('Failed to update bio. Please try again.');
     }
   };
+  
 
   return (
     <div>

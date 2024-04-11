@@ -19,7 +19,7 @@ function Post() {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
     });
-    return response.data.url; // The URL of the uploaded image
+    return response.data.url; 
   };
 
   const handleSubmit = async (e) => {
@@ -34,7 +34,6 @@ function Post() {
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
       },
     });
-    // Reset the form or redirect the user
   };
 
   return (

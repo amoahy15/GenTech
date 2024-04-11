@@ -115,26 +115,50 @@ def get_user(user_id):
 @user_controller.route('/update_user/<string:user_id>', methods=['PUT'])
 def update_user(user_id):
     current_app.logger.info(f"Updating user {user_id}")
-    data = request.get_json()
-    try:
-        if not data:
-            current_app.logger.warning("No data provided for update")
-            return jsonify({"error": "No update data provided"}), 400
+    current_user_id = get_jwt_identity()  # Authenticate user
 
+    # Make sure users can only update their own information
+    if current_user_id != user_id:
+        return jsonify({"error": "Unauthorized to update this user's information"}), 403
+
+    data = request.get_json()
+    if not data:
+        current_app.logger.warning("No data provided for update")
+        return jsonify({"error": "No update data provided"}), 400
+
+    try:
         user = User.objects(user_id=user_id).first()
         if not user:
             current_app.logger.warning(f"User {user_id} not found for update")
             return jsonify({"error": "User not found"}), 404
-        
-        user.update(**data)
+
+        # Fields that are allowed to be updated
+        allowed_updates = {'first_name', 'last_name', 'bio', 'location', 'profile_picture',
+                           'is_private', 'social_media_links', 'preferences'}
+
+        for field, value in data.items():
+            if field in allowed_updates:
+                if field == 'bio' and len(value) > 500:
+                    # Enforces bio length limit
+                    return jsonify({"error": "Bio must be 500 characters or less"}), 400
+                setattr(user, field, value)
+            else:
+                current_app.logger.warning(f"Attempted to update an unauthorized field: {field}")
+                return jsonify({"error": f"Cannot update field: {field}"}), 400
+
+        user.save()
         current_app.logger.info(f"User {user_id} updated successfully")
         return jsonify({"message": "User updated successfully"}), 200
     except ValidationError as e:
-        current_app.logger.exception(f"Validation error during update for user {user_id}")
-        return jsonify({"error": "Data validation failed"}), 400
+        current_app.logger.exception("Validation error during update")
+        return jsonify({"error": "Data validation failed", "details": str(e)}), 400
+    except NotUniqueError:
+        current_app.logger.exception("Attempted to update user with existing email or username")
+        return jsonify({"error": "Email or username already exists"}), 409
     except Exception as e:
-        current_app.logger.exception(f"Unexpected error during update for user {user_id}")
-        return jsonify({"error": "An unexpected error occurred"}), 500
+        current_app.logger.exception("An unexpected error occurred during user update")
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+
 
 # Route for deleting a user
 @user_controller.route('/delete_user/<string:user_id>', methods=['DELETE'])
