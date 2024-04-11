@@ -61,7 +61,7 @@ function Profile() {
   
     try {
       const token = localStorage.getItem('token');
-      const url = `http://127.0.0.1:5000/api/update_user/${userData.id}`;
+      const url = `http://localhost:5000/api/update_user/${userData.id}`;
   
       const response = await axios.put(
         url,

@@ -132,7 +132,6 @@ def update_user(user_id):
             current_app.logger.warning(f"User {user_id} not found for update")
             return jsonify({"error": "User not found"}), 404
 
-        # Fields that are allowed to be updated
         allowed_updates = {'first_name', 'last_name', 'bio', 'location', 'profile_picture',
                            'is_private', 'social_media_links', 'preferences'}
 
