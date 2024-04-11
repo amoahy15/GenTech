@@ -2,8 +2,7 @@ from flask import request, jsonify, Blueprint, current_app
 from mongoengine import NotUniqueError, ValidationError
 from models.artworkModel import Artwork
 from models.userModel import User
-from models.annotationModel import Annotation
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
 import logging
 
@@ -13,8 +12,8 @@ artwork_controller = Blueprint('artwork_controller', __name__)
 @jwt_required()  
 def create_artwork():
     current_app.logger.info("Attempting to create artwork")
-    current_user_id = get_jwt_identity()  
-    user = User.objects(user_id=current_user_id).first()  
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
     
     if not user:
         current_app.logger.error("User not found")
@@ -32,17 +31,13 @@ def create_artwork():
         new_artwork = Artwork(
             artwork_id=str(uuid.uuid4()),
             title=data['title'],
-            artist=user.user_id,  
+            user_id=user.user_id,  
             artist_name=f"{user.first_name} {user.last_name}",  
             year=data['year'],
             image_url=data['image_url']
         )
         new_artwork.save()
         current_app.logger.info("Artwork created successfully")
-
-        user.update(inc__artwork_count=1)  
-        current_app.logger.info("Artwork count updated for user.")
-
         return jsonify({"message": "Artwork created successfully!"}), 201
     except ValidationError as e:
         current_app.logger.exception("Validation error during artwork creation")
@@ -55,8 +50,8 @@ def create_artwork():
 @jwt_required()
 def delete_artwork(artwork_id):
     current_app.logger.info("Attempting to delete artwork")
-    current_user_id = get_jwt_identity()
-    artwork = Artwork.objects(artwork_id=artwork_id, artist=current_user_id).first()
+    user_id = get_jwt_identity()
+    artwork = Artwork.objects(artwork_id=artwork_id, user_id=user_id).first()
     
     if not artwork:
         current_app.logger.error("Artwork not found or not authorized")
@@ -70,8 +65,8 @@ def delete_artwork(artwork_id):
 @jwt_required()
 def update_artwork(artwork_id):
     current_app.logger.info("Attempting to update artwork")
-    current_user_id = get_jwt_identity()
-    artwork = Artwork.objects(artwork_id=artwork_id, artist=current_user_id).first()
+    user_id = get_jwt_identity()
+    artwork = Artwork.objects(artwork_id=artwork_id, user_id=user_id).first()
     
     if not artwork:
         current_app.logger.error("Artwork not found or not authorized")
@@ -103,7 +98,6 @@ def get_artwork(artwork_id):
 def get_artworks_by_collection(collection_name):
     artworks = Artwork.objects(collection=collection_name)
     if artworks:
-        # Wrap the serialized artworks in an object under the 'images' key
         response = {
             "images": [artwork.serialize() for artwork in artworks]
         }
@@ -121,15 +115,13 @@ def get_artwork_url(artwork_id):
         current_app.logger.error("Artwork not found")
         return jsonify({"error": "Artwork not found"}), 404
 
-    # Assuming the image_url field contains the direct URL to the image in S3
     image_url = artwork.image_url
-    
     return jsonify({"image_url": image_url}), 200
 
 @artwork_controller.route('/add_annotation/<string:artwork_id>', methods=['POST'])
 @jwt_required()
 def add_annotation(artwork_id):
-    current_user_id = get_jwt_identity()
+    user_id = get_jwt_identity()
     artwork = Artwork.objects(artwork_id=artwork_id).first()
     
     if not artwork:
@@ -145,12 +137,12 @@ def add_annotation(artwork_id):
 
     try:
         new_annotation = Annotation(
-            artworkID=artwork_id,
-            userID=current_user_id,
+            artwork_id=artwork_id,
+            user_id=user_id,
             message=data['message'],
             x_coordinate=data['x_coordinate'],
             y_coordinate=data['y_coordinate'],
-            annotationID=str(uuid.uuid4())  # Generate a unique ID for the annotation
+            annotation_id=str(uuid.uuid4())
         ).save()
 
         artwork.update(push__annotations=new_annotation)
