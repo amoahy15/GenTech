@@ -107,3 +107,17 @@ def get_artworks_by_collection(collection_name):
         return jsonify(response), 200
     else:
         return jsonify({"error": "No artworks found in this collection"}), 404
+
+@artwork_controller.route('/get_artwork_url/<string:artwork_id>', methods=['GET'])
+def get_artwork_url(artwork_id):
+    current_app.logger.info("Attempting to fetch artwork URL")
+    artwork = Artwork.objects(artwork_id=artwork_id).first()
+    
+    if not artwork:
+        current_app.logger.error("Artwork not found")
+        return jsonify({"error": "Artwork not found"}), 404
+
+    # Assuming the image_url field contains the direct URL to the image in S3
+    image_url = artwork.image_url
+    
+    return jsonify({"image_url": image_url}), 200
