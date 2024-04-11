@@ -5,7 +5,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '../styles/carouselarrow.module.css';
 import ImageCard from './ImageCard';
-import ImageCardHover from './ImageCardHover'; 
+import ImageCardHover from './ImageCardHover';
+
 
 const fetchImagesFromCategory = async (category) => {
     try {
