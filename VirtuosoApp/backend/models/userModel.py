@@ -30,7 +30,6 @@ class User(Document):
 
 
     def serialize(self):
-        reviews = [review.serialize() for review in self.reviews]
         return {
             "user_id": self.user_id,
             "user_name": self.user_name,
@@ -43,7 +42,6 @@ class User(Document):
             "favorite_artworks": self.favorite_artworks,
             "artwork_created" : self.artwork_created,
             "artwork_count": self.artwork_count,
-            "reviews": reviews,
             "review_count": self.review_count,
             "followers": self.followers,
             "following": self.following,
