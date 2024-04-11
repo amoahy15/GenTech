@@ -12,8 +12,8 @@ function Profile() {
   const [userData, setUserData] = useState({
     user_name: 'Loading...',
     bio: 'Loading bio...',
-    followers_count: 0, // Initialize followers_count
-    following_count: 0, // Initialize following_count
+    followers_count: 0, 
+    following_count: 0, 
   });
   const [bioText, setBioText] = useState('');
 
@@ -81,7 +81,6 @@ function Profile() {
         <div className="profile-details" style={{ alignItems: 'baseline' }}>
           <div style={{ fontSize: '30px', paddingTop: '17px' }}>{userData.user_name}</div>
           <button className="username-button">Follow</button>
-          {/* Displaying followers_count and following_count */}
           <div style={{ paddingTop: '10px' }}>
             <span>{`Followers: ${userData.followers_count}`}</span>
             <span style={{ paddingLeft: '15px' }}>{`Following: ${userData.following_count}`}</span>
@@ -114,7 +113,7 @@ function Profile() {
       </div>
 
       <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
-          {<Carousel images={[img, img2, img3]}></Carousel>}
+       <Carousel category="trending" />
       </div>
       
     </div>
