@@ -3,6 +3,7 @@ import HomeBackground from "../../assets/images/HomeBackground.png";
 import Button from "../Navigation/Button";
 import Row from "../Navigation/rowScroll";
 import Carousel from "../carouselcomponents/Carousel";
+import Collections from "./Collections";
 
 const Home = () => {
   const onClick = () => {
@@ -70,21 +71,20 @@ const Home = () => {
           className={styles.backgroundImage}
         />
       </div>
-      <Carousel category="trending" />
       <div style={{ marginBottom: "25vh" }}></div>
 
       <div>
         <Row title="Trending">
-          <Carousel category="trending" />
+          <Collections category="trending" />
         </Row>
         <Row title="Paintings">
-          <Carousel category="paintings" />
+          <Collections category="paintings" />
         </Row>
         <Row title="Photographs">
-          <Carousel category="photographs" />
+          <Collections category="photographs" />
         </Row>
         <Row title="Sculptures And Models">
-          <Carousel category="sculptures" />
+          <Collections category="sculptures" />
         </Row>
       </div>
     </div>
