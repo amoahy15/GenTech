@@ -6,6 +6,7 @@ import AnnotationComments from './AnnotationComments.js';
 import placeholderImage from '../../assets/images/art5.webp';
 import ImageDisplay from './ClickableImg.js';
 import FetchAnnotate from './FetchAnnotate.js'
+import RevPopup from './RevPopup.js';
 
 //todo: pass in info directly from reviewpage.js
 //todo: top priority refactoring
@@ -13,6 +14,9 @@ const ArtTextCols = ({ text }) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
+  const [showPopup, setShowPopup] = useState(false);
+  const [rating, setRating] = useState(0);
+
 
   //actually called in fetchannotate
   const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null });
@@ -25,7 +29,10 @@ const ArtTextCols = ({ text }) => {
   const handleButtonClick = () => {
     setShowAnnotations(!showAnnotations);
   };
-
+  
+  const handleButtonClick2 = () => {
+    setShowPopup(!showPopup);
+  };
 
   const handleImageClick = (event) => {
     if (allowDotPlacement) {
@@ -56,11 +63,19 @@ const ArtTextCols = ({ text }) => {
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', maxWidth: '50%' }}>
             <ImageDisplay imageUrl={placeholderImage} allowDotPlacement={allowDotPlacement} style={{ maxWidth: '100%', height: 'auto' }} hoverCoordinates={hoverCoordinates}/>
           <div style={{ marginTop: '10px' }}>
-            <StarRating />
+            <StarRating onRatingChange={(newRating) => setRating(newRating)} />
           </div>
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
-            <button style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{'Write a Review'}</button>
+            <button onClick={handleButtonClick2} style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{'Write a Review'}</button>
           </div>
+          {/* here */}
+          {showPopup && 
+              <RevPopup 
+                  onSubmit={() => setShowPopup(false)} 
+                  onClose={() => setShowPopup(false)} 
+                  url={placeholderImage}
+              />
+          }
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
             <button onClick={handleButtonClick} style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{buttonText}</button>
           </div>
