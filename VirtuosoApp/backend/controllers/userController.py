@@ -133,7 +133,7 @@ def update_user(user_id):
             current_app.logger.warning(f"User {user_id} not found for update")
             return jsonify({"error": "User not found"}), 404
 
-       
+
         allowed_updates = {'first_name', 'last_name', 'bio', 'location', 'profile_picture',
                            'is_private', 'social_media_links', 'preferences'}
 
@@ -299,3 +299,4 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user or no pending request found")
         return jsonify({"error": "You are not following this user or no pending request found"}), 400
+

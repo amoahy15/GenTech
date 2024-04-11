@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import button from "../styles/stars.module.css";
 
- {/* displays and handles click of the stars*/} 
-const StarRating = () => {
+const StarRating = ({ onRatingChange }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
-  const handleStarClick = (index) => {
-    setRating(index);
+  const handleStarClick = (starIndex) => {
+    setRating(starIndex);
+    onRatingChange(starIndex);
   };
 
-  const handleMouseOn = (index) => {
-    setHover(index);
+  const handleMouseOn = (starIndex) => {
+    setHover(starIndex);
   };
 
   const handleMouseOff = () => {
@@ -19,14 +19,14 @@ const StarRating = () => {
   };
 
   return (
-    <div className={button["button"]}>
-      {[...Array(5)].map((_, index) => {
+    <div>
+      {[...Array(5)].map((star, index) => {
         const starIndex = index + 1;
         return (
           <button
             type="button"
             key={starIndex}
-            className={starIndex <= (hover||rating) ? button.on:button.off}
+            className={starIndex <= (hover || rating) ? button.on : button.off}
             onClick={() => handleStarClick(starIndex)}
             onMouseEnter={() => handleMouseOn(starIndex)}
             onMouseLeave={handleMouseOff}
@@ -38,5 +38,4 @@ const StarRating = () => {
     </div>
   );
 };
-
 export default StarRating;

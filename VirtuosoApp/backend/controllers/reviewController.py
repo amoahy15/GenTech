@@ -38,6 +38,17 @@ def create_review():
             review_id=review_id,
             user=user,
             artwork=artwork,
+
+    """"
+    required_fields = ['artwork_id', 'rating']
+    missing_fields = [field for field in required_fields if field not in data]
+    if missing_fields:
+        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
+    try:
+        new_review = Review(
+            #review_id=str(uuid.uuid4()),
+            artwork_id=data['artwork_id'],
+            user_id=user_id,"""
             rating=data['rating'],
             comment=data.get('comment', '')
         )
@@ -54,6 +65,8 @@ def create_review():
         artwork.update_average_rating()
         current_app.logger.info(f"Average rating updated for artwork {data.get('artwork_id')}.")
 
+
+        logger.info(f"Review successfully created.")
         return jsonify({"msg": "Review created successfully", "review": new_review.serialize()}), 201
 
     except DoesNotExist as e:
@@ -110,17 +123,14 @@ def delete_review(review_id):
 @review_controller.route('/artwork/<artwork_id>', methods=['GET'])
 def get_annotations(artwork_id):
     try:
-        artwork = Artwork.objects.get(artwork_id=artwork_id)
-        reviews = Review.objects(artwork=artwork)
-        review_list = [{
-            'review_id': review.review_id,
-            'user_id': str(review.user.id),
-            'rating': review.rating,
-            'comment': review.comment,
-            'created_at': review.created_at.isoformat()
-        } for review in reviews]
+        reviews = Review.objects(artwork_id = artwork_id)
+        reviewList = [{
+            'userID': str(r.user_id),
+            'comment': r.comment,
+            'rating': r.rating
+        } for r in reviews]
 
-        return jsonify(review_list), 200
+        return jsonify(reviewList)
     except DoesNotExist:
         return jsonify({"error": "Artwork not found"}), 404
     except Exception as e:
