@@ -8,13 +8,12 @@ const Review = ({ reviews }) => {
   const userId = token.userId;
   const currentUserReviewIndex = reviews.findIndex(review => review.user_id === userId);
 
+//TODO: pin user ratings/reviews  to later edit
   let userHasReview = false;
   let currentUserReview;
   if (currentUserReviewIndex !== -1) {
     userHasReview = true;
-    // Remove the user's review from the array and store it
     [currentUserReview] = reviews.splice(currentUserReviewIndex, 1);
-    // Add the user's review at the start of the array
     reviews.unshift(currentUserReview);
   }
 

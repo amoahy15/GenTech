@@ -80,6 +80,7 @@ def login_user():
         current_app.logger.info(f"User {data['user_name']} logged in successfully")
         return jsonify({"message": "Login successful", "access_token": access_token}), 200
 
+
     current_app.logger.error("Invalid login credentials")
     return jsonify({"error": "Invalid credentials"}), 401
 

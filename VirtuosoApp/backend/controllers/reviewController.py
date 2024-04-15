@@ -23,9 +23,20 @@ def create_review():
         artwork = Artwork.objects.get(id=data['artwork_id'])
         
         new_review = Review(
-            id=review_id,
-            user_id=user_id,
+            review_id=review_id,
+            user=user,
+            artwork=artwork,
+
+    """"
+    required_fields = ['artwork_id', 'rating']
+    missing_fields = [field for field in required_fields if field not in data]
+    if missing_fields:
+        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
+    try:
+        new_review = Review(
+            #review_id=str(uuid.uuid4()),
             artwork_id=data['artwork_id'],
+            user_id=user_id,"""
             rating=data['rating'],
             comment=data.get('comment', ''),
             created_at=datetime.now()
@@ -34,8 +45,8 @@ def create_review():
 
         artwork.update_average_rating()  # Update average rating for the artwork after adding new review
         current_app.logger.info(f"Review {review_id} successfully created.")
-
-        return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
+        logger.info(f"Review successfully created.")
+        return jsonify({"msg": "Review created successfully", "review": new_review.serialize()}), 201
 
     except ValidationError as e:
         current_app.logger.error(f"Validation error during review creation: {str(e)}")
@@ -83,16 +94,14 @@ def delete_review(review_id):
 @review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
 def get_reviews_for_artwork(artwork_id):
     try:
-        reviews = Review.objects(artwork_id=artwork_id)
-        reviews_list = [{
-            'review_id': str(review.id),
-            'user_id': str(review.user_id),
-            'rating': review.rating,
-            'comment': review.comment,
-            'created_at': review.created_at.isoformat()
-        } for review in reviews]
+        reviews = Review.objects(artwork_id = artwork_id)
+        reviewList = [{
+            'userID': str(r.user_id),
+            'comment': r.comment,
+            'rating': r.rating
+        } for r in reviews]
 
-        return jsonify(reviews_list), 200
+        return jsonify(reviewList)
     except DoesNotExist:
         return jsonify({"error": "Artwork not found"}), 404
     except Exception as e:

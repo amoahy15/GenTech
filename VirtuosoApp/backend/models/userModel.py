@@ -30,7 +30,6 @@ class User(Document):
 
 
     def serialize(self):
-        reviews = [review.serialize() for review in self.reviews]
         return {
             "user_id": self.user_id,
             "user_name": self.user_name,
@@ -55,4 +54,5 @@ class User(Document):
             "verification_status": self.verification_status,
             "preferences": self.preferences,
             "joined_date": self.joined_date.isoformat(),
+        }
         }
