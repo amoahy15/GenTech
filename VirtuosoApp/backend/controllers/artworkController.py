@@ -32,7 +32,7 @@ def create_artwork():
             artwork_id=str(uuid.uuid4()),
             title=data['title'],
             user_id=user.user_id,  
-            artist_name=f"{user.first_name} {user.last_name}",  
+            artist_name=data['artist'],  
             year=data['year'],
             image_url=data['image_url']
         )
