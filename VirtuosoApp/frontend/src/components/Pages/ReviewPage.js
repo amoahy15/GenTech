@@ -18,6 +18,7 @@ function ReviewPage() {
       try {
         const response = await axios.get("http://127.0.0.1:8000/api/review/artwork/20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",); 
         const thisdata = response.data;
+        console.log(response.data);
 
         const formattedReviews = thisdata.map(review => ({
           rating: review.rating,

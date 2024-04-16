@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
-import axios from 'axios';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import '../styles/carouselarrow.module.css';
-import ImageCard from './ImageCard';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import ImageCardHover from './ImageCardHover';
-
+import '../styles/carouselarrow.module.css';
 
 const fetchImagesFromCategory = async (category) => {
   try {
@@ -42,12 +38,14 @@ const Carousel = ({ category }) => {
   };
 
   return (
-    <Slider {...sliderSettings}>
+    
+    <Slider {...settings}>
         {images.map((image, index) => (
-            <div key={index}>
-                <ImageCard image={image} />
-            </div>
-        ))}
+        <div key={index}>
+          <a href = './reviews'><ImageCardHover src={image} alt={`Slide ${index + 1}`} /></a>
+          
+        </div>
+      ))}
     </Slider>
   );
 };
