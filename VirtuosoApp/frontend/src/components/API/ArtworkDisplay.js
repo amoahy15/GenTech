@@ -11,7 +11,7 @@ function ArtworkDisplay() {
     const fetchArtwork = async () => {
       console.log('Fetching artwork with ID:', artworkId);  
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/api/artwork/get_artwork/${artworkId}`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkId}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }

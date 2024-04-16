@@ -4,61 +4,37 @@ import 'slick-carousel/slick/slick-theme.css';
 import ImageCardHover from './ImageCardHover';
 import '../styles/carouselarrow.module.css';
 
-function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, zIndex: '1', display: "block", color: "gray", width: "40px", height: "20px", textAlign: "center", lineHeight: "20px", fontSize: "36px"}}
-        onClick={onClick}
-      >
-        {'>'}
-      </div>
-    );
-    }
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, zIndex: '1', display: "block", color: "gray", width: "40px", height: "20px", textAlign: "center", lineHeight: "20px", fontSize: "36px"}}
-        onClick={onClick}
-      >
-        {'<'}
-      </div>
-    );
+const fetchImagesFromCategory = async (category) => {
+  try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/s3/images/${category}`);
+      return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+      console.error(`Error fetching images for category ${category}:`, error);
+      return [];
   }
+};
 
-const Carousel = ({ images }) => {
-  const settings = {
-    dots: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplaySpeed: 2000,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow/>,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        }
+const Carousel = ({ category }) => {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      if (category && typeof category === 'string') {
+        const fetchedImages = await fetchImagesFromCategory(category);
+        setImages(fetchedImages.map(url => ({ url: url, alt: `${category} image` })));
       }
-    ]
+    };
+    
+
+    fetchImages();
+  }, [category]);
+
+  const sliderSettings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 3,
   };
 
   return (

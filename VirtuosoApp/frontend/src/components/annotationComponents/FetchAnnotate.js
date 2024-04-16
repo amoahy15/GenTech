@@ -22,10 +22,10 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
   const fetchAnnotations = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:5000/api/annotations/artwork/${artworkID}`);
+      const response = await axios.get(`http://127.0.0.1:8000/api/annotations/artwork/${artworkID}`);
       const info = await Promise.all(
         response.data.map(async (annotation) => {
-          const userResponse = await axios.get(`http://127.0.0.1:5000/api/user/user/${annotation.userID}`);
+          const userResponse = await axios.get(`http://127.0.0.1:8000/api/user/user/${annotation.userID}`);
           return {
             ...annotation,
             username: userResponse.data.user_name

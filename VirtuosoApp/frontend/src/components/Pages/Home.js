@@ -74,9 +74,6 @@ const Home = () => {
       <div style={{ marginBottom: "25vh" }}></div>
 
       <div>
-        <Row title="Trending">
-          <Collections category="trending" />
-        </Row>
         <Row title="Paintings">
           <Collections category="paintings" />
         </Row>
