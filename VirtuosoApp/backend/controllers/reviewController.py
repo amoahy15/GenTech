@@ -26,20 +26,8 @@ def create_review():
             review_id=review_id,
             user=user,
             artwork=artwork,
-
-    """"
-    required_fields = ['artwork_id', 'rating']
-    missing_fields = [field for field in required_fields if field not in data]
-    if missing_fields:
-        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
-    try:
-        new_review = Review(
-            #review_id=str(uuid.uuid4()),
-            artwork_id=data['artwork_id'],
-            user_id=user_id,"""
             rating=data['rating'],
             comment=data.get('comment', ''),
-            created_at=datetime.now()
         )
         new_review.save()
 

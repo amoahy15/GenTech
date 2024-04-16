@@ -16,11 +16,11 @@ function ReviewPage() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/review/artwork/20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",); 
-        const thisdata = response.data;
-        console.log(response.data);
+        const response = await axios.get("http://127.0.0.1:8000/api/review/artwork/ddb2cbad-e00c-43fc-b317-41ad1148efdc/reviews"); 
+        const reviewsData = response.data;
+        console.log(reviewsData);
 
-        const formattedReviews = thisdata.map(review => ({
+        const formattedReviews = reviewsData.map(review => ({
           rating: review.rating,
           user: review.userID,
           review: review.comment
@@ -52,7 +52,7 @@ function ReviewPage() {
       </div>
 
         <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
-          <Carousel category={"Impressionism"}></Carousel>
+          <Carousel category={"paintings"}></Carousel>
         </div>
   </div>
   );

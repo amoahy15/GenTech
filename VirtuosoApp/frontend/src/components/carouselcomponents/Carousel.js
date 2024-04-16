@@ -3,7 +3,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ImageCardHover from './ImageCardHover';
 import '../styles/carouselarrow.module.css';
-
+import axios from 'axios';
+import React, {useState, useEffect, settings} from 'react';
 const fetchImagesFromCategory = async (category) => {
   try {
       const response = await axios.get(`http://127.0.0.1:8000/api/s3/images/${category}`);
