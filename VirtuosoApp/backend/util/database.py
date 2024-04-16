@@ -16,6 +16,6 @@ def connect_db(app):
             host=os.environ.get("MONGODB_URI"),
             alias='default'
         )
-        print(f"Successful connection to MongoDB Atlas at {os.environ.get("MONGODB_URI")}.")
+        print(f"Successful connection to MongoDB Atlas at {os.environ.get('MONGODB_URI')}.")
     except Exception as e:
         print(f"An error occurred while connecting to MongoDB: {e}")

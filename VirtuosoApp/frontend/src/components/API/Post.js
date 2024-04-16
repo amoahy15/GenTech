@@ -13,7 +13,7 @@ function Post() {
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append('image', file);
-    const response = await axios.post('http://127.0.0.1:5000/api/s3/upload', formData, {
+    const response = await axios.post('http://127.0.0.1:8000/api/s3/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -25,7 +25,7 @@ function Post() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const imageUrl = await uploadImage();
-    await axios.post('http://127.0.0.1:5000/api/artwork/create_artwork', {
+    await axios.post('http://127.0.0.1:8000/api/artwork/create_artwork', {
       title,
       year,
       image_url: imageUrl,

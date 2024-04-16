@@ -9,13 +9,13 @@ import ImageCardHover from './ImageCardHover';
 
 
 const fetchImagesFromCategory = async (category) => {
-    try {
-        const response = await axios.get(`http://127.0.0.1:5000/api/s3/images/${category}`);
-        return response.data;
-    } catch (error) {
-        console.error(`Error fetching images for category ${category}:`, error);
-        return [];
-    }
+  try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/s3/images/${category}`);
+      return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+      console.error(`Error fetching images for category ${category}:`, error);
+      return [];
+  }
 };
 
 const Carousel = ({ category }) => {
@@ -23,11 +23,12 @@ const Carousel = ({ category }) => {
 
   useEffect(() => {
     const fetchImages = async () => {
-      if (category) {
+      if (category && typeof category === 'string') {
         const fetchedImages = await fetchImagesFromCategory(category);
         setImages(fetchedImages.map(url => ({ url: url, alt: `${category} image` })));
       }
     };
+    
 
     fetchImages();
   }, [category]);
