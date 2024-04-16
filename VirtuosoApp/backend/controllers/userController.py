@@ -83,17 +83,6 @@ def login_user():
     current_app.logger.error("Invalid login credentials")
     return jsonify({"error": "Invalid credentials"}), 401
 
-@user_controller.route('/user/<string:user_id>', methods=['GET'])
-@jwt_required()
-def get_user(user_id):
-    user = User.objects(user_id=user_id).first()
-
-    if user:
-        current_app.logger.info(f"User details fetched for {user_id}")
-        return jsonify(user.serialize()), 200
-
-    current_app.logger.error(f"User {user_id} not found")
-    return jsonify({"error": "User not found"}), 404
 
 @user_controller.route('/delete_user/<string:user_id>', methods=['DELETE'])
 @jwt_required()
