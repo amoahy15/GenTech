@@ -1,88 +1,112 @@
-from flask import request, jsonify, Blueprint, current_app
-from mongoengine import NotUniqueError, ValidationError
+from flask import request, jsonify, Blueprint
+from werkzeug.utils import secure_filename
+import boto3
+import os
+from mongoengine import ValidationError, NotUniqueError
 from models.artworkModel import Artwork
 from models.userModel import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
-import logging
 
 artwork_controller = Blueprint('artwork_controller', __name__)
 
+s3_client = boto3.client(
+    's3',
+    aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+    aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
+    region_name=os.getenv('AWS_REGION')
+)
+bucket_name = os.getenv('S3_BUCKET_NAME')
+
 @artwork_controller.route('/create_artwork', methods=['POST'])
-@jwt_required()  
+@jwt_required()
 def create_artwork():
-    current_app.logger.info("Attempting to create artwork")
     user_id = get_jwt_identity()
     user = User.objects(user_id=user_id).first()
-    
     if not user:
-        current_app.logger.error("User not found")
         return jsonify({"error": "User not found"}), 404
 
-    data = request.get_json()
-    required_fields = ['title', 'year', 'image_url']
-    missing_fields = [field for field in required_fields if field not in data]
+    if 'image' not in request.files:
+        return jsonify({"error": "No image file provided"}), 400
 
-    if missing_fields:
-        current_app.logger.error("Missing required fields: %s", ', '.join(missing_fields))
-        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
-
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    
+    filename = secure_filename(file.filename)
+    s3_folder_path = "Uploaded Artworks/" + filename
     try:
+        s3_client.upload_fileobj(file, bucket_name, s3_folder_path)
+        image_url = f"https://{bucket_name}.s3.amazonaws.com/{s3_folder_path}"
+
+        data = request.get_json()
         new_artwork = Artwork(
             artwork_id=str(uuid.uuid4()),
             title=data['title'],
-            user_id=user.user_id,  
-            artist_name=data['artist'],  
+            user_id=user_id,
+            artist=data['artist'],
             year=data['year'],
-            image_url=data['image_url']
+            image_url=image_url,
+            image_location=s3_folder_path
         )
+        if 'tags' in data:
+            new_artwork.tags = data['tags']
+        if 'description' in data:
+            new_artwork.description = data['description']
         new_artwork.save()
-        current_app.logger.info("Artwork created successfully")
-        return jsonify({"message": "Artwork created successfully!"}), 201
+        return jsonify({"message": "Artwork created successfully!", "artwork_id": new_artwork.artwork_id, "image_url": image_url}), 201
     except ValidationError as e:
-        current_app.logger.exception("Validation error during artwork creation")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        current_app.logger.exception("Unexpected error during artwork creation")
-        return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+        return jsonify({'error': str(e)}), 500
 
 @artwork_controller.route('/delete_artwork/<string:artwork_id>', methods=['DELETE'])
 @jwt_required()
 def delete_artwork(artwork_id):
-    current_app.logger.info("Attempting to delete artwork")
     user_id = get_jwt_identity()
     artwork = Artwork.objects(artwork_id=artwork_id, user_id=user_id).first()
     
     if not artwork:
-        current_app.logger.error("Artwork not found or not authorized")
         return jsonify({"error": "Artwork not found or not authorized"}), 404
 
-    artwork.delete()
-    current_app.logger.info("Artwork deleted successfully")
-    return jsonify({"message": "Artwork deleted successfully"}), 200
+    try:
+        # Delete the image from S3
+        s3_client.delete_object(Bucket=bucket_name, Key=artwork.image_location)
+        artwork.delete()
+        return jsonify({"message": "Artwork deleted successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @artwork_controller.route('/update_artwork/<string:artwork_id>', methods=['PUT'])
 @jwt_required()
 def update_artwork(artwork_id):
-    current_app.logger.info("Attempting to update artwork")
     user_id = get_jwt_identity()
     artwork = Artwork.objects(artwork_id=artwork_id, user_id=user_id).first()
     
     if not artwork:
-        current_app.logger.error("Artwork not found or not authorized")
         return jsonify({"error": "Artwork not found or not authorized"}), 404
     
     data = request.get_json()
+    file = request.files.get('image')
+    if file and file.filename:
+        filename = secure_filename(file.filename)
+        s3_folder_path = "Updated Artworks/" + filename
+        try:
+            s3_client.upload_fileobj(file, bucket_name, s3_folder_path)
+            data['image_url'] = f"https://{bucket_name}.s3.amazonaws.com/{s3_folder_path}"
+            data['image_location'] = s3_folder_path
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     for field in ['title', 'year', 'image_url', 'description', 'tags']:
         if field in data:
             setattr(artwork, field, data[field])
     
     artwork.save()
-    current_app.logger.info("Artwork updated successfully")
     return jsonify({"message": "Artwork updated successfully"}), 200
 
 @artwork_controller.route('/get_artwork/<string:artwork_id>', methods=['GET'])
-@jwt_required()  
+@jwt_required()
 def get_artwork(artwork_id):
     current_app.logger.info("Attempting to fetch artwork")
     artwork = Artwork.objects(artwork_id=artwork_id).first()
@@ -91,7 +115,19 @@ def get_artwork(artwork_id):
         current_app.logger.error("Artwork not found")
         return jsonify({"error": "Artwork not found"}), 404
     
-    return jsonify(artwork.serialize()), 200
+    # Serialize the artwork data to return a JSON representation
+    artwork_data = {
+        "artwork_id": artwork.artwork_id,
+        "title": artwork.title,
+        "artist": artwork.artist,
+        "year": artwork.year,
+        "image_url": artwork.image_url,  # URL to the image stored on S3
+        "description": artwork.description if artwork.description else "No description provided",
+        "tags": artwork.tags,
+        "average_rating": artwork.average_rating if artwork.average_rating else "Not rated",
+        "genre": artwork.genre if artwork.genre else "No genre specified"
+    }
+    return jsonify(artwork_data), 200
 
 @artwork_controller.route('/artworks/collection/<string:collection_name>', methods=['GET'])
 @jwt_required()  
