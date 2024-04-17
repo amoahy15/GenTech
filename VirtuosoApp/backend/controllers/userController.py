@@ -1,4 +1,3 @@
-import logging
 import uuid
 from flask import Flask, Blueprint, request, jsonify, current_app
 from models.userModel import User
@@ -6,6 +5,9 @@ from mongoengine.errors import NotUniqueError, ValidationError
 from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -53,23 +55,32 @@ def create_user():
         current_app.logger.error("User already exists with the provided username or email", exc_info=True)
         return jsonify({"error": "User already exists"}), 409
 
+
 @user_controller.route('/update_user', methods=['PUT'])
 @jwt_required()
 def update_user():
     user_id = get_jwt_identity()
     user = User.objects(user_id=user_id).first()
 
-    if user:
-        data = request.get_json()
-        for key, value in data.items():
-            setattr(user, key, value)
+    if not user:
+        current_app.logger.error("User not found for update")
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+    if 'user_name' in data:
+        user.user_name = data['user_name']
+        current_app.logger.info(f"Updating username for user ID {user_id} to {data['user_name']}")
+    else:
+        current_app.logger.warning(f"No 'user_name' found in request data for user ID {user_id}")
+
+    try:
         user.save()
-        current_app.logger.info(f"User {user_id} updated successfully.")
+        current_app.logger.info(f"User {user_id} updated successfully to {data['user_name']}")
         return jsonify({"message": "User updated successfully"}), 200
-
-    current_app.logger.error("User not found for update")
-    return jsonify({"error": "User not found"}), 404
-
+    except Exception as e:
+        current_app.logger.error(f"Error updating user {user_id}: {str(e)}")
+        return jsonify({"error": "Error updating user"}), 500
+    
 @user_controller.route('/login', methods=['POST'])
 def login_user():
     data = request.get_json()

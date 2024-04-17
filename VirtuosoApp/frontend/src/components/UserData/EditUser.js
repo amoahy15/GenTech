@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import styles from '../styles/profiledropdown.module.css'
-import ChangeUserName from '../API/ChangeUserName'
 import ChangePassword from '../API/ChangePassword'
+import UpdateUsername from '../API/UpdateUserName'
 
 
 const EditUser = () => {
@@ -21,10 +21,10 @@ const EditUser = () => {
        
         <ul className={styles.menu}>  
              <li>
-               <a><DropDownItems><ChangeUserName/></DropDownItems></a>
+               <a><DropDownItems><UpdateUsername/></DropDownItems></a>
              </li>
              <li>
-             <a><DropDownItems ><ChangePassword/></DropDownItems></a>
+            
             </li>
          </ul> 
         
