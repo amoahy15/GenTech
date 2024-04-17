@@ -83,6 +83,7 @@ def delete_review(review_id):
 @review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
 @jwt_required()
 def get_reviews_for_artwork(artwork_id):
+    user_id = get_jwt_identity()  # Retrieves the JWT identity, typically the user ID of the logged-in user
     try:
         reviews = Review.objects(artwork_id=artwork_id)
         reviews_list = []
@@ -103,3 +104,4 @@ def get_reviews_for_artwork(artwork_id):
         return jsonify({"error": "Artwork not found"}), 404
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+
