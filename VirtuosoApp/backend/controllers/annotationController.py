@@ -40,11 +40,17 @@ def create_annotation():
 def get_annotation(annotation_id):
     annotation = Annotation.objects(id=annotation_id).first()
     if annotation:
-        annotation_data = {
-            "annotation_id": str(annotation.id),
-            "user_id": annotation.user_id,
-        }
-        return jsonify(annotation_data)
+        user = User.objects(user_id=annotation.user_id).first()
+        if user:
+            annotation_data = {
+                "annotation_id": str(annotation.id),
+                "user_id": annotation.user_id,
+                "user_name": user.user_name,
+                "profile_picture": user.profile_picture
+            }
+            return jsonify(annotation_data)
+        else:
+            return jsonify({"error": "User not found"}), 404
     else:
         return jsonify({"error": "Annotation not found"}), 404
 
