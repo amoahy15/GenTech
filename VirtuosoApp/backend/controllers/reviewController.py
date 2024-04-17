@@ -80,6 +80,8 @@ def delete_review(review_id):
     except DoesNotExist:
         return jsonify({"error": "Review not found"}), 404
 
+@review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
+@jwt_required()
 def get_reviews_for_artwork(artwork_id):
     try:
         reviews = Review.objects(artwork_id=artwork_id)
