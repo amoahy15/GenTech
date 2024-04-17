@@ -66,18 +66,24 @@ def delete_annotation(annotation_id):
         return jsonify({"error": "Annotation not found or access denied"}), 404
 
 @annotation_controller.route('/artwork/<artwork_id>/annotations', methods=['GET'])
+@jwt_required()
 def get_annotations_for_artwork(artwork_id):
     try:
         annotations = Annotation.objects(artwork_id=artwork_id)
-        annotations_list = [{
-            'annotation_id': str(annotation.id),
-            'user_id': str(annotation.user_id),
-            'message': annotation.message,
-            'x_coordinate': annotation.x_coordinate,
-            'y_coordinate': annotation.y_coordinate,
-        } for annotation in annotations]
-
-        return jsonify(annotations_list)
+        annotations_list = []
+        for annotation in annotations:
+            user = User.objects(user_id=annotation.user_id).first()
+            if user:
+                annotations_list.append({
+                    'annotation_id': str(annotation.id),
+                    'user_id': str(annotation.user_id),
+                    'user_name': user.user_name,
+                    'profile_picture': user.profile_picture,
+                    'message': annotation.message,
+                    'x_coordinate': annotation.x_coordinate,
+                    'y_coordinate': annotation.y_coordinate,
+                })
+        return jsonify(annotations_list), 200
     except DoesNotExist:
         return jsonify({"error": "Artwork not found"}), 404
     except Exception as e:
