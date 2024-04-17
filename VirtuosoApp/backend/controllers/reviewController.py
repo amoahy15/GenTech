@@ -80,18 +80,22 @@ def delete_review(review_id):
     except DoesNotExist:
         return jsonify({"error": "Review not found"}), 404
 
-@review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
 def get_reviews_for_artwork(artwork_id):
     try:
         reviews = Review.objects(artwork_id=artwork_id)
-        reviews_list = [{
-            'review_id': str(review.id),
-            'user_id': str(review.user_id),
-            'rating': review.rating,
-            'comment': review.comment,
-            'created_at': review.created_at.isoformat()
-        } for review in reviews]
-
+        reviews_list = []
+        for review in reviews:
+            user = User.objects(user_id=review.user_id).first()
+            if user:
+                reviews_list.append({
+                    'review_id': str(review.id),
+                    'user_id': str(review.user_id),
+                    'user_name': user.user_name,
+                    'profile_picture': user.profile_picture,
+                    'rating': review.rating,
+                    'comment': review.comment,
+                    'created_at': review.created_at.isoformat()
+                })
         return jsonify(reviews_list), 200
     except DoesNotExist:
         return jsonify({"error": "Artwork not found"}), 404
