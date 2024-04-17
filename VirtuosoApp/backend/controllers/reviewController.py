@@ -1,3 +1,4 @@
+import datetime
 from flask import request, jsonify, Blueprint, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine import ValidationError, NotUniqueError, DoesNotExist
@@ -73,7 +74,7 @@ def update_review(review_id):
 @review_controller.route('/reviews/<string:review_id>', methods=['DELETE'])
 @jwt_required()
 def delete_review(review_id):
-    try {
+    try :
         review = Review.objects.get(id=review_id)
         review.delete()
         return jsonify({"message": "Review deleted successfully"}), 200
