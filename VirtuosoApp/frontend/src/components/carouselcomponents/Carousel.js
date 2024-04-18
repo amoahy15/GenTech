@@ -82,18 +82,17 @@ const Carousel = ({ category }) => {
 
   const handleImageClick = (artworkID) => {
     history.push(`/reviews/${artworkID}`);
+    window.location.reload();
   };
 
   return (
-    <div >
-      <Slider {...settings}>
-      {artworks.map((artwork, index) => (
+    <Slider {...settings} key={JSON.stringify(settings)}>
+    {artworks.map((artwork, index) => (
         <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}>
-          <ImageCardHover src={artwork.image_url} alt={artwork.title} />
+            <ImageCardHover src={artwork.image_url} alt={artwork.title} />
         </div>
-      ))}
-    </Slider>
-    </div>
+    ))}
+</Slider>
   );
 };
 

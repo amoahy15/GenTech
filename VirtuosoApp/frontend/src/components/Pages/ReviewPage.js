@@ -10,27 +10,27 @@ function ReviewPage(props) {
   const [reviews, setReviews] = useState([]);
   const { artworkID } = props.match.params;
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`); 
-        const reviewsData = response.data;
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`); 
+      const reviewsData = response.data.map(review => ({
+        rating: review.rating,
+        user_name: review.user_name,
+        review: review.comment
+      }));
+      setReviews(reviewsData);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
 
-        const formattedReviews = reviewsData.map(review => ({
-          rating: review.rating,
-          user_name: review.user_name,
-          review: review.comment
-        }));
-        setReviews(formattedReviews);
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-      }
-    };
-  
+  useEffect(() => {
     fetchReviews();
   }, [artworkID]);
 
-
+  const handleReviewSubmitted = () => {
+    fetchReviews();
+  };
 
   return (
   <div>
@@ -39,7 +39,7 @@ function ReviewPage(props) {
             
         </div>
           <div>
-            <ArtTextCols artworkID={artworkID} ></ArtTextCols>
+            <ArtTextCols artworkID={artworkID} handleSubmit = {handleReviewSubmitted}></ArtTextCols>
             <h1 style={{margin: '50px'}}>REVIEWS</h1>
             <Review reviews={reviews}></Review>
             <h1 style={{margin: '50px'}}>MORE LIKE THIS</h1>

@@ -6,7 +6,7 @@ import StarRating from './stars'
 import { useParams } from "react-router-dom";
 
 //TODO: Undo hardcoding of artworkid
-const RevPopup = ({ onSubmit, onClose, artworkID}) => {
+const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
   const [annotationText, setAnnotationText] = useState("");
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
@@ -70,6 +70,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
         }
       );
       console.log("Successful submission");
+      handleSubmit();
       onSubmit();
     } catch (error) {
       console.error("Error during submission:", error);

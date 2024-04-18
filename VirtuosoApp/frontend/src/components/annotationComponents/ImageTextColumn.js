@@ -11,7 +11,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 //todo: pass in info directly from reviewpage.js
 //todo: top priority refactoring
-const ArtTextCols = ({artworkID}) => {
+const ArtTextCols = ({artworkID, handleSubmit}) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
@@ -105,6 +105,7 @@ const ArtTextCols = ({artworkID}) => {
                   onClose={() => setShowPopup(false)} 
                   url={placeholderImage}
                   artworkID={artworkID}
+                  handleSubmit = {handleSubmit}
               />
           }
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
