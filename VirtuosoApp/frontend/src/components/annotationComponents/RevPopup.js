@@ -37,6 +37,8 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
         });
       } catch (error) {
         console.error('Error fetching user details:', error);
+        nav.push("/login2");
+        window.location.reload();
       }
     };
 
@@ -50,6 +52,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
     if (!userData) {
       console.error("Not logged in");
       nav.push("/login2");
+      window.location.reload();
       return;
     }
     
@@ -90,9 +93,12 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
 
         </div>
         <form onSubmit={handleFormSubmit}>
-            <input className={styles["input"]} type="text" value={annotationText} onChange={handleTextChange} placeholder="Type your review here"/>
-            <button className={styles["btn"]} style={{alignItems: 'right'}}type="submit">Add</button>
-            <button className={styles["btn"]} type="button" onClick={onClose}>Cancel</button>
+        <textarea className={styles.input} value={annotationText} onChange={handleTextChange}
+                  placeholder="Type your review here"/>
+          <div className={styles.buttonGroup}>
+            <button className={styles.btn} type="submit">Submit</button>
+            <button className={styles.btn} type="button" onClick={onClose}>Cancel</button>
+          </div>
         </form>
         </div>
 

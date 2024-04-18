@@ -114,7 +114,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     <div className={styles['popup-background']}>
       <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
-            <img ref = {imgref} src={imageUrl} style={{ maxWidth: '100%'}}/>
+            <img ref = {imgref} src={imageUrl} style={{ padding: '20px', maxWidth: '100%', maxHeight: '60vw'}}/>
             {
             realclickCoordinates.x !== null && realclickCoordinates.x >= 0 &&
             realclickCoordinates.y !== null && realclickCoordinates.y >= 0 && (
@@ -125,9 +125,12 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
           }
         </div>
         <form onSubmit={handleFormSubmit}>
-            <input className={styles["input"]} type="text" value={annotationText} onChange={handleTextChange} placeholder="Type your annotation here"/>
-            <button className={styles["btn"]}type="submit">Add</button>
-            <button className={styles["btn"]} type="button" onClick={onClose}>Cancel</button>
+            <textarea className={styles.input} value={annotationText} onChange={handleTextChange}
+                  placeholder="Type your annotation here"/>
+          <div className={styles.buttonGroup}>
+            <button className={styles.btn} type="submit">Submit</button>
+            <button className={styles.btn} type="button" onClick={onClose}>Cancel</button>
+          </div>
         </form>
         </div>
 

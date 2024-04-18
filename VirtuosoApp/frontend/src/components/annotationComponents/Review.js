@@ -1,11 +1,19 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from '../styles/reviews.module.css';
 import ReviewCard from './ReviewCard';
-import jwt_decode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const Review = ({ reviews }) => {
   const token = localStorage.getItem('token');
-  const userId = token.userId;
+  const [userId, setUserData] = useState();
+
+  useEffect(() => {
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUserData(decodedToken.userId); // Ensure your token actually contains `userId`
+    }
+  }, [token]);
+
   const currentUserReviewIndex = reviews.findIndex(review => review.user_id === userId);
 
 //TODO: pin user ratings/reviews  to later edit

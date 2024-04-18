@@ -22,7 +22,10 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
   const fetchAnnotations = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/annotations/artwork/${artworkID}/annotations`);
+      const response = await axios.get(`http://127.0.0.1:8000/api/annotations/artwork/${artworkID}/annotations`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }});
       const info = await Promise.all(
         response.data.map(async (annotation) => {
           return {
@@ -48,11 +51,22 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
   };
 
   //refresh 
-  const handleAnnotationSubmit = async (annotationText, clickCoordinates) => {
+  const handleAnnotationSubmit = async () => {
     try {
       await fetchAnnotations();
     } catch (error) {
       console.error("Error adding annotation:", error);
+    }
+  };
+
+  const handleDeleteAnnotation = async (annotationId) => {
+    try {
+      await axios.delete(`http://127.0.0.1:8000/api/annotations/annotations/${annotationId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      fetchAnnotations(); 
+    } catch (error) {
+      console.error("Error deleting annotation:", error);
     }
   };
 
@@ -65,7 +79,7 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
           {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} url={url} />}
         </div>
         {annotations.map((annotation, index) => (
-          <SingleAnnotation key={index} username={annotation.user_name} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>
+          <SingleAnnotation annotation={annotation} onDelete= {handleDeleteAnnotation} key={index} username={annotation.user_name} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>
         ))}
       </div>
     </div>
