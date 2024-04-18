@@ -82,7 +82,7 @@ def update_artwork(artwork_id):
     return jsonify({"message": "Artwork updated successfully"}), 200
 
 @artwork_controller.route('/get_artwork/<string:artwork_id>', methods=['GET'])
-@jwt_required()  
+@jwt_required(optional=True)  
 def get_artwork(artwork_id):
     current_app.logger.info("Attempting to fetch artwork")
     artwork = Artwork.objects(artwork_id=artwork_id).first()

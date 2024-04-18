@@ -35,11 +35,15 @@ function App() {
           <AboutPage/>
           <Footer/>
         </Route> 
-        <Route path="/reviews">
-          {token ? <NavUser/> : <Nav/>}
-          <ReviewPage/>
-          <Footer/>
-        </Route> 
+        <Route path="/reviews/:artworkId">
+          {({ match }) => (
+            <div>
+              {token ? <NavUser/> : <Nav/>}
+              {match && <ReviewPage />}
+              <Footer />
+            </div>
+          )}
+        </Route>
         <Route path="/login">
           <LoginPage/>
         </Route>

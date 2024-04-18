@@ -1,3 +1,4 @@
+import datetime
 from flask import request, jsonify, Blueprint, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine import ValidationError, NotUniqueError, DoesNotExist
@@ -23,18 +24,19 @@ def create_review():
         artwork = Artwork.objects.get(id=data['artwork_id'])
         
         new_review = Review(
-            review_id=review_id,
-            user=user,
-            artwork=artwork,
+            id=review_id,
+            user_id=user_id,
+            artwork_id=data['artwork_id'],
             rating=data['rating'],
             comment=data.get('comment', ''),
+            created_at=datetime.now()
         )
         new_review.save()
 
-        artwork.update_average_rating()  # Update average rating for the artwork after adding new review
+        artwork.update_average_rating()
         current_app.logger.info(f"Review {review_id} successfully created.")
-        logger.info(f"Review successfully created.")
-        return jsonify({"msg": "Review created successfully", "review": new_review.serialize()}), 201
+
+        return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
 
     except ValidationError as e:
         current_app.logger.error(f"Validation error during review creation: {str(e)}")
@@ -72,25 +74,36 @@ def update_review(review_id):
 @review_controller.route('/reviews/<string:review_id>', methods=['DELETE'])
 @jwt_required()
 def delete_review(review_id):
-    try:
+    try :
         review = Review.objects.get(id=review_id)
         review.delete()
         return jsonify({"message": "Review deleted successfully"}), 200
     except DoesNotExist:
         return jsonify({"error": "Review not found"}), 404
 
+
 @review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
 def get_reviews_for_artwork(artwork_id):
     try:
-        reviews = Review.objects(artwork_id = artwork_id)
-        reviewList = [{
-            'userID': str(r.user_id),
-            'comment': r.comment,
-            'rating': r.rating
-        } for r in reviews]
-
-        return jsonify(reviewList)
-    except DoesNotExist:
-        return jsonify({"error": "Artwork not found"}), 404
+        artwork = Artwork.objects(artwork_id=artwork_id).first()
+        if not artwork:
+            return jsonify({"error": "Artwork not found"}), 404
+        reviews = Review.objects(artwork_id=artwork)
+        reviews_list = []
+        for review in reviews:
+            user = User.objects(user_id=review.user_id).first()
+            if user:
+                reviews_list.append({
+                    'review_id': str(review.id),
+                    'user_id': str(review.user_id),
+                    'user_name': user.user_name,
+                    'profile_picture': user.profile_picture,
+                    'rating': review.rating,
+                    'comment': review.comment,
+                    'created_at': review.created_at.isoformat() if review.created_at else None
+                })
+        return jsonify(reviews_list), 200
+    except ValidationError as e:
+        return jsonify({"error": "Invalid data format", "details": str(e)}), 400
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500

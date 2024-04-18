@@ -57,7 +57,7 @@ const Home = () => {
             community today and dive into our diverse catalogue.
           </p>
           <div className={styles.btn}>
-            <a href="./register2">
+            <a href="./register">
               <Button text="Create an Account" onClick={onClick} />
             </a>
           </div>
@@ -80,9 +80,10 @@ const Home = () => {
         <Row title="Photographs">
           <Collections category="photographs" />
         </Row>
-        <Row title="Sculptures And Models">
-          <Collections category="sculptures" />
+        <Row title="User Created Images">
+          <Collections category="User Created Images" />
         </Row>
+        <img></img>
       </div>
     </div>
   );

@@ -3,16 +3,17 @@ import styles from '../styles/popup.module.css'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import StarRating from './stars'
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 //TODO: Undo hardcoding of artworkid
-const RevPopup = ({ onSubmit, onClose }) => {
+const RevPopup = ({ onSubmit, onClose}) => {
   const [annotationText, setAnnotationText] = useState("");
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
   const token = localStorage.getItem('token');
   const nav = useHistory();
   const [rating, setRating] = useState(0);
-
+  const {artworkID} = useParams()
 
   const handleTextChange = (event) => {
     const newText = event.target.value;    
@@ -27,7 +28,7 @@ const RevPopup = ({ onSubmit, onClose }) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
+        const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -54,7 +55,7 @@ const RevPopup = ({ onSubmit, onClose }) => {
     }
     console.log(rating);
     const payload = {
-      artwork_id: "ddb2cbad-e00c-43fc-b317-41ad1148efdc", //TODO
+      artwork_id: artworkID, //TODO
       rating: parseFloat(rating),
       comment: annotationText,
     };
