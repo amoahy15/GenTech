@@ -48,7 +48,7 @@ function ReviewPage(props) {
           
       </div>
 
-        <div style={{paddingBottom: '50px', padding: '10px 5vw'}}>
+        <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
           <Carousel category={"painting"}></Carousel>
         </div>
   </div>

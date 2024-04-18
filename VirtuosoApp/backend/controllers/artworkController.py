@@ -41,7 +41,9 @@ def create_artwork():
             artist_name=data['artist'],
             artist = data['artist'],
             year=data['year'],
-            image_url=data['image_url']
+            image_url=data['image_url'],
+            tags = ["user_art"],
+            description = data['description']
             #TODO: append tags to have 'user art'
         )
 

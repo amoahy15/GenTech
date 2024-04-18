@@ -7,7 +7,7 @@ import LoginPage from "./components/UserData/loginPageDark";
 import LoginPage2 from "./components/UserData/loginPageLight";
 import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
-import Collection from "./components/Pages/Collections";
+import Gallery from './components/Pages/Gallery';
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
@@ -58,7 +58,7 @@ function App() {
         </Route> 
         <Route path="/collections">
           {token ? <NavUser/> : <Nav/>}
-          <Collection/>
+          <Gallery/>
           <Footer/>
         </Route>
         <Route path="/disclaimer">
