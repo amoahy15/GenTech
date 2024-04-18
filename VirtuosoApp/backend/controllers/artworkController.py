@@ -43,7 +43,6 @@ def create_artwork():
             year=data['year'],
             image_url=data['image_url'],
             tags = ["user_art"],
-            description = data['description']
         )
 
         new_artwork.save()

@@ -66,7 +66,6 @@ function App() {
         <Route path="/test">
           <TestSearch/>
         </Route>
-        <Route path="/artwork/:artworkId" component={ArtworkDisplay} />
       </Switch> 
       </div>
     </div>

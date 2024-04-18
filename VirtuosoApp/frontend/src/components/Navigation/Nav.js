@@ -6,6 +6,7 @@ import DropDownMenu from "./DropDownMenu";
 import Button2 from "./navButton";
 import Search from "../API/Search";
 import SearchList from "./SearchList";
+import { Link } from "react-router-dom";
 
 
 const Nav = () => {
@@ -30,11 +31,9 @@ const Nav = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='./'><Button2 text='Community' onClick={onClick}/></a>
-
-          <a href = './collections'><Button2 text='Collections' onClick={onClick}/></a>
-
-          <a href="./"><Button2 text='Filler' onClick={onClick}/></a>
+          <Link to='/'><Button2 text='Community' onClick={onClick} /></Link>
+          <Link to='/collections'><Button2 text='Collections' onClick={onClick} /></Link>
+          <Link to='/'><Button2 text='Filler' onClick={onClick} /></Link>
 
           <ul className={styles.userlist} style ={{marginBottom: "1vh"}}>
             <li><a href="./login2"><button onClick={onClick} className={styles.userbtn}>

@@ -123,12 +123,6 @@ function Profile() {
     </div>
 
 
-        <div>
-          <Row title ='Trending'>
-            <Collections category='trending'/>
-          </Row>
-        </div>
-
     </div>
   );
 }

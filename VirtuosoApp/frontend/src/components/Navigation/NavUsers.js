@@ -31,11 +31,11 @@ const NavUser = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='./'><Button2 text='Community' onClick={onClick}/></a>
+          <a href='/'><Button2 text='Community' onClick={onClick}/></a>
 
-          <a href = './collections'><Button2 text='Collections' onClick={onClick}/></a>
+          <a href = '/collections'><Button2 text='Collections' onClick={onClick}/></a>
 
-          <a href="./"><Button2 text='Forum' onClick={onClick}/></a>
+          <a href="/"><Button2 text='Forum' onClick={onClick}/></a>
 
           <UserIcon><UserDropDown></UserDropDown></UserIcon>
 
