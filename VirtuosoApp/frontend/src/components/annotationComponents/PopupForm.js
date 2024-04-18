@@ -3,7 +3,7 @@ import styles from '../styles/popup.module.css'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-
+//for more about image rendering i used this: https://docs.rs/imgref/latest/imgref/
 //TODO: Undo hardcoding of artworkid
 const PopupForm = ({ onSubmit, onClose, url }) => {
   const [annotationText, setAnnotationText] = useState("");
@@ -13,6 +13,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
   const [userData, setUserData] = useState();
   const token = localStorage.getItem('token');
   const [imageUrl, setImageUrl] = useState('');
+  const [error, setError] = useState('');
 
   const nav = useHistory();
   const {artworkID} = useParams()
@@ -54,7 +55,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
 
     const fetchArtworkImage = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/get_artwork/${artworkID}`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -77,11 +78,15 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     event.preventDefault();
     if (!userData) {
       console.error("Not logged in");
-      nav.push("/login");
+      nav.push("/login2");
+      return;
+    }
+    if (realclickCoordinates.x === null || realclickCoordinates.y === null) {
+      setError("Please select a point on the image before submitting your comment.");
       return;
     }
     const payload = {
-      artworkID: artworkID,
+      artwork_id: artworkID,
       message: annotationText,
       x_coordinate: String(realclickCoordinates.x),
       y_coordinate: String(realclickCoordinates.y),
@@ -92,7 +97,6 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
         payload,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -110,7 +114,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     <div className={styles['popup-background']}>
       <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
-            <img src={imageUrl} style={{ maxWidth: '100%'}}/>
+            <img ref = {imgref} src={imageUrl} style={{ maxWidth: '100%'}}/>
             {
             realclickCoordinates.x !== null && realclickCoordinates.x >= 0 &&
             realclickCoordinates.y !== null && realclickCoordinates.y >= 0 && (

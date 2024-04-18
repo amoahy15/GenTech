@@ -35,15 +35,13 @@ function App() {
           <AboutPage/>
           <Footer/>
         </Route> 
-        <Route path="/reviews/:artworkId">
-          {({ match }) => (
-            <div>
-              {token ? <NavUser/> : <Nav/>}
-              {match && <ReviewPage />}
-              <Footer />
-            </div>
-          )}
-        </Route>
+        <Route path="/reviews/:artworkID" render={(props) => (
+          <div>
+            {token ? <NavUser/> : <Nav/>}
+            <ReviewPage {...props} />
+            <Footer />
+          </div>
+        )} />
         <Route path="/login">
           <LoginPage/>
         </Route>
@@ -69,7 +67,7 @@ function App() {
         <Route path="/test">
           <TestSearch/>
         </Route>
-        <Route path="/artwork/:artworkId" component={ArtworkDisplay} />
+        <Route path="/artwork/:artworkID" component={ArtworkDisplay} />
       </Switch> 
       </div>
     </div>

@@ -3,17 +3,16 @@ import styles from '../styles/popup.module.css'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import StarRating from './stars'
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams } from "react-router-dom";
 
 //TODO: Undo hardcoding of artworkid
-const RevPopup = ({ onSubmit, onClose}) => {
+const RevPopup = ({ onSubmit, onClose, artworkID}) => {
   const [annotationText, setAnnotationText] = useState("");
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
   const token = localStorage.getItem('token');
   const nav = useHistory();
   const [rating, setRating] = useState(0);
-  const {artworkID} = useParams()
 
   const handleTextChange = (event) => {
     const newText = event.target.value;    
@@ -42,7 +41,7 @@ const RevPopup = ({ onSubmit, onClose}) => {
     };
 
     fetchUserDetails();
-  }, []);
+  }, [artworkID]);
 
   
   
@@ -53,19 +52,19 @@ const RevPopup = ({ onSubmit, onClose}) => {
       nav.push("/login2");
       return;
     }
-    console.log(rating);
+    
     const payload = {
-      artwork_id: artworkID, //TODO
+      artwork_id: artworkID,
       rating: parseFloat(rating),
       comment: annotationText,
     };
+    console.log(artworkID);
     try {
       await axios.post(
-        "http://127.0.0.1:5000/api/review/create_review",
+        "http://127.0.0.1:8000/api/review/create_review",
         payload,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }

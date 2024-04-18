@@ -47,7 +47,7 @@ const Review = ({ reviews }) => {
               <ReviewCard
                 key={reviewIndex}
                 rating={review.rating}
-                user={review.user}
+                user={review.user_name}
                 review={review.review}
               />
             ))}

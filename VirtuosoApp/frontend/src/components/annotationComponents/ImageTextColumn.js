@@ -11,15 +11,13 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 //todo: pass in info directly from reviewpage.js
 //todo: top priority refactoring
-const ArtTextCols = ({ text }) => {
+const ArtTextCols = ({artworkID}) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
   const [showPopup, setShowPopup] = useState(false);
   const [rating, setRating] = useState(0);
-  const {artworkID} = useParams();
   const [imageURL, setImageUrl] = useState('');
-  const { artworkId } = useParams();  
 
   //actually called in fetchannotate
   const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null });
@@ -29,9 +27,9 @@ const ArtTextCols = ({ text }) => {
 
   useEffect(() => {
     const fetchArtwork = async () => {
-      console.log('Fetching artwork with ID:', artworkId);  
+      console.log('Fetching artwork with ID:', artworkID);  
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkId}`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
         console.log('Received data:', response.data);  
         setArtwork(response.data);
       } catch (err) {
@@ -45,7 +43,7 @@ const ArtTextCols = ({ text }) => {
     };
 
     fetchArtwork();
-}, [artworkId]);  
+}, [artworkID]);  
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -92,12 +90,10 @@ const ArtTextCols = ({ text }) => {
 
   return (
     <div style={{ width: '90%', margin: 'auto' }}>
-      <hr style={{ width: '100%', margin: 'auto' }} />
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'stretch', padding: '40px' }}>
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', maxWidth: '50%' }}>
             <ImageDisplay imageUrl={artwork.image_url} allowDotPlacement={allowDotPlacement} style={{ maxWidth: '100%', height: 'auto' }} hoverCoordinates={hoverCoordinates}/>
           <div style={{ marginTop: '10px' }}>
-            <StarRating onRatingChange={(newRating) => setRating(newRating)} />
           </div>
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
             <button onClick={handleButtonClick2} style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{'Write a Review'}</button>
@@ -108,6 +104,7 @@ const ArtTextCols = ({ text }) => {
                   onSubmit={() => setShowPopup(false)} 
                   onClose={() => setShowPopup(false)} 
                   url={placeholderImage}
+                  artworkID={artworkID}
               />
           }
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
@@ -122,7 +119,7 @@ const ArtTextCols = ({ text }) => {
               //<AnnotationComments comments={annotations} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
               <FetchAnnotate artworkID={artworkID} setHoverCoordinates={setHoverCoordinates} url = {placeholderImage}></FetchAnnotate>
             ) : (
-              <TextColumn header={artwork.title} text={artwork.year} info={artwork.artist_name} />
+              <TextColumn header={artwork.title} text={artwork.description} info={artwork.artist_name} />
             )}
           </div>
         </div>

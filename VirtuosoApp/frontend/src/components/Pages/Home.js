@@ -73,15 +73,12 @@ const Home = () => {
       </div>
       <div style={{ marginBottom: "25vh" }}></div>
 
-      <div>
+      <div styles={{margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth: '90vw'}}>
         <Row title="Paintings">
-          <Collections category="paintings" />
-        </Row>
-        <Row title="Photographs">
-          <Collections category="photographs" />
+          <Collections category="painting" />
         </Row>
         <Row title="User Created Images">
-          <Collections category="User Created Images" />
+          <Collections category="user_art" />
         </Row>
         <img></img>
       </div>

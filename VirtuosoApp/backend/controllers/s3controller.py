@@ -2,6 +2,10 @@ from flask import Blueprint, jsonify, current_app, request
 from werkzeug.utils import secure_filename
 import boto3
 import os
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.artworkModel import Artwork
+from models.userModel import User
+import uuid
 
 
 s3_controller = Blueprint('s3_controller', __name__)

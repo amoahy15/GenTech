@@ -24,8 +24,7 @@ class Artwork(Document):
 
 
     def update_average_rating(self):
-        from .reviewModel import Review
-        reviews = Review.objects(artwork=self) 
+        reviews = Review.objects(artwork_id=self)  # This should correctly reference the `artwork` in Review
         if reviews:
             total_rating = sum(review.rating for review in reviews)
             self.average_rating = total_rating / len(reviews)

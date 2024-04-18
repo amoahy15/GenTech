@@ -20,20 +20,18 @@ def create_review():
     current_app.logger.setLevel(logging.INFO)
 
     try:
-        user = User.objects.get(id=user_id)
-        artwork = Artwork.objects.get(id=data['artwork_id'])
+        user = User.objects.get(user_id=user_id)
+        artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
         
         new_review = Review(
-            id=review_id,
-            user_id=user_id,
-            artwork_id=data['artwork_id'],
+            review_id=review_id,
+            user_id=user,
+            artwork_id=artwork,
             rating=data['rating'],
             comment=data.get('comment', ''),
-            created_at=datetime.now()
         )
         new_review.save()
-
-        artwork.update_average_rating()
+        # had to remove the append and update average
         current_app.logger.info(f"Review {review_id} successfully created.")
 
         return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
@@ -91,7 +89,7 @@ def get_reviews_for_artwork(artwork_id):
         reviews = Review.objects(artwork_id=artwork)
         reviews_list = []
         for review in reviews:
-            user = User.objects(user_id=review.user_id).first()
+            user = review.user_id
             if user:
                 reviews_list.append({
                     'review_id': str(review.id),

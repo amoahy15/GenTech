@@ -24,9 +24,7 @@ const ImageCardHover = ({ src, alt }) => {
                 <img src={src} alt={alt} />
                 {isHovering && (
                     <div className={styles.hoverContent}>
-                        <p>Artwork name</p>
-                        <p>My rating: * * * * *</p>
-                        <p>Review likes: 32</p>
+                        <p>{alt}</p>
                     </div>
                 )}
             </div>

@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom';
 function ArtworkDisplay() {
   const [artwork, setArtwork] = useState(null);
   const [error, setError] = useState('');
-  const { artworkId } = useParams();  
+  const { artworkID } = useParams();  
 
   useEffect(() => {
     const fetchArtwork = async () => {
-      console.log('Fetching artwork with ID:', artworkId);  
+      console.log('Fetching artwork with ID:', artworkID);  
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkId}`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
         console.log('Received data:', response.data);  
         setArtwork(response.data);
       } catch (err) {
@@ -25,7 +25,7 @@ function ArtworkDisplay() {
     };
 
     fetchArtwork();
-}, [artworkId]);  
+}, [artworkID]);  
 
   if (error) {
     return <div>Error: {error}</div>;

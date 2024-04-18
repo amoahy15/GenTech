@@ -25,10 +25,8 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
       const response = await axios.get(`http://127.0.0.1:8000/api/annotations/artwork/${artworkID}/annotations`);
       const info = await Promise.all(
         response.data.map(async (annotation) => {
-          const userResponse = await axios.get(`http://127.0.0.1:8000/api/user/user/${annotation.userID}`);
           return {
             ...annotation,
-            username: userResponse.data.user_name
           };
         })
       );
@@ -67,7 +65,7 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
           {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} url={url} />}
         </div>
         {annotations.map((annotation, index) => (
-          <SingleAnnotation key={index} username={annotation.username} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>
+          <SingleAnnotation key={index} username={annotation.user_name} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>
         ))}
       </div>
     </div>

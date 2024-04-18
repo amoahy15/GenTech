@@ -1,53 +1,99 @@
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import ImageCardHover from './ImageCardHover';
-import '../styles/carouselarrow.module.css';
 import axios from 'axios';
-import React, {useState, useEffect} from 'react';
-const fetchImagesFromCategory = async (category) => {
-  try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/s3/images/${category}`);
-      return Array.isArray(response.data) ? response.data : [];
-  } catch (error) {
-      console.error(`Error fetching images for category ${category}:`, error);
-      return [];
-  }
-};
+import { useHistory } from 'react-router-dom';  
 
 const Carousel = ({ category }) => {
-  const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      if (category && typeof category === 'string') {
-        const fetchedImages = await fetchImagesFromCategory(category);
-        setImages(fetchedImages.map(url => ({ url: url, alt: `${category} image` })));
-      }
-    };
-    
-
-    fetchImages();
-  }, [category]);
-
-  const settings = {
+  const [artworks, setArtworks] = useState([]);
+  const [settings, setSliderSettings] = useState({
       dots: true,
       infinite: true,
       speed: 500,
       slidesToShow: 3,
       slidesToScroll: 3,
+      responsive: [
+          {
+              breakpoint: 1024, 
+              settings: {
+                  slidesToShow: 5,
+                  slidesToScroll: 3,
+              }
+          },
+          {
+              breakpoint: 600,
+              settings: {
+                  slidesToShow: 2,
+                  slidesToScroll: 2
+              }
+          },
+          {
+              breakpoint: 480,
+              settings: {
+                  slidesToShow: 1,
+                  slidesToScroll: 1
+              }
+          }
+      ]
+  
+  });
+  const history = useHistory();
+
+  useEffect(() => {
+    const fetchArtworks = async () => {
+      if (category) {
+        try {
+          const response = await axios.get(`http://127.0.0.1:8000/api/artwork/tags/${category}`);
+          setArtworks(response.data.artworks || []);
+          updateSettings(response.data.artworks.length);
+        } catch (error) {
+          console.error(`Error fetching artworks with tag ${category}:`, error);
+        }
+      }
+    };
+
+    fetchArtworks();
+  }, [category]);
+
+  const updateSettings = (artworkCount) => {
+    if (artworkCount === 1) {
+      setSliderSettings({
+        dots: false,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: false,
+      });
+    } else {
+      setSliderSettings({
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: Math.min(3, artworkCount),
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+      });
+    }
+  };
+
+  const handleImageClick = (artworkID) => {
+    history.push(`/reviews/${artworkID}`);
   };
 
   return (
-    
-    <Slider {...settings}>
-        {images.map((image, index) => (
-        <div key={index}>
-          <a href = './reviews'><ImageCardHover src={image} alt={`Slide ${index + 1}`} /></a>
-          
+    <div >
+      <Slider {...settings}>
+      {artworks.map((artwork, index) => (
+        <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}>
+          <ImageCardHover src={artwork.image_url} alt={artwork.title} />
         </div>
       ))}
     </Slider>
+    </div>
   );
 };
 

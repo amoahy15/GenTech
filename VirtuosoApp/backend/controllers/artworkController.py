@@ -32,9 +32,11 @@ def create_artwork():
             artwork_id=str(uuid.uuid4()),
             title=data['title'],
             user_id=user.user_id,  
-            artist_name=data['artist'],  
+            artist_name=data['artist'],
+            artist = data['artist'],
             year=data['year'],
             image_url=data['image_url']
+            #TODO: append tags to have 'user art'
         )
         new_artwork.save()
         current_app.logger.info("Artwork created successfully")
@@ -118,38 +120,16 @@ def get_artwork_url(artwork_id):
     image_url = artwork.image_url
     return jsonify({"image_url": image_url}), 200
 
-@artwork_controller.route('/add_annotation/<string:artwork_id>', methods=['POST'])
-@jwt_required()
-def add_annotation(artwork_id):
-    user_id = get_jwt_identity()
-    artwork = Artwork.objects(artwork_id=artwork_id).first()
-    
-    if not artwork:
-        current_app.logger.error("Artwork not found")
-        return jsonify({"error": "Artwork not found"}), 404
-
-    data = request.get_json()
-    required_fields = ['message', 'x_coordinate', 'y_coordinate']
-    missing_fields = [field for field in required_fields if field not in data]
-
-    if missing_fields:
-        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
-
+@artwork_controller.route('/tags/<string:tag>', methods=['GET'])
+@jwt_required(optional=True)
+def get_artworks_by_tag(tag):
     try:
-        new_annotation = Annotation(
-            artwork_id=artwork_id,
-            user_id=user_id,
-            message=data['message'],
-            x_coordinate=data['x_coordinate'],
-            y_coordinate=data['y_coordinate'],
-            annotation_id=str(uuid.uuid4())
-        ).save()
-
-        artwork.update(push__annotations=new_annotation)
-        artwork.reload()
-
-        return jsonify({"message": "Annotation added successfully", "annotation": new_annotation}), 201
-    except ValidationError as e:
-        return jsonify({"error": str(e)}), 400
+        artworks_with_tag = Artwork.objects(tags=tag)
+        artworks_data = [artwork.serialize() for artwork in artworks_with_tag]
+        if artworks_with_tag:
+            return jsonify({"artworks": artworks_data}), 200
+        else:
+            return jsonify({"message": "No artworks found with the tag"}), 404
     except Exception as e:
-        return jsonify({"error": "Unexpected error", "details": str(e)}), 500
+        current_app.logger.error(f"Failed to fetch artworks with tag {tag}: {e}")
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
