@@ -12,7 +12,6 @@ import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
 import TestSearch from "./components/Pages/TestSearch";
-import ArtworkDisplay from "./components/API/ArtworkDisplay";
 
 function App() {
 
@@ -65,7 +64,6 @@ function App() {
         <Route path="/test">
           <TestSearch/>
         </Route>
-        <Route path="/artwork/:artworkId" component={ArtworkDisplay} />
       </Switch> 
       </div>
     </div>

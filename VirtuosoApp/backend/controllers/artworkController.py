@@ -104,6 +104,19 @@ def get_artwork(artwork_id):
     
     return jsonify(artwork.serialize()), 200
 
+@artwork_controller.route('/get_user_artworks', methods=['GET'])
+@jwt_required()
+def get_user_artworks():
+    user_id = get_jwt_identity() 
+    current_app.logger.info(f"Attempting to fetch artworks for user ID {user_id}")
+    artworks = Artwork.objects(user_id=user_id)
+
+    if artworks:
+        return jsonify([artwork.serialize() for artwork in artworks]), 200
+    else:
+        current_app.logger.error("No artworks found for this user")
+        return jsonify({"error": "No artworks found"}), 404
+
 @artwork_controller.route('/artworks/collection/<string:collection_name>', methods=['GET'])
 @jwt_required()  
 def get_artworks_by_collection(collection_name):
