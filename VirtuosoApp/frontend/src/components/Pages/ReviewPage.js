@@ -29,7 +29,7 @@ function ReviewPage(props) {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`, {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}` // Ensure this is the correct way to pass token based on your server's expectation
+        'Authorization': `Bearer ${localStorage.getItem('token')}` 
       }
     });
       const reviewsData = response.data.map(review => ({

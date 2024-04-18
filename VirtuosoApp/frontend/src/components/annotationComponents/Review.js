@@ -11,13 +11,12 @@ const Review = ({ reviews, onDel }) => {
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
-      setUserData(decodedToken.userId); // Ensure your token actually contains `userId`
+      setUserData(decodedToken.userId);
     }
   }, [token]);
 
   const currentUserReviewIndex = reviews.findIndex(review => review.user_id === userId);
 
-//TODO: pin user ratings/reviews  to later edit
   let userHasReview = false;
   let currentUserReview;
   if (currentUserReviewIndex !== -1) {
