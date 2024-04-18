@@ -24,14 +24,14 @@ const NavUser = () => {
      
       
       <header className={styles.header} style={{paddingRight: '90px'}}>
-      <a className={styles.virtuoso} href = './' style = {{textDecoration: 'none'}}><span>VIRTUOS</span><span style ={{color: '#990000'}}>O</span></a>
+      <a className={styles.virtuoso} href = '/' style = {{textDecoration: 'none'}}><span>VIRTUOS</span><span style ={{color: '#990000'}}>O</span></a>
      
       {/*<img className={styles.logo} src={spiral}/>*/}
       <nav className={styles.Nav}>
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='./reviews'><Button2 text='Community' onClick={onClick}/></a>
+          <a href='./'><Button2 text='Community' onClick={onClick}/></a>
 
           <a href = './collections'><Button2 text='Collections' onClick={onClick}/></a>
 

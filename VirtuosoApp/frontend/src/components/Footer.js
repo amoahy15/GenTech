@@ -14,7 +14,7 @@ const Footer = () => {
             <div className={styles['boxes']}>
                 <ul className={styles.box}>
                     <li className={styles.title}>VIRTUOSO</li>
-                    <li><a href="./">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="./about">About</a></li>
                     <li><a href="./collections">Collections</a></li>
                 </ul>

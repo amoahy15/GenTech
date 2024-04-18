@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const ChangePassword = () => {
+const ChangeUserName = () => {
 
     const [userData, setUserData] = useState({
         id: '',
+        user_name: 'Loading...',
       });
-      const [password, setPassword] = useState('');
+      const [userName, setUserName] = useState('');
     
       useEffect(() => {
         const fetchUserDetails = async () => {
           try {
-            const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+            const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
               },
             });
             setUserData({
               id: response.data.user_id,
-              pwd: response.data.password_hash, 
+              user_name: response.data.user_name, 
             });
-            setPassword(response.data.password_hash);
+            setUserName(response.data.user_name);
           } catch (error) {
             console.error('Error fetching user details:', error);
           }
@@ -29,11 +30,11 @@ const ChangePassword = () => {
         fetchUserDetails();
       }, []); 
     
-      const handlePWDChange = event => {
-        setPassword(event.target.value);
+      const handleUserChange = event => {
+        setUserName(event.target.value);
       };
     
-      const handleUpdatePWD = async () => {
+      const handleUpdateUser = async () => {
         if (!userData.id) {
           alert('User ID is undefined. Please ensure you are logged in and try again.');
           return;
@@ -41,11 +42,11 @@ const ChangePassword = () => {
       
         try {
           const token = localStorage.getItem('token');
-          const url = `http://localhost:5000/api/update_user`;
+          const url = `http://localhost:8000/api/update_user/${userData.id}`;
       
           const response = await axios.put(
             url,
-            { pwd: password },
+            { user_name: userName },
             {
               headers: {
                 'Authorization': `Bearer ${token}`,
@@ -55,13 +56,13 @@ const ChangePassword = () => {
       
           setUserData(prevState => ({
             ...prevState,
-            pwd: response.password,
+            user_name: response.userName,
           }));
       
-          alert('Password updated successfully!');
+          alert('Username updated successfully!');
         } catch (error) {
-          console.error('Error updating password:', error.response ? error.response.data : error);
-          alert('Failed to update password. Please try again.');
+          console.error('Error updating username:', error.response ? error.response.data : error);
+          alert('Failed to update username. Please try again.');
           console.log(userData.id);
         }
       };
@@ -71,11 +72,11 @@ const ChangePassword = () => {
         <div className='textEntry'>
               <input 
                 type="text" 
-                value={password} 
-                onChange={handlePWDChange} 
-                placeholder="change password"
+                value={userName} 
+                onChange={handleUserChange} 
+                placeholder="change username"
               />
-               <button onClick={handleUpdatePWD}>Save</button>
+               <button onClick={handleUpdateUser}>Save</button>
         </div>
     </div>
     
@@ -83,5 +84,4 @@ const ChangePassword = () => {
 
 }
 
-export default ChangePassword
-
+export default ChangeUserName

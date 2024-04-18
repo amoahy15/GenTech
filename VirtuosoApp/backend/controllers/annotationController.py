@@ -26,7 +26,6 @@ def create_annotation():
             message=data['message'],
             x_coordinate=data['x_coordinate'],
             y_coordinate=data['y_coordinate'],
-            created_at=datetime.datetime.now()
         )
         new_annotation.save()
 
@@ -66,8 +65,8 @@ def delete_annotation(annotation_id):
         return jsonify({"error": "Annotation not found or access denied"}), 404
 
 @annotation_controller.route('/artwork/<artwork_id>/annotations', methods=['GET'])
-@jwt_required()
 def get_annotations_for_artwork(artwork_id):
+    #took out token req.
     try:
         annotations = Annotation.objects(artwork_id=artwork_id)
         annotations_list = []

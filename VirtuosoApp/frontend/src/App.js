@@ -7,7 +7,7 @@ import LoginPage from "./components/UserData/loginPageDark";
 import LoginPage2 from "./components/UserData/loginPageLight";
 import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
-import Collection from "./components/Pages/Collections";
+import Gallery from './components/Pages/Gallery';
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
@@ -34,11 +34,13 @@ function App() {
           <AboutPage/>
           <Footer/>
         </Route> 
-        <Route path="/reviews">
-          {token ? <NavUser/> : <Nav/>}
-          <ReviewPage/>
-          <Footer/>
-        </Route> 
+        <Route path="/reviews/:artworkID" render={(props) => (
+          <div>
+            {token ? <NavUser/> : <Nav/>}
+            <ReviewPage {...props} />
+            <Footer />
+          </div>
+        )} />
         <Route path="/login">
           <LoginPage/>
         </Route>
@@ -55,7 +57,7 @@ function App() {
         </Route> 
         <Route path="/collections">
           {token ? <NavUser/> : <Nav/>}
-          <Collection/>
+          <Gallery/>
           <Footer/>
         </Route>
         <Route path="/disclaimer">
@@ -64,6 +66,7 @@ function App() {
         <Route path="/test">
           <TestSearch/>
         </Route>
+        <Route path="/artwork/:artworkId" component={ArtworkDisplay} />
       </Switch> 
       </div>
     </div>

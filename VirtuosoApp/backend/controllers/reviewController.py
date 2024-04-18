@@ -20,20 +20,18 @@ def create_review():
     current_app.logger.setLevel(logging.INFO)
 
     try:
-        user = User.objects.get(id=user_id)
-        artwork = Artwork.objects.get(id=data['artwork_id'])
+        user = User.objects.get(user_id=user_id)
+        artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
         
         new_review = Review(
-            id=review_id,
-            user_id=user_id,
-            artwork_id=data['artwork_id'],
+            review_id=review_id,
+            user_id=user,
+            artwork_id=artwork,
             rating=data['rating'],
             comment=data.get('comment', ''),
-            created_at=datetime.now()
         )
         new_review.save()
-
-        artwork.update_average_rating()  # Update average rating for the artwork after adding new review
+        # had to remove the append and update average
         current_app.logger.info(f"Review {review_id} successfully created.")
 
         return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
@@ -81,15 +79,17 @@ def delete_review(review_id):
     except DoesNotExist:
         return jsonify({"error": "Review not found"}), 404
 
+
 @review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
-@jwt_required()
 def get_reviews_for_artwork(artwork_id):
-    user_id = get_jwt_identity()  # Retrieves the JWT identity, typically the user ID of the logged-in user
     try:
-        reviews = Review.objects(artwork_id=artwork_id)
+        artwork = Artwork.objects(artwork_id=artwork_id).first()
+        if not artwork:
+            return jsonify({"error": "Artwork not found"}), 404
+        reviews = Review.objects(artwork_id=artwork)
         reviews_list = []
         for review in reviews:
-            user = User.objects(user_id=review.user_id).first()
+            user = review.user_id
             if user:
                 reviews_list.append({
                     'review_id': str(review.id),
@@ -98,11 +98,10 @@ def get_reviews_for_artwork(artwork_id):
                     'profile_picture': user.profile_picture,
                     'rating': review.rating,
                     'comment': review.comment,
-                    'created_at': review.created_at.isoformat()
+                    'created_at': review.created_at.isoformat() if review.created_at else None
                 })
         return jsonify(reviews_list), 200
-    except DoesNotExist:
-        return jsonify({"error": "Artwork not found"}), 404
+    except ValidationError as e:
+        return jsonify({"error": "Invalid data format", "details": str(e)}), 400
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
-

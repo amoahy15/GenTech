@@ -3,11 +3,9 @@ import Carousel from '../carouselcomponents/Carousel';
 import styles from '../styles/carousel.module.css';
 import Row from "../Navigation/rowScroll";
 
-
-
 const Collections = ({category}) => {
     return (
-        <div className={styles.containerColl}>  
+        <div className={styles.containerColl} styles={{margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>  
             <Carousel category= {category} />
         </div>
     );

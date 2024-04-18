@@ -14,7 +14,7 @@ const ImageDisplay = ({imageUrl, allowDotPlacement, hoverCoordinates}) => {
 
   return (
     <div id="image-display" style={{ position: 'relative', width: '100%' }}>
-      <img src={imageUrl} alt="Annotated Image" style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', maxHeight: '600px', objectFit: 'cover' }} />
+      <img src={imageUrl} alt={imageUrl} style={{ minWidth: '100%', maxWidth: '100%', height: 'auto', maxHeight: '600px', objectFit: 'cover' }} />
       {renderDot()}
     </div>
   );

@@ -20,6 +20,5 @@ class Review(Document):
             "artwork_id": str(self.artwork.artwork_id),
             "rating": self.rating,
             "comment": self.comment,
-            # Format the created_at datetime to ISO 8601 string
             "created_at": self.created_at.isoformat()
         }

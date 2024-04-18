@@ -57,7 +57,7 @@ const Home = () => {
             community today and dive into our diverse catalogue.
           </p>
           <div className={styles.btn}>
-            <a href="./register2">
+            <a href="./register">
               <Button text="Create an Account" onClick={onClick} />
             </a>
           </div>
@@ -73,19 +73,20 @@ const Home = () => {
       </div>
       <div style={{ marginBottom: "25vh" }}></div>
 
-      <div>
-        <Row title="Trending">
-          <Collections category="trending" />
-        </Row>
+      <div >
         <Row title="Paintings">
-          <Collections category="paintings" />
+          <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
+            <Collections category="painting" />
+          </div>
+          
         </Row>
-        <Row title="Photographs">
-          <Collections category="photographs" />
+        <Row title="User Created Images">
+          <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
+          <Collections category="user_art" />
+          </div>
+          
         </Row>
-        <Row title="Sculptures And Models">
-          <Collections category="sculptures" />
-        </Row>
+        <img></img>
       </div>
     </div>
   );

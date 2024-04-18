@@ -37,10 +37,13 @@ def create_artwork():
         new_artwork = Artwork(
             artwork_id=str(uuid.uuid4()),
             title=data['title'],
-            user_id=user_id,  
-            artist=data['artist'],
+            user_id=user.user_id,  
+            artist_name=data['artist'],
+            artist = data['artist'],
             year=data['year'],
-            image_url=data['image_url']
+            image_url=data['image_url'],
+            tags = ["user_art"],
+            description = data['description']
         )
 
         new_artwork.save()
@@ -93,7 +96,7 @@ def update_artwork(artwork_id):
     return jsonify({"message": "Artwork updated successfully"}), 200
 
 @artwork_controller.route('/get_artwork/<string:artwork_id>', methods=['GET'])
-@jwt_required()  
+@jwt_required(optional=True)  
 def get_artwork(artwork_id):
     current_app.logger.info("Attempting to fetch artwork")
     artwork = Artwork.objects(artwork_id=artwork_id).first()
@@ -145,38 +148,65 @@ def get_artwork_url(artwork_id):
     
     return jsonify({"image_url": image_url}), 200
 
-@artwork_controller.route('/add_annotation/<string:artwork_id>', methods=['POST'])
-@jwt_required()
-def add_annotation(artwork_id):
-    current_user_id = get_jwt_identity()
-    artwork = Artwork.objects(artwork_id=artwork_id).first()
-    
-    if not artwork:
-        current_app.logger.error("Artwork not found")
-        return jsonify({"error": "Artwork not found"}), 404
+@artwork_controller.route('/tags/<string:tag>', methods=['GET'])
+@jwt_required(optional=True)
+def get_artworks_by_tag(tag):
+    try:
+        artworks_with_tag = Artwork.objects(tags=tag)
+        artworks_data = [artwork.serialize() for artwork in artworks_with_tag]
+        if artworks_with_tag:
+            return jsonify({"artworks": artworks_data}), 200
+        else:
+            return jsonify({"message": "No artworks found with the tag"}), 404
+    except Exception as e:
+        current_app.logger.error(f"Failed to fetch artworks with tag {tag}: {e}")
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+
+@artwork_controller.route('/create_artwork/gentech', methods=['POST'])
+@jwt_required()  
+def gentech_artwork():
+    current_app.logger.info("Attempting to create artwork")
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
+    if (user.user_id != "bc25829c-d3c5-4204-a4a4-6a4cc1d12a96"):
+        return jsonify ({"error": "User not found"}), 404
+    if not user:
+        current_app.logger.error("User not found")
+        return jsonify({"error": "User not found"}), 404
 
     data = request.get_json()
-    required_fields = ['message', 'x_coordinate', 'y_coordinate']
+    required_fields = ['title', 'year', 'image_url']
     missing_fields = [field for field in required_fields if field not in data]
 
     if missing_fields:
+        current_app.logger.error("Missing required fields: %s", ', '.join(missing_fields))
         return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
 
+
     try:
-        new_annotation = Annotation(
-            artworkID=artwork_id,
-            userID=current_user_id,
-            message=data['message'],
-            x_coordinate=data['x_coordinate'],
-            y_coordinate=data['y_coordinate'],
-            annotationID=str(uuid.uuid4())  # Generate a unique ID for the annotation
-        ).save()
+        new_artwork = Artwork(
+            artwork_id=str(uuid.uuid4()),
+            title=data['title'],
+            user_id=user.user_id,  
+            artist_name=data['artist'],
+            artist = data['artist'],
+            year=data['year'],
+            image_url=data['image_url'],
+            tags = data['tags'],
+            description = data['description']
+        )
 
-        artwork.update(push__annotations=new_annotation)
-        artwork.reload()
+        new_artwork.save()
+        current_app.logger.info("Artwork created successfully")
 
-        return jsonify({"message": "Annotation added successfully", "annotation": new_annotation}), 201
+        user.update(inc__artwork_count=1)  
+        current_app.logger.info("Artwork count updated for user.")
+
+        return jsonify({"message": "Artwork created successfully!"}), 201
     except ValidationError as e:
+        current_app.logger.exception("Validation error during artwork creation")
         return jsonify({"error": str(e)}), 400
     except Exception as e:
-        return jsonify({"error": "Unexpected error", "details": str(e)}), 500
+        current_app.logger.exception("Unexpected error during artwork creation")
+        return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+    

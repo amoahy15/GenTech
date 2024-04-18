@@ -14,7 +14,6 @@ bcrypt = Bcrypt(app)
 user_controller = Blueprint('user_controller', __name__)
 
 @user_controller.route('/create_user', methods=['POST'])
-@jwt_required()
 def create_user():
     current_app.logger.info("Attempting to create a new user")
     data = request.get_json()

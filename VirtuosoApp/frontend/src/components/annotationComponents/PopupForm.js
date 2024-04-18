@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect} from "react";
 import styles from '../styles/popup.module.css'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
-
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+//for more about image rendering i used this: https://docs.rs/imgref/latest/imgref/
 //TODO: Undo hardcoding of artworkid
 const PopupForm = ({ onSubmit, onClose, url }) => {
   const [annotationText, setAnnotationText] = useState("");
@@ -11,11 +12,14 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
   const token = localStorage.getItem('token');
-  const nav = useHistory();
+  const [imageUrl, setImageUrl] = useState('');
+  const [error, setError] = useState('');
 
+  const nav = useHistory();
+  const {artworkID} = useParams()
   const handleTextChange = (event) => {
     const newText = event.target.value;    
-    if (newText.length <= 500) { 
+    if (newText.length <= 500) {
       setAnnotationText(newText);
     } else {
       console.error("The annotation text is too long.");
@@ -34,7 +38,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
+        const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -48,7 +52,25 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     };
 
     fetchUserDetails();
-  }, []);
+
+    const fetchArtworkImage = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        setImageUrl(response.data.image_url);
+      } catch (error) {
+        console.error('Error fetching artwork image:', error);
+        setImageUrl('/path/to/fallback/image.jpg');  // Set a fallback image on error
+      }
+    };
+
+    if (artworkID) {
+      fetchArtworkImage();
+    }
+  }, [artworkID, token]); 
 
   
   
@@ -56,22 +78,25 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     event.preventDefault();
     if (!userData) {
       console.error("Not logged in");
-      nav.push("/login");
+      nav.push("/login2");
+      return;
+    }
+    if (realclickCoordinates.x === null || realclickCoordinates.y === null) {
+      setError("Please select a point on the image before submitting your comment.");
       return;
     }
     const payload = {
-      artworkID: "20cc4d78-a17c-49b9-8e7c-5b32cb57d7a3",
+      artwork_id: artworkID,
       message: annotationText,
       x_coordinate: String(realclickCoordinates.x),
       y_coordinate: String(realclickCoordinates.y),
     };
     try {
       await axios.post(
-        "http://127.0.0.1:5000/api/annotations/annotation",
+        "http://127.0.0.1:8000/api/annotations/annotation",
         payload,
         {
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -89,7 +114,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     <div className={styles['popup-background']}>
       <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
-            <img ref={imgref} src={url} style={{ maxWidth: '100%'}}/>
+            <img ref = {imgref} src={imageUrl} style={{ maxWidth: '100%'}}/>
             {
             realclickCoordinates.x !== null && realclickCoordinates.x >= 0 &&
             realclickCoordinates.y !== null && realclickCoordinates.y >= 0 && (
