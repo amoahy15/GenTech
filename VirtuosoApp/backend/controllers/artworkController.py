@@ -44,7 +44,6 @@ def create_artwork():
             image_url=data['image_url'],
             tags = ["user_art"],
             description = data['description']
-            #TODO: append tags to have 'user art'
         )
 
         new_artwork.save()
@@ -149,3 +148,52 @@ def get_artworks_by_tag(tag):
     except Exception as e:
         current_app.logger.error(f"Failed to fetch artworks with tag {tag}: {e}")
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+
+@artwork_controller.route('/create_artwork/gentech', methods=['POST'])
+@jwt_required()  
+def gentech_artwork():
+    current_app.logger.info("Attempting to create artwork")
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
+    if (user.user_id != "bc25829c-d3c5-4204-a4a4-6a4cc1d12a96"):
+        return jsonify ({"error": "User not found"}), 404
+    if not user:
+        current_app.logger.error("User not found")
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+    required_fields = ['title', 'year', 'image_url']
+    missing_fields = [field for field in required_fields if field not in data]
+
+    if missing_fields:
+        current_app.logger.error("Missing required fields: %s", ', '.join(missing_fields))
+        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
+
+
+    try:
+        new_artwork = Artwork(
+            artwork_id=str(uuid.uuid4()),
+            title=data['title'],
+            user_id=user.user_id,  
+            artist_name=data['artist'],
+            artist = data['artist'],
+            year=data['year'],
+            image_url=data['image_url'],
+            tags = data['tags'],
+            description = data['description']
+        )
+
+        new_artwork.save()
+        current_app.logger.info("Artwork created successfully")
+
+        user.update(inc__artwork_count=1)  
+        current_app.logger.info("Artwork count updated for user.")
+
+        return jsonify({"message": "Artwork created successfully!"}), 201
+    except ValidationError as e:
+        current_app.logger.exception("Validation error during artwork creation")
+        return jsonify({"error": str(e)}), 400
+    except Exception as e:
+        current_app.logger.exception("Unexpected error during artwork creation")
+        return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
+    
