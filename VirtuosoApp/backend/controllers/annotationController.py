@@ -65,6 +65,7 @@ def delete_annotation(annotation_id):
         return jsonify({"error": "Annotation not found or access denied"}), 404
 
 @annotation_controller.route('/artwork/<artwork_id>/annotations', methods=['GET'])
+@jwt_required()
 def get_annotations_for_artwork(artwork_id):
     #took out token req.
     try:

@@ -12,7 +12,7 @@ const ChangeUserName = () => {
       useEffect(() => {
         const fetchUserDetails = async () => {
           try {
-            const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+            const response = await axios.get('http://127.0.0.1:5000/api/user/details', {
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
               },

@@ -1,12 +1,17 @@
-from flask import request, jsonify, Blueprint, current_app
-from mongoengine import NotUniqueError, ValidationError
+from flask import current_app, request, jsonify, Blueprint
+from werkzeug.utils import secure_filename
+import boto3
+import os
+from mongoengine import ValidationError, NotUniqueError
 from models.artworkModel import Artwork
 from models.userModel import User
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
-import logging
+
 
 artwork_controller = Blueprint('artwork_controller', __name__)
+
+
 
 @artwork_controller.route('/create_artwork', methods=['POST'])
 @jwt_required()  
@@ -27,6 +32,7 @@ def create_artwork():
         current_app.logger.error("Missing required fields: %s", ', '.join(missing_fields))
         return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
 
+
     try:
         new_artwork = Artwork(
             artwork_id=str(uuid.uuid4()),
@@ -38,8 +44,13 @@ def create_artwork():
             image_url=data['image_url']
             #TODO: append tags to have 'user art'
         )
+
         new_artwork.save()
         current_app.logger.info("Artwork created successfully")
+
+        user.update(inc__artwork_count=1)  
+        current_app.logger.info("Artwork count updated for user.")
+
         return jsonify({"message": "Artwork created successfully!"}), 201
     except ValidationError as e:
         current_app.logger.exception("Validation error during artwork creation")
@@ -47,13 +58,13 @@ def create_artwork():
     except Exception as e:
         current_app.logger.exception("Unexpected error during artwork creation")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
-
+    
 @artwork_controller.route('/delete_artwork/<string:artwork_id>', methods=['DELETE'])
 @jwt_required()
 def delete_artwork(artwork_id):
     current_app.logger.info("Attempting to delete artwork")
-    user_id = get_jwt_identity()
-    artwork = Artwork.objects(artwork_id=artwork_id, user_id=user_id).first()
+    current_user_id = get_jwt_identity()
+    artwork = Artwork.objects(artwork_id=artwork_id, artist=current_user_id).first()
     
     if not artwork:
         current_app.logger.error("Artwork not found or not authorized")
@@ -67,8 +78,8 @@ def delete_artwork(artwork_id):
 @jwt_required()
 def update_artwork(artwork_id):
     current_app.logger.info("Attempting to update artwork")
-    user_id = get_jwt_identity()
-    artwork = Artwork.objects(artwork_id=artwork_id, user_id=user_id).first()
+    current_user_id = get_jwt_identity()
+    artwork = Artwork.objects(artwork_id=artwork_id, artist=current_user_id).first()
     
     if not artwork:
         current_app.logger.error("Artwork not found or not authorized")
@@ -100,6 +111,7 @@ def get_artwork(artwork_id):
 def get_artworks_by_collection(collection_name):
     artworks = Artwork.objects(collection=collection_name)
     if artworks:
+        # Wrap the serialized artworks in an object under the 'images' key
         response = {
             "images": [artwork.serialize() for artwork in artworks]
         }
@@ -117,7 +129,9 @@ def get_artwork_url(artwork_id):
         current_app.logger.error("Artwork not found")
         return jsonify({"error": "Artwork not found"}), 404
 
+    # Assuming the image_url field contains the direct URL to the image in S3
     image_url = artwork.image_url
+    
     return jsonify({"image_url": image_url}), 200
 
 @artwork_controller.route('/tags/<string:tag>', methods=['GET'])

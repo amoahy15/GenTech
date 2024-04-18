@@ -14,8 +14,9 @@ import os
 import logging
 
 app = Flask(__name__)
+app.config['DEBUG'] = True
 load_dotenv() 
-cors = CORS(app, resources={r'/api/*':{'origins':'*'}})
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, allow_headers=["Authorization", "Content-Type"])
 
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)

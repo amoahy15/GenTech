@@ -41,7 +41,7 @@ const ChangePassword = () => {
       
         try {
           const token = localStorage.getItem('token');
-          const url = `http://localhost:8000/api/update_user/${userData.id}`;
+          const url = `http://localhost:5000/api/update_user`;
       
           const response = await axios.put(
             url,
