@@ -2,8 +2,9 @@ import React, {useEffect, useState} from 'react';
 import styles from '../styles/reviews.module.css';
 import ReviewCard from './ReviewCard';
 import {jwtDecode} from "jwt-decode";
+import axios from 'axios';
 
-const Review = ({ reviews }) => {
+const Review = ({ reviews, onDel }) => {
   const token = localStorage.getItem('token');
   const [userId, setUserData] = useState();
 
@@ -41,6 +42,20 @@ const Review = ({ reviews }) => {
 
   const reviewRows = rows(reviews, 2);
 
+  const deleteReview = async (reviewId) => {
+    try {
+        const response = await axios.delete(`http://127.0.0.1:8000/api/review/reviews/${reviewId}`, {
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        });
+        if (response.status === 200) {
+            console.log("Review deleted successfully");
+            window.location.reload();
+        }
+    } catch (error) {
+        console.error("Failed to delete review", error.response.data);
+    }
+}
+
   return (
     <div style={{ marginLeft: '5vw', marginRight: '5vw' }}>
       <div className={styles['review-container']}>
@@ -57,6 +72,9 @@ const Review = ({ reviews }) => {
                 rating={review.rating}
                 user={review.user_name}
                 review={review.review}
+                revid = {review.revid}
+                is_owner={review.is_owner}
+                onDelete = {onDel}
               />
             ))}
           </div>
@@ -67,4 +85,3 @@ const Review = ({ reviews }) => {
 };
 
 export default Review;
-

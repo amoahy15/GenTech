@@ -68,34 +68,42 @@ def update_review(review_id):
         return jsonify({"error": str(e)}), 400
     except DoesNotExist:
         return jsonify({"error": "Review not found"}), 404
-
 @review_controller.route('/reviews/<string:review_id>', methods=['DELETE'])
 @jwt_required()
 def delete_review(review_id):
-    try :
-        review = Review.objects.get(id=review_id)
+    user_id = get_jwt_identity()
+    try:
+        user = User.objects.get(user_id=user_id)
+        review = Review.objects.get(review_id=review_id, user_id=user)
         review.delete()
         return jsonify({"message": "Review deleted successfully"}), 200
     except DoesNotExist:
-        return jsonify({"error": "Review not found"}), 404
-
-
+        return jsonify({"error": "Review not found or access denied"}), 404
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+    
 @review_controller.route('/artwork/<string:artwork_id>/reviews', methods=['GET'])
+@jwt_required()
 def get_reviews_for_artwork(artwork_id):
+    user_id = get_jwt_identity()
+    curruser= User.objects(user_id=user_id).first()
     try:
         artwork = Artwork.objects(artwork_id=artwork_id).first()
         if not artwork:
             return jsonify({"error": "Artwork not found"}), 404
+
         reviews = Review.objects(artwork_id=artwork)
         reviews_list = []
+
         for review in reviews:
-            user = review.user_id
+            user = User.objects(id=review.user_id.id).first()  # Assuming user_id is a ReferenceField
             if user:
                 reviews_list.append({
                     'review_id': str(review.id),
                     'user_id': str(review.user_id),
                     'user_name': user.user_name,
                     'profile_picture': user.profile_picture,
+                    'is_owner': user == curruser,
                     'rating': review.rating,
                     'comment': review.comment,
                     'created_at': review.created_at.isoformat() if review.created_at else None
