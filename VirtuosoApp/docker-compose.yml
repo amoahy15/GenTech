@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80" 
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=production
+      - REACT_APP_BACKEND_URL=http://backend:5100  
+
+  backend:
+    build: ./backend
+    ports:
+      - "5100:5100"
+    volumes:
+      - ./backend:/app
+    environment:
+      - FLASK_ENV=production
+    env_file:
+      - .env 
+
+networks:
+  default:
+    driver: bridge
