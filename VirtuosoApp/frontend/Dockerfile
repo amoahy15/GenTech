@@ -10,9 +10,10 @@ COPY . .
 
 RUN npm run build
 
-ENV REACT_APP_API_URL=http://localhost:5100
-
 FROM nginx:stable-alpine
+
+# Copy custom Nginx configuration
+COPY default.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build-stage /app/build /usr/share/nginx/html
 

@@ -6,7 +6,7 @@ import bgVid from '../../assets/videos/lightvid.mp4';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL; 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const LoginPage2 = () => {
   const [email, setEmail] = useState('');
@@ -23,7 +23,7 @@ const LoginPage2 = () => {
       user_name: userName
     };
 
-    axios.post(`${API_BASE_URL}/user/login`, userData)  
+    axios.post(`${API_BASE_URL}/api/user/login`, userData)
         .then(function (response) {
         const token = response.data.auth ? response.data.auth.token : response.data.access_token;
         localStorage.setItem('token', token); 
