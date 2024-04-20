@@ -261,3 +261,5 @@ VirtuosoApp/backend/cert.pem
 VirtuosoApp/backend/key.pem
 VirtuosoApp/frontend/.env.development
 VirtuosoApp/frontend/.env.production
+VirtuosoApp/backend/.env.yaml
+VirtuosoApp/backend/app.yaml
