@@ -18,8 +18,6 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
 //get user info here (incl username) 
 //TODO: profile pic? (in info)
-
-
 const fetchAnnotations = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/annotations/artwork/${artworkID}/annotations`, {
@@ -62,7 +60,7 @@ const fetchAnnotations = async () => {
 
   const handleDeleteAnnotation = async (annotationId) => {
     try {
-      await axios.delete(`${apiUrl}/annotations/annotations/${annotationId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/annotations/annotations/${annotationId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       fetchAnnotations(); 

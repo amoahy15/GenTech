@@ -94,8 +94,8 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
       y_coordinate: String(realclickCoordinates.y),
     };
     try {
-      await axios.post(
-        `${apiUrl}/annotations/annotation`,
+      axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/annotations/annotation`,
         payload,
         {
           headers: {
