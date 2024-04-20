@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 //todo: pass in info directly from reviewpage.js
 //todo: top priority refactoring
+
 const ArtTextCols = ({artworkID, handleSubmit}) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
@@ -29,7 +30,7 @@ const ArtTextCols = ({artworkID, handleSubmit}) => {
     const fetchArtwork = async () => {
       console.log('Fetching artwork with ID:', artworkID);  
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/get_artwork/${artworkID}`);
         console.log('Received data:', response.data);  
         setArtwork(response.data);
       } catch (err) {

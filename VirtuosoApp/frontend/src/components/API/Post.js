@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+
 function Post() {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState('');
@@ -26,7 +27,7 @@ function Post() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const imageUrl = await uploadImage();
-    await axios.post('http://127.0.0.1:8000/api/artwork/create_artwork', {
+    await axios.post(`${process.env.REACT_APP_API_BASE_URL}/artwork/create_artwork`, {
       title,
       artist,
       year,
@@ -37,7 +38,7 @@ function Post() {
       },
     });
   };
-
+  
   return (
     <form onSubmit={handleSubmit}>
       <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />

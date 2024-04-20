@@ -4,6 +4,7 @@ import ReviewCard from './ReviewCard';
 import {jwtDecode} from "jwt-decode";
 import axios from 'axios';
 
+
 const Review = ({ reviews, onDel }) => {
   const token = localStorage.getItem('token');
   const [userId, setUserData] = useState();
@@ -43,9 +44,9 @@ const Review = ({ reviews, onDel }) => {
 
   const deleteReview = async (reviewId) => {
     try {
-        const response = await axios.delete(`http://127.0.0.1:8000/api/review/reviews/${reviewId}`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/review/reviews/${reviewId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
         if (response.status === 200) {
             console.log("Review deleted successfully");
             window.location.reload();

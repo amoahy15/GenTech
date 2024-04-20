@@ -30,7 +30,7 @@ function Profile() {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -39,8 +39,8 @@ function Profile() {
           id: response.data.user_id,
           user_name: response.data.user_name, 
           bio: response.data.bio,
-          followers_count: response.data.followers_count, // Set followers_count
-          following_count: response.data.following_count, // Set following_count
+          followers_count: response.data.followers_count,
+          following_count: response.data.following_count,
         });
         setBioText(response.data.bio);
       } catch (error) {
@@ -63,7 +63,7 @@ function Profile() {
   
     try {
       const token = localStorage.getItem('token');
-      const url = `http://localhost:8000/api/update_user/${userData.id}`;
+      const url = `${process.env.REACT_APP_API_BASE_URL}/update_user/${userData.id}`;
   
       const response = await axios.put(
         url,

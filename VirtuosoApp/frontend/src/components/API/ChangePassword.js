@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+
 const ChangePassword = () => {
 
     const [userData, setUserData] = useState({
@@ -11,7 +12,7 @@ const ChangePassword = () => {
       useEffect(() => {
         const fetchUserDetails = async () => {
           try {
-            const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
               },
@@ -41,8 +42,7 @@ const ChangePassword = () => {
       
         try {
           const token = localStorage.getItem('token');
-          const url = `http://localhost:5000/api/update_user`;
-      
+          const url = `${process.env.REACT_APP_API_BASE_URL}/update_user`;
           const response = await axios.put(
             url,
             { pwd: password },

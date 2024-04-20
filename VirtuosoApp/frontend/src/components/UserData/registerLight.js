@@ -27,7 +27,7 @@ const Register = () => {
       user_name: userName
     };
 
-    axios.post('http://127.0.0.1:8000/api/user/create_user', userData)
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/create_user`, userData)
       .then(function (response) {
         console.log(response);
         const token = response.data.auth ? response.data.auth.token : response.data.access_token;

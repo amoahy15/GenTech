@@ -21,7 +21,7 @@ const Carousel = ({ category }) => {
     const fetchArtworks = async () => {
       if (category) {
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/artwork/tags/${category}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
           setArtworks(response.data.artworks || []);
           updateSettings(response.data.artworks.length);
         } catch (error) {

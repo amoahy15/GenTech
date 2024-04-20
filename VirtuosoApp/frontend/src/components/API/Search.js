@@ -12,7 +12,7 @@ const Search = () => {
   const [filteredUserNames, setFilteredUserNames] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/user/list_users')
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/list_users`)
       .then(response => {
         const names = response.data.map(user => user.userName);
         setUserNames(names);

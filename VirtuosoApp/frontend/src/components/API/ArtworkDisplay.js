@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
+
 function ArtworkDisplay() {
   const [artwork, setArtwork] = useState(null);
   const [error, setError] = useState('');
@@ -11,7 +12,7 @@ function ArtworkDisplay() {
     const fetchArtwork = async () => {
       console.log('Fetching artwork with ID:', artworkID);  
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/get_artwork/${artworkID}`);
         console.log('Received data:', response.data);  
         setArtwork(response.data);
       } catch (err) {

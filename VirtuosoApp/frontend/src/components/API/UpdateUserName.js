@@ -11,7 +11,7 @@ function UpdateUsername() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put('http://127.0.0.1:5000/api/user/update_user', {
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/user/update_user`, {
         user_name: username
       }, {
         headers: {
