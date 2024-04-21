@@ -92,7 +92,7 @@ def get_reviews_for_artwork(artwork_id):
         if not artwork:
             return jsonify({"error": "Artwork not found"}), 404
 
-        reviews = Review.objects(artwork_id=artwork)
+        reviews = Review.objects(artwork_id=artwork).order_by('-like_count')
         reviews_list = []
 
         for review in reviews:

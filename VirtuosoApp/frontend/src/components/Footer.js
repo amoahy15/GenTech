@@ -15,8 +15,8 @@ const Footer = () => {
                 <ul className={styles.box}>
                     <li className={styles.title}>VIRTUOSO</li>
                     <li><a href="/">Home</a></li>
-                    <li><a href="./about">About</a></li>
-                    <li><a href="./collections">Collections</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/collections">Collections</a></li>
                 </ul>
                 <ul className={styles.box}>
                     <li className={styles.title}>MEET  GENTECH</li>
@@ -36,9 +36,9 @@ const Footer = () => {
             </div>
         </div>
         <div className={styles['boxes']} style={{textAlign: 'right'}}>
-                    <a href="./disclaimer" className={styles.txt} style={{paddingLeft: '55px'}}>Privacy policy</a>
-                    <a href="./disclaimer" className={styles.txt}>Terms of Service</a>
-                    <a href="./disclaimer" className={styles.txt}>Disclaimer</a>
+                    <a href="/disclaimer" className={styles.txt} style={{paddingLeft: '55px'}}>Privacy policy</a>
+                    <a href="/disclaimer" className={styles.txt}>Terms of Service</a>
+                    <a href="/disclaimer" className={styles.txt}>Disclaimer</a>
         </div>
       </footer>
   )
