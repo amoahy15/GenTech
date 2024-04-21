@@ -50,19 +50,25 @@ def create_review():
 @jwt_required()
 def get_review(review_id):
     try:
-        review = Review.objects.get(id=review_id)
+        review = Review.objects.get(review_id=review_id)
         return jsonify(review.serialize()), 200
     except DoesNotExist:
         current_app.logger.error(f"Review {review_id} not found")
         return jsonify({"error": "Review not found"}), 404
+    except AttributeError as e:
+        current_app.logger.error(f"Attribute error: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error: {str(e)}")
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 
 @review_controller.route('/reviews/<string:review_id>', methods=['PUT'])
 @jwt_required()
 def update_review(review_id):
     data = request.get_json()
     try:
-        Review.objects(id=review_id).update_one(**data)
-        review = Review.objects.get(id=review_id)
+        Review.objects(review_id=review_id).update_one(**data)
+        review = Review.objects.get(review_id=review_id)
         return jsonify({"message": "Review updated successfully", "review": review.serialize()}), 200
     except ValidationError as e:
         return jsonify({"error": str(e)}), 400
@@ -86,37 +92,42 @@ def delete_review(review_id):
 @jwt_required()
 def get_reviews_for_artwork(artwork_id):
     user_id = get_jwt_identity()
-    curruser= User.objects(user_id=user_id).first()
     try:
-        artwork = Artwork.objects(artwork_id=artwork_id).first()
-        if not artwork:
-            return jsonify({"error": "Artwork not found"}), 404
+        curruser = User.objects.get(user_id=user_id)
+        artwork = Artwork.objects.get(artwork_id=artwork_id)
 
         reviews = Review.objects(artwork_id=artwork).order_by('-like_count')
+        user_review = reviews.filter(user_id=curruser).first()
+
         reviews_list = []
-
         for review in reviews:
-            user = User.objects(id=review.user_id.id).first()
+            user = review.user_id
             likedbyuser = curruser in review.liked_by
-
             likes = [u.serialize() for u in review.liked_by]
-            if user:
-                reviews_list.append({
-                    'review_id': str(review.id),
-                    'user_id': str(review.user_id),
-                    'user_name': user.user_name,
-                    'profile_picture': user.profile_picture,
-                    'is_owner': user == curruser,
-                    'rating': review.rating,
-                    'comment': review.comment,
-                    'created_at': review.created_at.isoformat() if review.created_at else None,
-                    'liked_status': likedbyuser,
-                    "likes": likes,
-                    "like_count": review.like_count
-                })
-        return jsonify(reviews_list), 200
+            reviews_list.append({
+                'review_id': str(review.id),
+                'user_id': str(user.id),
+                'user_name': user.user_name,
+                'profile_picture': user.profile_picture,
+                'is_owner': user == curruser,
+                'rating': review.rating,
+                'comment': review.comment,
+                'created_at': review.created_at.isoformat() if review.created_at else None,
+                'liked_status': likedbyuser,
+                "likes": likes,
+                "like_count": review.like_count
+            })
+
+        return jsonify({
+            "reviews": reviews_list,
+            "user_has_reviewed": bool(user_review),
+            "user_review_id": str(user_review.id) if user_review else None
+        }), 200
+
     except ValidationError as e:
         return jsonify({"error": "Invalid data format", "details": str(e)}), 400
+    except DoesNotExist:
+        return jsonify({"error": "Artwork not found"}), 404
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 @review_controller.route('/<string:review_id>/like', methods=['POST'])

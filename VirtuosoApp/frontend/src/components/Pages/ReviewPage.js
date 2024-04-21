@@ -9,7 +9,8 @@ import axios from 'axios';
 function ReviewPage(props) {
   const [reviews, setReviews] = useState([]);
   const { artworkID } = props.match.params;
-
+  const [userHasReviewed, setUserHasReviewed] = useState(false);
+  const [userReviewId, setUserReviewId] = useState(null);
   const nav = useHistory();
 
   const fetchReviews = async () => {
@@ -17,11 +18,10 @@ function ReviewPage(props) {
       const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
-      const reviewsData = response.data.map(review => ({
-        ...review,
-      }));
-      console.log(reviewsData)
-      setReviews(reviewsData);
+      setReviews(response.data.reviews);
+      setUserHasReviewed(response.data.user_has_reviewed);
+      setUserReviewId(response.data.user_review_id);
+      console.log(userHasReviewed)
     } catch (error) {
       console.error('Error fetching reviews:', error);
     }
@@ -69,7 +69,7 @@ const handleLike = async (reviewId) => {
   return (
     <div>
       <div>
-        <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} />
+        <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} userHasReviewed={userHasReviewed} userReviewId={userReviewId}/>
         <h1 style={{margin: '50px'}}>REVIEWS</h1>
         <Review onDel={deleteReview} reviews={reviews} handleLike={handleLike} />
         <h1 style={{margin: '50px'}}>MORE LIKE THIS</h1>

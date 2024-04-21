@@ -17,9 +17,8 @@ class Review(Document):
     def serialize(self):
         return {
             "review_id": self.review_id,
-            "user_id": str(self.user.id),
-            "user_displayName": self.user.user_name,
-            "artwork_id": str(self.artwork.artwork_id),
+            "user_id": str(self.user_id),
+            "artwork_id": str(self.artwork_id),
             "rating": self.rating,
             "comment": self.comment,
             "created_at": self.created_at.isoformat(),

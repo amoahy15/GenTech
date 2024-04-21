@@ -8,16 +8,16 @@ import ImageDisplay from './ClickableImg.js';
 import FetchAnnotate from './FetchAnnotate.js'
 import RevPopup from './RevPopup.js';
 import axios from 'axios';
+import RevEdit from './RevEdit.js';
 import { useParams } from 'react-router-dom';
 //todo: pass in info directly from reviewpage.js
 //todo: top priority refactoring
-const ArtTextCols = ({artworkID, handleSubmit}) => {
+const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
   const [showPopup, setShowPopup] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [imageURL, setImageUrl] = useState('');
+  const [showEdit, setShowEdit] = useState(0);
 
   //actually called in fetchannotate
   const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null });
@@ -65,7 +65,9 @@ const ArtTextCols = ({artworkID, handleSubmit}) => {
   const handleButtonClick2 = () => {
     setShowPopup(!showPopup);
   };
-
+  const handleButtonClick3 = () => {
+    setShowEdit(!showEdit);
+  };
   const handleImageClick = (event) => {
     if (allowDotPlacement) {
       const rect = event.target.getBoundingClientRect();
@@ -74,6 +76,7 @@ const ArtTextCols = ({artworkID, handleSubmit}) => {
       setClickCoordinates({ x, y });
     }
   };
+  
 
 {/* old test annotations */}
   const annotations = [
@@ -96,10 +99,14 @@ const ArtTextCols = ({artworkID, handleSubmit}) => {
           <div style={{ marginTop: '10px' }}>
           </div>
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
-            <button onClick={handleButtonClick2} style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{'Write a Review'}</button>
+            {userHasReviewed ? (<button onClick={handleButtonClick3} 
+            style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{'Edit Your Review'}</button>) :
+            (<button onClick={handleButtonClick2} 
+              style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{'Write a Review'}</button>)}
           </div>
-          {/* here */}
-          {showPopup && 
+
+
+          {!!showPopup && 
               <RevPopup 
                   onSubmit={() => setShowPopup(false)} 
                   onClose={() => setShowPopup(false)} 
@@ -108,8 +115,17 @@ const ArtTextCols = ({artworkID, handleSubmit}) => {
                   handleSubmit = {handleSubmit}
               />
           }
+          {!!showEdit && 
+              <RevEdit 
+                onSubmit={() => setShowEdit(false)}
+                onClose={() => setShowEdit(false)}
+                handleSubmit={handleSubmit} //HERE
+                reviewId={userReviewId}
+              />
+          }
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
-            <button onClick={handleButtonClick} style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{buttonText}</button>
+            <button onClick={handleButtonClick} 
+            style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{buttonText}</button>
           </div>
         </div>
         <div style={{ margin: '20px', position: 'relative', width: '50%' }}>
@@ -118,9 +134,12 @@ const ArtTextCols = ({artworkID, handleSubmit}) => {
             {showAnnotations ? (
 
               //<AnnotationComments comments={annotations} onAddCommentClick={handleAddCommentClick} allowDotPlacement={allowDotPlacement} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
-              <FetchAnnotate artworkID={artworkID} setHoverCoordinates={setHoverCoordinates} url = {placeholderImage}></FetchAnnotate>
+              <FetchAnnotate artworkID={artworkID} 
+              setHoverCoordinates={setHoverCoordinates} 
+              url = {placeholderImage}></FetchAnnotate>
             ) : (
-              <TextColumn header={artwork.title} text={artwork.description} info={artwork.artist_name} />
+              <TextColumn header={artwork.title} text={artwork.description} 
+              info={artwork.artist_name} />
             )}
           </div>
         </div>

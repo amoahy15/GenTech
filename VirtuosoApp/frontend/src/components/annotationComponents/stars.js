@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import button from "../styles/stars.module.css";
 
-const StarRating = ({ onRatingChange }) => {
-  const [rating, setRating] = useState(0);
+const StarRating = ({ rating: initialRating, onRatingChange }) => {
+  const [rating, setRating] = useState(initialRating);
   const [hover, setHover] = useState(0);
+
+  // Synchronize internal state with the external rating prop
+  useEffect(() => {
+    setRating(initialRating);
+  }, [initialRating]);
 
   const handleStarClick = (starIndex) => {
     setRating(starIndex);
@@ -15,7 +20,7 @@ const StarRating = ({ onRatingChange }) => {
   };
 
   const handleMouseOff = () => {
-    setHover(rating);
+    setHover(rating); // Ensures that hover state resets to current rating
   };
 
   return (
@@ -29,8 +34,7 @@ const StarRating = ({ onRatingChange }) => {
             className={starIndex <= (hover || rating) ? button.on : button.off}
             onClick={() => handleStarClick(starIndex)}
             onMouseEnter={() => handleMouseOn(starIndex)}
-            onMouseLeave={handleMouseOff}
-          >
+            onMouseLeave={handleMouseOff}>
             <span className={button.star}>&#9733;</span>
           </button>
         );
