@@ -91,3 +91,26 @@ def get_annotations_for_artwork(artwork_id):
         return jsonify({"error": "Artwork not found"}), 404
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+
+@annotation_controller.route('/annotations/<string:annotation_id>/like', methods=['POST'])
+@jwt_required()
+def toggle_annotation_like(annotation_id):
+    user_id = get_jwt_identity()
+    try:
+        annotation = Annotation.objects.get(annotation_id=annotation_id)
+        user = User.objects.get(user_id=user_id)
+        if user in annotation.liked_by:
+            annotation.update(pull__liked_by=user)
+            annotation.update(dec__like_count=1)
+            liked_status = False
+        else:
+            annotation.update(push__liked_by=user)
+            annotation.update(inc__like_count=1)
+            liked_status = True
+        annotation.reload()
+        users = [u.serialize() for u in annotation.liked_by]
+        return jsonify({"message": "Like or unlike successful", "liked_by": users, "like_count": annotation.like_count, "liked_status": liked_status}), 200
+    except DoesNotExist:
+        return jsonify({"error": "Annotation not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
