@@ -3,7 +3,7 @@ from flask import request, jsonify, Blueprint, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from mongoengine import ValidationError, NotUniqueError, DoesNotExist
 from models.reviewModel import Review
-from models.artworkModel import Artwork
+from models.artworkModel import Artwork, updateRating
 from models.userModel import User
 import logging
 import uuid
@@ -31,7 +31,7 @@ def create_review():
             comment=data.get('comment', ''),
         )
         new_review.save()
-        # had to remove the append and update average
+        updateRating(data['artwork_id'])
         current_app.logger.info(f"Review {review_id} successfully created.")
 
         return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
@@ -69,6 +69,7 @@ def update_review(review_id):
     try:
         Review.objects(review_id=review_id).update_one(**data)
         review = Review.objects.get(review_id=review_id)
+        updateRating(review.artwork_id.artwork_id)
         return jsonify({"message": "Review updated successfully", "review": review.serialize()}), 200
     except ValidationError as e:
         return jsonify({"error": str(e)}), 400
@@ -82,6 +83,7 @@ def delete_review(review_id):
         user = User.objects.get(user_id=user_id)
         review = Review.objects.get(review_id=review_id, user_id=user)
         review.delete()
+        updateRating(review.artwork_id.artwork_id)
         return jsonify({"message": "Review deleted successfully"}), 200
     except DoesNotExist:
         return jsonify({"error": "Review not found or access denied"}), 404
