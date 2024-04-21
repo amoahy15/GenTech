@@ -1,5 +1,6 @@
 import uuid
 import logging
+import os
 import secrets
 from flask import Flask, Blueprint, request, jsonify, current_app
 from models.userModel import User
@@ -49,7 +50,8 @@ def create_user():
     )
     try:
         new_user.save()
-        verification_url = f"https://yourdomain.com/account/accept/{new_user.user_id}/{verification_code}"
+        base_url = os.getenv('BASE_URL', 'http://localhost:3000')
+        verification_url = f"{base_url}/verify/{new_user.user_id}/{verification_code}"
         send_confirmation_email(new_user.email, verification_url)
         return jsonify({"message": "User created successfully, please check your email to verify your account", "user_id": new_user.user_id}), 201
         
@@ -203,12 +205,19 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user")
         return jsonify({"error": "Not following this user"}), 400
-    
-@user_controller.route('/account/accept/<user_id>/<token>', methods=['GET'])
-def confirm_email(user_id, token):
-    user = User.objects(user_id=user_id, verification_token=token).first()
+
+
+@user_controller.route('/verify/<user_id>/<verification_token>', methods=['GET'])
+def verify_user(user_id, verification_token):
+    user = User.objects(user_id=user_id).first()
     if not user:
-        return jsonify({"error": "Invalid link or user not found"}), 404
-    user.verification_status = True
-    user.save()
-    return jsonify({"message": "Email verified successfully"}), 200
+        return jsonify({"error": "User not found"}), 404
+
+    if user.verification_status:
+        return jsonify({"message": "User already verified"}), 200
+    if user.verification_token == verification_token:
+        user.verification_status = True
+        user.save()
+        return jsonify({"verified": True, "message": "User successfully verified"}), 200
+    else:
+        return jsonify({"error": "Invalid verification token"}), 400
