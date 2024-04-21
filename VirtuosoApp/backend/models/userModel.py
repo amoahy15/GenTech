@@ -24,6 +24,7 @@ class User(Document):
     is_private = BooleanField(default=False)
     social_media_links = DictField()
     verification_status = BooleanField(default=False)
+    verification_token = StringField()
     preferences = DictField()
     joined_date = DateTimeField(default=datetime.now(timezone.utc))
     

@@ -1,11 +1,13 @@
 import uuid
+import logging
+import secrets
 from flask import Flask, Blueprint, request, jsonify, current_app
 from models.userModel import User
 from mongoengine.errors import NotUniqueError, ValidationError
 from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-import logging
+from .mailController import send_confirmation_email
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,8 +25,9 @@ def create_user():
 
     if User.objects(email=data['email']).first():
         current_app.logger.error("Email already exists")
-        return jsonify({"error": "Email already exists"}), 409
-
+        return jsonify({"error": "Email already exists"}), 409     
+     
+    verification_code = secrets.token_urlsafe(16)
     new_user = User(
         user_id=str(uuid.uuid4()),
         user_name=data['user_name'],
@@ -40,20 +43,22 @@ def create_user():
         is_private=data.get('is_private', False),
         social_media_links=data.get('social_media_links', {}),
         verification_status=data.get('verification_status', False),
+        verification_token=verification_code,
         preferences=data.get('preferences', {}),
         joined_date=datetime.now(timezone.utc)
     )
     try:
         new_user.save()
-        current_app.logger.info(f"User {new_user.user_name} created successfully with ID {new_user.user_id}.")
-        return jsonify({"message": "User created successfully", "user_id": new_user.user_id}), 201
+        verification_url = f"https://yourdomain.com/account/accept/{new_user.user_id}/{verification_code}"
+        send_confirmation_email(new_user.email, verification_url)
+        return jsonify({"message": "User created successfully, please check your email to verify your account", "user_id": new_user.user_id}), 201
+        
     except ValidationError as e:
         current_app.logger.error("Validation error during user creation", exc_info=True)
         return jsonify({"error": str(e)}), 400
     except NotUniqueError:
         current_app.logger.error("User already exists with the provided username or email", exc_info=True)
         return jsonify({"error": "User already exists"}), 409
-
 
 @user_controller.route('/update_user', methods=['PUT'])
 @jwt_required()
@@ -198,3 +203,12 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user")
         return jsonify({"error": "Not following this user"}), 400
+    
+@user_controller.route('/account/accept/<user_id>/<token>', methods=['GET'])
+def confirm_email(user_id, token):
+    user = User.objects(user_id=user_id, verification_token=token).first()
+    if not user:
+        return jsonify({"error": "Invalid link or user not found"}), 404
+    user.verification_status = True
+    user.save()
+    return jsonify({"message": "Email verified successfully"}), 200
