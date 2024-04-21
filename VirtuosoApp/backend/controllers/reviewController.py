@@ -97,7 +97,8 @@ def get_reviews_for_artwork(artwork_id):
 
         for review in reviews:
             user = User.objects(id=review.user_id.id).first()
-            is_liked_by_user = curruser in [str(u.id) for u in review.liked_by]
+            likedbyuser = curruser in review.liked_by
+
             likes = [u.serialize() for u in review.liked_by]
             if user:
                 reviews_list.append({
@@ -109,8 +110,9 @@ def get_reviews_for_artwork(artwork_id):
                     'rating': review.rating,
                     'comment': review.comment,
                     'created_at': review.created_at.isoformat() if review.created_at else None,
-                    'liked_status': is_liked_by_user,
-                    "likes": likes
+                    'liked_status': likedbyuser,
+                    "likes": likes,
+                    "like_count": review.like_count
                 })
         return jsonify(reviews_list), 200
     except ValidationError as e:

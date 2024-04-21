@@ -4,9 +4,7 @@ import StaticStarRating from './staticstars';
 import { FaTrashAlt, FaHeart} from 'react-icons/fa';
 
 //This component displays a single review card & controls conditional components
-const ReviewCard = ({ rating, user, review, revid, is_owner, onDelete, onLike, isLiked}) => {
-  //todo likes
-  
+const ReviewCard = ({ rating, likes, user, review, revid, is_owner, onDelete, onLike, isLiked}) => {
   return (
     <div className={styles['review-card']}>
       <StaticStarRating rating={rating}/>
@@ -15,6 +13,7 @@ const ReviewCard = ({ rating, user, review, revid, is_owner, onDelete, onLike, i
       <div className={styles['actions']}>
         <button onClick={() => onLike(revid)} className={styles['like-button']}>
           <FaHeart style={{cursor: 'pointer', fontSize: '14px', color: isLiked ? 'red' : 'gray' }} />
+          <span style={{ marginLeft: '5px', fontSize: '14px' }}>{likes}</span>
         </button>
         {is_owner && (
           <button onClick={() => onDelete(revid)} className={styles['delete-button']}>

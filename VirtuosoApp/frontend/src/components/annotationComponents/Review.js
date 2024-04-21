@@ -31,20 +31,6 @@ const Review = ({ reviews, onDel, isLiked, handleLike}) => {
 
   const reviewRows = rows(reviews, 2);
 
-  const deleteReview = async (reviewId) => {
-    try {
-        const response = await axios.delete(`http://127.0.0.1:8000/api/review/reviews/${reviewId}`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-        });
-        if (response.status === 200) {
-            console.log("Review deleted successfully");
-            window.location.reload();
-        }
-    } catch (error) {
-        console.error("Failed to delete review", error.response.data);
-    }
-}
-
   return (
     <div style={{ marginLeft: '5vw', marginRight: '5vw' }}>
       <div className={styles['review-container']}>
@@ -56,12 +42,13 @@ const Review = ({ reviews, onDel, isLiked, handleLike}) => {
                 key={reviewIndex}
                 rating={review.rating}
                 user={review.user_name}
-                review={review.review}
-                revid = {review.revid}
+                review={review.comment}
+                revid = {review.review_id}
                 is_owner={review.is_owner}
                 onDelete = {onDel}
-                isLiked={isLiked}
-                onLike={handleLike}
+                isLiked={review.liked_status}
+                likes = {review.like_count}
+                onLike={()=> handleLike(review.review_id)}
               />
             ))}
           </div>
