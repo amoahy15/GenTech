@@ -27,21 +27,18 @@ const Register = () => {
       user_name: userName
     };
 
-    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/create_user`, userData)
-      .then(function (response) {
-        console.log(response);
-        const token = response.data.auth ? response.data.auth.token : response.data.access_token;
-        localStorage.setItem('token', token);
-        nav.push("./profile");
-        window.location.reload();
-      }).catch(function (error) {
-        console.log(error);
-        if (error.response && error.response.status === 401) {
-          alert("Invalid credentials");
-        } else {
-          alert("Error. Please try again");
-        }
-      });
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/create_user`, userData);
+      console.log(response);
+      nav.push("/email-check");
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.status === 401) {
+        alert("Invalid credentials");
+      } else {
+        alert("Error. Please try again");
+      }
+    }
   }
 
   return (
@@ -49,7 +46,7 @@ const Register = () => {
       <video className={styles.videobg} src={bgVid} autoPlay muted loop />
       <div className={styles.wrapper}>
         <div className={styles.container}>
-        <form onSubmit={registerUser}> {/* Updated to use onSubmit event */}
+        <form onSubmit={registerUser}>
 
           <div className={styles.header}>
             <h1><a href='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
@@ -79,13 +76,13 @@ const Register = () => {
             </div>
           </div>
 
-          <button className={styles.btn} type="submit">Create Account</button> {/* Changed to type="submit" */}
+          <button className={styles.btn} type="submit">Create Account</button>
           <Authenticator/>
         </form>
       </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Register;
