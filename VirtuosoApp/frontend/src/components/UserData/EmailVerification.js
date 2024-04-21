@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import VirtuosoLogo from "../../assets/images/VirtuosoLogo.png";
 
 function VerificationPage() {
   const [status, setStatus] = useState('Verifying...');
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
   const { userId, verificationToken } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     const apiUrl = `${process.env.REACT_APP_API_BASE_URL}/user/verify/${userId}/${verificationToken}`;
@@ -14,6 +15,9 @@ function VerificationPage() {
       .then(response => {
         if (response.data.verified) {
           setStatus('Your account has been successfully verified!');
+          setTimeout(() => {
+            history.push('/profile');
+          }, 3000);
         } else {
           setStatus('Verification failed.');
           setError(response.data.message);
@@ -23,7 +27,7 @@ function VerificationPage() {
         setStatus('Verification failed.');
         setError(`Error: ${error.response?.data?.error || 'Unknown error occurred'}`);  // Set error from API response or a default error message
       });
-  }, [userId, verificationToken]);
+  }, [userId, verificationToken, history]);
 
   return (
     <div style={{ textAlign: 'center', backgroundColor: 'white', height: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>

@@ -70,8 +70,8 @@ function App() {
         </Route>
         <Route path="/email-check">
               <EmailCheckPage />
-            </Route>
-        <Route path="/verify/:userId/:verificationToken" element={<VerificationPage />} />
+            </Route>        
+        <Route path="/verify/:userId/:verificationToken" component={VerificationPage} />
       </Switch> 
       </div>
     </div>
