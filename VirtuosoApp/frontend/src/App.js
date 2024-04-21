@@ -12,6 +12,8 @@ import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from './components/Pages/Disclaimer';
 import TestSearch from "./components/Pages/TestSearch";
+import VerificationPage from "./components/UserData/EmailVerification";
+import EmailCheckPage from "./components/UserData/EmailCheckPage";
 
 function App() {
 
@@ -66,6 +68,10 @@ function App() {
         <Route path="/test">
           <TestSearch/>
         </Route>
+        <Route path="/email-check">
+              <EmailCheckPage />
+            </Route>
+        <Route path="/verify/:userId/:verificationToken" element={<VerificationPage />} />
       </Switch> 
       </div>
     </div>
