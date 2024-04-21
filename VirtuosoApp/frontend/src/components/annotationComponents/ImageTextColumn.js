@@ -139,7 +139,7 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
               url = {placeholderImage}></FetchAnnotate>
             ) : (
               <TextColumn header={artwork.title} text={artwork.description} 
-              info={artwork.artist_name} />
+              name={artwork.artist_name} year={artwork.year} rating={artwork.average_rating}/>
             )}
           </div>
         </div>
