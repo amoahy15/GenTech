@@ -14,7 +14,7 @@ const SingleAnnotation = ({ onDelete, username, comment, x, y, onHover, annotati
       {/*<p style={{paddingBottom: '8px'}}>{[x, " ", y]}</p>*/}
       {/*<p style={{paddingBottom: '8px'}}>{["^", likes]}</p>*/}
       {annotation.is_owner && (
-        <FaTrashAlt onClick={() => onDelete(annotation.annotation_id)} style={{ cursor: 'pointer' }} />
+        <FaTrashAlt onClick={() => onDelete(annotation.annotation_id)} style={{cursor: 'pointer', fontSize: '14px', color: 'gray' }} />
       )}
       <hr></hr>
     </div>

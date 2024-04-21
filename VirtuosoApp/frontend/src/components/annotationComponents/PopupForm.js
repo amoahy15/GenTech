@@ -3,6 +3,7 @@ import styles from '../styles/popup.module.css'
 import axios from "axios";
 import { useHistory } from 'react-router-dom';
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+
 //for more about image rendering i used this: https://docs.rs/imgref/latest/imgref/
 //TODO: Undo hardcoding of artworkid
 const PopupForm = ({ onSubmit, onClose, url }) => {
@@ -111,10 +112,11 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
   };
 
   return (
-    <div className={styles['popup-background']}>
-      <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', textAlign: 'center' }}>
+    <div className={styles['popup-background']} style={{overflow: 'auto'}}>
+      <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', overflow: 'auto', alignItems: 'center', textAlign: 'center' }}>
+        
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
-            <img ref = {imgref} src={imageUrl} style={{ padding: '20px', maxWidth: '100%', maxHeight: '60vw'}}/>
+            <img ref = {imgref} src={imageUrl} style={{ padding: '20px', maxWidth: '100%', maxHeight: '60vh'}}/>
             {
             realclickCoordinates.x !== null && realclickCoordinates.x >= 0 &&
             realclickCoordinates.y !== null && realclickCoordinates.y >= 0 && (
@@ -128,8 +130,12 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
             <textarea className={styles.input} value={annotationText} onChange={handleTextChange}
                   placeholder="Type your annotation here"/>
           <div className={styles.buttonGroup}>
-            <button className={styles.btn} type="submit">Submit</button>
-            <button className={styles.btn} type="button" onClick={onClose}>Cancel</button>
+            <button className={styles.btn} type="submit">Submit
+            </button>
+            
+            <button className={styles.btn} type="button" onClick={onClose}>
+              Cancel
+            </button>
           </div>
         </form>
         </div>

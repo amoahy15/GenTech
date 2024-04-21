@@ -12,12 +12,6 @@ const Gallery = () => {
           </div>
           
         </Row>
-        <Row title="User Images">
-          <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
-          <Collections category="user_art" />
-          </div>
-          
-        </Row>
         <Row title="Sculpture">
           <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
           <Collections category="sculpture" />

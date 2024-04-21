@@ -96,7 +96,9 @@ def get_reviews_for_artwork(artwork_id):
         reviews_list = []
 
         for review in reviews:
-            user = User.objects(id=review.user_id.id).first()  # Assuming user_id is a ReferenceField
+            user = User.objects(id=review.user_id.id).first()
+            is_liked_by_user = curruser in [str(u.id) for u in review.liked_by]
+            likes = [u.serialize() for u in review.liked_by]
             if user:
                 reviews_list.append({
                     'review_id': str(review.id),
@@ -106,10 +108,34 @@ def get_reviews_for_artwork(artwork_id):
                     'is_owner': user == curruser,
                     'rating': review.rating,
                     'comment': review.comment,
-                    'created_at': review.created_at.isoformat() if review.created_at else None
+                    'created_at': review.created_at.isoformat() if review.created_at else None,
+                    'liked_status': is_liked_by_user,
+                    "likes": likes
                 })
         return jsonify(reviews_list), 200
     except ValidationError as e:
         return jsonify({"error": "Invalid data format", "details": str(e)}), 400
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+@review_controller.route('/<string:review_id>/like', methods=['POST'])
+@jwt_required()
+def toggle_likes(review_id): #both like and unlike use this 
+    user_id = get_jwt_identity()
+    try:
+        review = Review.objects.get(review_id=review_id)
+        user = User.objects.get(user_id=user_id)
+        if user in review.liked_by: #can not like 2x
+            review.update(pull__liked_by=user)
+            review.update(dec__like_count=1)
+            liked_status = False
+        else:
+            review.update(push__liked_by=user)
+            review.update(inc__like_count=1)
+            liked_status = True
+        review.reload()
+        users = [u.serialize() for u in review.liked_by]
+        return jsonify({"message": "Like or unlike succesful", "likedby": users, "like_count": review.like_count, "liked_status": liked_status}), 200
+    except DoesNotExist:
+        return jsonify({"error": "Review not found"}), 404
     except Exception as e:
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500

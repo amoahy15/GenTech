@@ -4,9 +4,10 @@ import ReviewCard from './ReviewCard';
 import {jwtDecode} from "jwt-decode";
 import axios from 'axios';
 
-const Review = ({ reviews, onDel }) => {
+const Review = ({ reviews, onDel, isLiked, handleLike}) => {
   const token = localStorage.getItem('token');
   const [userId, setUserData] = useState();
+
 
   useEffect(() => {
     if (token) {
@@ -14,17 +15,6 @@ const Review = ({ reviews, onDel }) => {
       setUserData(decodedToken.userId);
     }
   }, [token]);
-
-  const currentUserReviewIndex = reviews.findIndex(review => review.user_id === userId);
-
-  let userHasReview = false;
-  let currentUserReview;
-  if (currentUserReviewIndex !== -1) {
-    userHasReview = true;
-    [currentUserReview] = reviews.splice(currentUserReviewIndex, 1);
-    reviews.unshift(currentUserReview);
-  }
-
 
   if (!reviews || reviews.length === 0) {
     return <div style={{marginLeft: '5vw'}}>Start the conversation!</div>;
@@ -58,11 +48,7 @@ const Review = ({ reviews, onDel }) => {
   return (
     <div style={{ marginLeft: '5vw', marginRight: '5vw' }}>
       <div className={styles['review-container']}>
-        {!userHasReview && (
-          <div>
-            <button >+</button>
-          </div>
-        )}
+        
         {reviewRows.map((row, index) => (
           <div key={index} className={styles['row']}>
             {row.map((review, reviewIndex) => (
@@ -74,6 +60,8 @@ const Review = ({ reviews, onDel }) => {
                 revid = {review.revid}
                 is_owner={review.is_owner}
                 onDelete = {onDel}
+                isLiked={isLiked}
+                onLike={handleLike}
               />
             ))}
           </div>
