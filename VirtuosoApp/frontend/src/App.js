@@ -28,7 +28,7 @@ function App() {
           <Home/>
           <Footer/>
         </Route>
-        <Route exact path="/about">
+        <Route path="/about">
           {token ? <NavUser/> : <Nav/>}
           <AboutPage/>
           <Footer/>
