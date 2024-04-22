@@ -8,7 +8,7 @@ from mongoengine.errors import NotUniqueError, ValidationError
 from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from .mailController import send_confirmation_email
+from .mailController import send_confirmation_email, send_password_reset_email
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -221,3 +221,23 @@ def verify_user(user_id, verification_token):
         return jsonify({"verified": True, "message": "User successfully verified"}), 200
     else:
         return jsonify({"error": "Invalid verification token"}), 400
+
+
+@user_controller.route('/request_password_reset', methods=['POST'])
+def request_password_reset():
+    data = request.get_json()
+    if not data or 'email' not in data:
+        return jsonify({'error': 'Email is required'}), 400
+    
+    user = User.objects(email=data['email']).first()
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    reset_code = secrets.token_urlsafe(16)
+    base_url = os.getenv('BASE_URL', 'http://localhost:3000')
+    reset_url = f"{base_url}/reset_password/{user.user_id}/{reset_code}"
+    try:
+        send_password_reset_email(email=user.email, reset_url=reset_url)
+        return jsonify({'message': 'Password reset email sent successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': 'Failed to send password reset email', 'details': str(e)}), 500
