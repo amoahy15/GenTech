@@ -1,33 +1,29 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    width: 100vw;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   }
 
 .textContainer {
     margin: auto;
     padding: 20px;
-    border: 1px solid #cccccc;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
-    max-width: 800px; /* Adjust as needed */
+    background-color: rgba(255, 255, 255, 0.8); 
+    max-width: 800px; 
     text-align: center;
   }
-
-.h2 {
-    font-size: 100px;
-}
 .p {
-    font-size: 25px;
+  margin-top: .5333333333rem;
+  margin-bottom: 2.3333333333rem;
+  font-size: 1.0666666667rem;
+  text-align: center;
 }
 .h1{
     font-size: 45px;
     padding-bottom: 20px;
+    color: rgba(153, 0, 0);
 }
 .buttonContainer {
   padding: 20px;
@@ -36,3 +32,9 @@
   margin-bottom: 20px;
 }
 
+.backgroundImage {
+  width: 421px;
+  height: 343px;
+  margin: auto; 
+  display: block; 
+}
