@@ -206,31 +206,35 @@ def unfollow_user():
         current_app.logger.warning("User is not following this user")
         return jsonify({"error": "Not following this user"}), 400
 
-
 @user_controller.route('/verify/<user_id>/<verification_token>', methods=['GET'])
 def verify_user(user_id, verification_token):
+    current_app.logger.debug(f"Verifying user {user_id} with token {verification_token}")
     user = User.objects(user_id=user_id).first()
     if not user:
+        current_app.logger.warning(f"User not found: {user_id}")
         return jsonify({"error": "User not found"}), 404
-
     if user.verification_status:
+        current_app.logger.info(f"User already verified: {user_id}")
         return jsonify({"message": "User already verified"}), 200
     if user.verification_token == verification_token:
         user.verification_status = True
         user.save()
+        current_app.logger.info(f"User verified successfully: {user_id}")
         return jsonify({"verified": True, "message": "User successfully verified"}), 200
     else:
+        current_app.logger.warning(f"Invalid verification token for user {user_id}: {verification_token}")
         return jsonify({"error": "Invalid verification token"}), 400
-
 
 @user_controller.route('/request_password_reset', methods=['POST'])
 def request_password_reset():
     data = request.get_json()
     if not data or 'email' not in data:
+        current_app.logger.error("Email field is missing in request data")
         return jsonify({'error': 'Email is required'}), 400
-    
+
     user = User.objects(email=data['email']).first()
     if not user:
+        current_app.logger.warning(f"User not found with email: {data['email']}")
         return jsonify({'error': 'User not found'}), 404
 
     reset_code = secrets.token_urlsafe(16)
@@ -238,6 +242,8 @@ def request_password_reset():
     reset_url = f"{base_url}/reset_password/{user.user_id}/{reset_code}"
     try:
         send_password_reset_email(email=user.email, reset_url=reset_url)
+        current_app.logger.info(f"Password reset email sent to {user.email}")
         return jsonify({'message': 'Password reset email sent successfully'}), 200
     except Exception as e:
+        current_app.logger.error(f"Failed to send password reset email to {user.email}: {str(e)}")
         return jsonify({'error': 'Failed to send password reset email', 'details': str(e)}), 500

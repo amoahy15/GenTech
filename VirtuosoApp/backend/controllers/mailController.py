@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, current_app
 from jinja2 import Environment, FileSystemLoader
 import os
 import logging
@@ -6,7 +6,7 @@ import mailtrap as mt
 
 
 mail_controller = Blueprint('mail_controller', __name__)
-logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../templates')
 env = Environment(loader=FileSystemLoader(template_dir))
@@ -19,7 +19,7 @@ def send_confirmation_email(email, verification_url):
 
     email = data['email']
     verification_url = data['verification_url']
-    logger.info(f"Preparing to send confirmation email to {email}")
+    current_app.logger.info(f"Preparing to send confirmation email to {email}")
     html_content = render_email_template(verification_url)
     
     mail = mt.Mail(
@@ -33,10 +33,10 @@ def send_confirmation_email(email, verification_url):
     client = mt.MailtrapClient(token=os.getenv('MAILTRAP_TOKEN'))
     try:
         client.send(mail)
-        logger.info("Confirmation email sent successfully")
+        current_app.logger.info("Confirmation email sent successfully")
         return jsonify({'message': 'Email sent successfully'}), 200
     except Exception as e:
-        logger.error(f"Failed to send email: {str(e)}")
+        current_app.logger.error(f"Failed to send email: {str(e)}")
         return jsonify({'error': 'Failed to send email', 'details': str(e)}), 500
 
 def render_email_template(verification_url):
@@ -44,7 +44,7 @@ def render_email_template(verification_url):
     return template.render(verification_url=verification_url)
 
 @mail_controller.route('/send_password_reset_email', methods=['POST'])
-def send_password_reset_email():
+def send_password_reset_email(email, reset_url):
     data = request.get_json()
     if not data or 'email' not in data or 'reset_url' not in data:
         return jsonify({'error': 'Missing email or reset URL'}), 400
@@ -52,7 +52,7 @@ def send_password_reset_email():
     email = data['email']
     reset_url = data['reset_url']
     
-    logger.info(f"Preparing to send password reset email to {email}")
+    current_app.logger.info(f"Preparing to send password reset email to {email}")
     html_content = render_password_email_template(reset_url)
     
     mail = mt.Mail(
@@ -67,10 +67,10 @@ def send_password_reset_email():
     client = mt.MailtrapClient(token=os.getenv('MAILTRAP_TOKEN'))
     try:
         client.send(mail)
-        logger.info("Password reset email sent successfully")
+        current_app.logger.info("Password reset email sent successfully")
         return jsonify({'message': 'Email sent successfully'}), 200
     except Exception as e:
-        logger.error(f"Failed to send email: {str(e)}")
+        current_app.logger.error(f"Failed to send email: {str(e)}")
         return jsonify({'error': 'Failed to send email', 'details': str(e)}), 500
 
 def render_password_email_template(reset_url):
