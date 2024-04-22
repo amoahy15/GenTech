@@ -28,7 +28,7 @@ function App() {
           <Home/>
           <Footer/>
         </Route>
-        <Route exact path="/about">
+        <Route path="/about">
           {token ? <NavUser/> : <Nav/>}
           <AboutPage/>
           <Footer/>
@@ -40,26 +40,26 @@ function App() {
             <Footer />
           </div>
         )} />
-        <Route exact path="/login">
+        <Route path="/login">
           <LoginPage2/>
         </Route> 
-        <Route exact path="/register">
+        <Route path="/register">
           <Register/>
         </Route> 
-        <Route exact path="/profile">
+        <Route path="/profile">
           {token ? <NavUser/> : <Nav/>}
           <Profile/>
           <Footer/>
         </Route> 
-        <Route exact path="/collections">
+        <Route path="/collections">
           {token ? <NavUser/> : <Nav/>}
           <Gallery/>
           <Footer/>
         </Route>
-        <Route exact path="/disclaimer">
+        <Route path="/disclaimer">
           <Disclaimer/>
         </Route>
-        <Route exact path="/test">
+        <Route path="/test">
           <TestSearch/>
         </Route>
       </Switch> 
