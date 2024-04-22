@@ -42,9 +42,6 @@ function App() {
           </div>
         )} />
         <Route path="/login">
-          <LoginPage/>
-        </Route>
-        <Route path="/login2">
           <LoginPage2/>
         </Route> 
         <Route path="/register">
