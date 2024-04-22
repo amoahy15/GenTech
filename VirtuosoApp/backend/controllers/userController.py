@@ -79,6 +79,58 @@ def update_user():
     except Exception as e:
         current_app.logger.error(f"Error updating user {user_id}: {str(e)}")
         return jsonify({"error": "Error updating user"}), 500
+
+@user_controller.route('/update_password', methods=['PUT'])
+@jwt_required()
+def update_password():
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
+
+    if not user:
+        current_app.logger.error("User not found")
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+    if 'old_password' in data and 'new_password' in data:
+        if bcrypt.check_password_hash(user.password_hash, data['old_password']):
+            new_hashed_password = bcrypt.generate_password_hash(data['new_password']).decode('utf-8')
+            user.password_hash = new_hashed_password
+            try:
+                user.save()
+                return jsonify({"message": "Password updated successfully"}), 200
+            except Exception as e:
+                current_app.logger.error(f"Error updating password for user {user_id}: {str(e)}")
+                return jsonify({"error": "Error updating password"}), 500
+        else:
+            return jsonify({"error": "Incorrect old password"}), 400
+    else:
+        return jsonify({"error": "Required password fields missing"}), 400
+    
+@user_controller.route('/update_bio', methods=['PUT'])
+@jwt_required()
+def update_bio():
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
+
+    if not user:
+        current_app.logger.error("User not found for bio update")
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+    if 'bio' in data:
+        user.bio = data['bio']
+        current_app.logger.info(f"Updating bio for user ID {user_id} to {data['bio']}")
+    else:
+        current_app.logger.warning(f"No 'bio' found in request data for user ID {user_id}")
+
+    try:
+        user.save()
+        current_app.logger.info(f"User bio updated successfully for user ID {user_id}")
+        return jsonify({"message": "User bio updated successfully"}), 200
+    except Exception as e:
+        current_app.logger.error(f"Error updating bio for user {user_id}: {str(e)}")
+        return jsonify({"error": "Error updating user bio"}), 500
+
     
 @user_controller.route('/login', methods=['POST'])
 def login_user():

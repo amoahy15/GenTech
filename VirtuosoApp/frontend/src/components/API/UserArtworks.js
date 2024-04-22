@@ -1,42 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ImageCard from '../carouselcomponents/ImageCard';
 
 
-
-const fetchImagesFromCategory = async (category) => {
-    try {
-        const response = await axios.get(`http://127.0.0.1:5000/api/s3/images/${category}`);
-        return response.data;
-    } catch (error) {
-        console.error(`Error fetching images for category ${category}:`, error);
-        return [];
-    }
-};
-
-const UserArtworks = ({ category }) => {
-  const [images, setImages] = useState([]);
+const UserArtworks = () => {
+  const [artworks, setArtworks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      if (category) {
-        const fetchedImages = await fetchImagesFromCategory(category);
-        setImages(fetchedImages.map(url => ({ url: url, alt: `${category} image` })));
+    const fetchArtworks = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/user_artwork`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          }
+        });
+
+        setArtworks(response.data);
+      } catch (error) {
+        console.error('Fetching error:', error);
+        setError(`Failed to fetch artworks: ${error.response ? error.response.data.error : error.message}`);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchImages();
-  }, [category]);
+    fetchArtworks();
+  }, []); 
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   return (
     <div>
-       <h1>My art</h1>
-        {images.map((image, index) => (
-            <div key={index}>
-                <ImageCard image={image} />
-            </div>
-        ))}
+      {artworks.length > 0 ? (
+        <div>
+          <h2>User Artworks</h2>
+          <ul>
+            {artworks.map((artwork, index) => (
+              <li key={index}>
+                <img src={artwork.imageUrl} alt={artwork.title} style={{ width: '100px', height: 'auto' }} />
+                <p>{artwork.title}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>No artworks found.</p>
+      )}
     </div>
   );
 };

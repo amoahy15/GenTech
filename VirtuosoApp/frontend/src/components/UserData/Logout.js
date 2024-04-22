@@ -9,7 +9,8 @@ const Logout = () => {
     const handleLogout = () =>{
         
         localStorage.removeItem('token');
-        nav.push('./login2');
+        nav.push('./');
+        window.location.reload();
     }
 
     return(

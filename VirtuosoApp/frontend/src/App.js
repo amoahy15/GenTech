@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AboutPage from "./components/Pages/AboutPage";
 import Home from "./components/Pages/Home";
 import ReviewPage from "./components/Pages/ReviewPage";
-import LoginPage from "./components/UserData/loginPageDark";
 import LoginPage2 from "./components/UserData/loginPageLight";
 import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
@@ -29,7 +28,7 @@ function App() {
           <Home/>
           <Footer/>
         </Route>
-        <Route path="/about">
+        <Route exact path="/about">
           {token ? <NavUser/> : <Nav/>}
           <AboutPage/>
           <Footer/>
@@ -41,26 +40,26 @@ function App() {
             <Footer />
           </div>
         )} />
-        <Route path="/login">
+        <Route exact path="/login">
           <LoginPage2/>
         </Route> 
-        <Route path="/register">
+        <Route exact path="/register">
           <Register/>
         </Route> 
-        <Route path="/profile">
+        <Route exact path="/profile">
           {token ? <NavUser/> : <Nav/>}
           <Profile/>
           <Footer/>
         </Route> 
-        <Route path="/collections">
+        <Route exact path="/collections">
           {token ? <NavUser/> : <Nav/>}
           <Gallery/>
           <Footer/>
         </Route>
-        <Route path="/disclaimer">
+        <Route exact path="/disclaimer">
           <Disclaimer/>
         </Route>
-        <Route path="/test">
+        <Route exact path="/test">
           <TestSearch/>
         </Route>
       </Switch> 

@@ -9,11 +9,11 @@ import img3 from '../../assets/images/testImage3.jpeg';
 import EditUser from '../UserData/EditUser.js';
 import EditItem from '../UserData/EditItem.js';
 import styles from '../styles/user.module.css';
-import UserCollections from './UserCollections.js';
 import Collections from './Collections.js';
 import Row from '../Navigation/rowScroll.js';
 import Post from '../API/Post.js';
 import UserArtworks from '../API/UserArtworks.js';
+import RecentlyViewedCarousel from '../carouselcomponents/RecentlyViewed.js';
 
 function Profile() {
 
@@ -63,7 +63,7 @@ function Profile() {
   
     try {
       const token = localStorage.getItem('token');
-      const url = `http://localhost:8000/api/update_user/${userData.id}`;
+      const url = 'http://127.0.0.1:8000/api/user/update_bio';
   
       const response = await axios.put(
         url,
@@ -109,18 +109,21 @@ function Profile() {
               />
                <button onClick={handleUpdateBio}>Save</button>
           </div>
+          <div>
+          <Post/>
+          <h1>My Artwork</h1>
+          
+          </div>
+      </div>
       </div>
 
-      <div className={styles.container}>
-        <div>Updates</div>
-        <div>
-          <Post/>
-        </div>
-        <div>
-          <UserCollections category="trending"/>
-        </div>
-      </div>  
-    </div>
+      <div>
+      <Row title="Recently Viewed">
+      <div className={styles.containerColl} styles={{margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>  
+      <RecentlyViewedCarousel/>
+      </div>    
+      </Row>
+      </div>
 
 
     </div>

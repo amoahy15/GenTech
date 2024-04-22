@@ -48,7 +48,7 @@ const UserDropDown = () => {
        <div className = {styles.menu}>
         <ul>  
              <li>
-               <a href = "./profile"><DropDownItems>Profile</DropDownItems></a>
+               <a href = "/profile"><DropDownItems>Profile</DropDownItems></a>
              </li>
              <li>
              <a><DropDownItems goToMenu = 'settings'>Settings</DropDownItems></a>
