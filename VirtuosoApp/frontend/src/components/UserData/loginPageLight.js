@@ -14,7 +14,7 @@ const LoginPage2 = () => {
   const nav = useHistory();
   
   const loginUser = async (e) => {
-    e.preventDefault(); // Prevent the default form submit action
+    e.preventDefault();
 
     const userData = {
       email: email,
@@ -57,7 +57,7 @@ const LoginPage2 = () => {
           </div>
           <div className={styles.forgot}> 
             <label className={styles.in}><input className={styles.in} type="checkbox"/>Remember me</label>
-            <a className ={styles.a} href="#">Forgot password?</a>
+            <a className ={styles.a} href="./reset-password">Forgot password?</a>
           </div>
           <button className = {styles.btn} type="submit" onClick ={loginUser}>sign in</button>
           <div className={styles.register}>
