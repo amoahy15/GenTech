@@ -1,11 +1,7 @@
 import styles from "../styles/homepage.module.css";
 import HomeBackground from "../../assets/images/HomeBackground.png";
 import Button from "../Navigation/Button";
-import Row from "../Navigation/rowScroll";
-import Carousel from "../carouselcomponents/Carousel";
-import Collections from "./Collections";
 import React, { useState, useEffect, onClick} from "react";
-import video from '../../assets/videos/lightvid.mp4'
 const Home = () => {
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -65,7 +61,7 @@ const Home = () => {
                   Explore a variety of genres and styles. Start building your
                   community today and dive into our diverse catalogue.
                 </p>
-                <div className={styles.btn}>
+                <div >
                   <a href="/register">
                     <Button text="Create an Account" onClick={onClick} />
                   </a>
