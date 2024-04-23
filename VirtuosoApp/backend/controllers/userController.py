@@ -253,3 +253,6 @@ def unfollow_user():
     
 
     #TODO: return user reviews based on id (reviews in object)
+    #sort by date 
+    #each element should return img and review 
+    #TODO: return top 3-5 reviews

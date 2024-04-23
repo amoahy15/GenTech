@@ -64,6 +64,7 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
       await axios.delete(`http://127.0.0.1:8000/api/annotations/annotations/${annotationId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
+      setHoverCoordinates({x: null, y:null})
       fetchAnnotations(); 
     } catch (error) {
       console.error("Error deleting annotation:", error);

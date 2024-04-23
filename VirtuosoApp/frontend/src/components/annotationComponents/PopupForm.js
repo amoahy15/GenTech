@@ -32,9 +32,9 @@ const PopupForm = ({ onSubmit, onClose }) => {
     const x = ((event.clientX - rect.left) / rect.width) * 100;
     const y = ((event.clientY - rect.top) / rect.height) * 100;
     setClickCoordinates({ x, y }); 
-    setrealClickCoordinates({ x, y }); //now storing as %
+    setrealClickCoordinates({ x, y }); // Storing as %
     console.log(`Clicked coordinates: (${x}%, ${y}%)`);
-  };
+};
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -115,7 +115,7 @@ const PopupForm = ({ onSubmit, onClose }) => {
       <div className={styles["popup-box"]} style={{ display: 'flex', justifyContent: 'center', overflow: 'auto', alignItems: 'center', textAlign: 'center' }}>
         
         <div onClick={handleImageClick} style={{ position: 'relative', display: 'inline-block', cursor: 'crosshair' }}>
-            <img ref = {imgref} src={imageUrl} style={{ padding: '20px', maxWidth: '100%', maxHeight: '60vh'}}/>
+            <img onClick={handleImageClick} ref = {imgref} src={imageUrl} style={{ padding: '20px', maxWidth: '100%', maxHeight: '60vh'}}/>
             {
             realclickCoordinates.x !== null && realclickCoordinates.x >= 0 &&
             realclickCoordinates.y !== null && realclickCoordinates.y >= 0 && (
