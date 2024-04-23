@@ -250,3 +250,6 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user")
         return jsonify({"error": "Not following this user"}), 400
+    
+
+    #TODO: return user reviews based on id (reviews in object)

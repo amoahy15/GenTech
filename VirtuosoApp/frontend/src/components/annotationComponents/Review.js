@@ -8,7 +8,6 @@ const Review = ({ reviews, onDel, isLiked, handleLike}) => {
   const token = localStorage.getItem('token');
   const [userId, setUserData] = useState();
 
-
   useEffect(() => {
     if (token) {
       const decodedToken = jwtDecode(token);
@@ -54,6 +53,7 @@ const Review = ({ reviews, onDel, isLiked, handleLike}) => {
           </div>
         ))}
       </div>
+
     </div>
   );
 };

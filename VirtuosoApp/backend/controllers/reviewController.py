@@ -15,24 +15,22 @@ review_controller = Blueprint('review_controller', __name__)
 def create_review():
     user_id = get_jwt_identity()
     data = request.get_json()
-    review_id = str(uuid.uuid4())
-    current_app.logger.info(f"Attempting to create review {review_id} by user {user_id} for artwork {data.get('artwork_id')}")
+    current_app.logger.info(f"Attempting to create review by user {user_id} for artwork {data.get('artwork_id')}")
     current_app.logger.setLevel(logging.INFO)
-
     try:
         user = User.objects.get(user_id=user_id)
         artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
         
         new_review = Review(
-            review_id=review_id,
             user_id=user,
             artwork_id=artwork,
             rating=data['rating'],
             comment=data.get('comment', ''),
         )
+        #TODO: User append
         new_review.save()
         updateRating(data['artwork_id'])
-        current_app.logger.info(f"Review {review_id} successfully created.")
+        current_app.logger.info(f"Review successfully created.")
 
         return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
 
@@ -83,6 +81,7 @@ def delete_review(review_id):
         user = User.objects.get(user_id=user_id)
         review = Review.objects.get(review_id=review_id, user_id=user)
         review.delete()
+        #Delete from user
         updateRating(review.artwork_id.artwork_id)
         return jsonify({"message": "Review deleted successfully"}), 200
     except DoesNotExist:

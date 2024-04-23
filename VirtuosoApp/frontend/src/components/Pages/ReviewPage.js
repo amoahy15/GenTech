@@ -5,6 +5,8 @@ import ArtTextCols from "../annotationComponents/ImageTextColumn";
 import Carousel from '../carouselcomponents/Carousel.js';
 import Review from "../annotationComponents/Review.js";
 import axios from 'axios';
+import styles from '../styles/reviews.module.css'
+import Help from '../annotationComponents/Help.js';
 
 function ReviewPage(props) {
   const [reviews, setReviews] = useState([]);
@@ -12,6 +14,9 @@ function ReviewPage(props) {
   const [userHasReviewed, setUserHasReviewed] = useState(false);
   const [userReviewId, setUserReviewId] = useState(null);
   const nav = useHistory();
+  const [showHelp, setShowHelp] = useState(false);
+  const toggleHelp = () => setShowHelp(!showHelp);
+
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -35,6 +40,7 @@ function ReviewPage(props) {
       console.log(userHasReviewed)
     } catch (error) {
       console.error('Error fetching reviews:', error);
+      nav.push('/login')
     }
   };
 
@@ -80,6 +86,10 @@ const handleLike = async (reviewId) => {
       <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
         <Carousel category={"painting"} />
       </div>
+      <button className={styles["help-button"]} onClick={toggleHelp}>?</button>
+      {showHelp && (
+        <Help onClose={toggleHelp}/>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmailField, DateTimeField, BooleanField, ListField, DictField, IntField
+from mongoengine import Document, StringField,ReferenceField, EmailField, DateTimeField, BooleanField, ListField, DictField, IntField
 from datetime import datetime, timezone
 
 class User(Document):
@@ -13,7 +13,7 @@ class User(Document):
     location = StringField()
     favorite_artworks = ListField()
     artwork_count = IntField(default=0)  
-    reviews = ListField()
+    reviews = ListField(ReferenceField(), default=list)
     review_count = IntField(default=0) 
     artwork_created = ListField()
     followers = ListField()  
