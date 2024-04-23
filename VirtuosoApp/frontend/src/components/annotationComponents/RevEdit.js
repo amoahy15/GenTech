@@ -41,7 +41,7 @@ const RevEdit = ({ onSubmit, onClose, handleSubmit, reviewId }) => {
     event.preventDefault();
     if (!localStorage.getItem('token')) {
       console.error("Not logged in");
-      nav.push("/login2");
+      nav.push("/login");
       return;
     }
     const payload = {

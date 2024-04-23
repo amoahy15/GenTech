@@ -76,7 +76,7 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
         <div style={{ textAlign: 'left', marginBottom: '20px', cursor: 'pointer' }}>
           <span style={{ fontSize: '24px', fontWeight: 'bold'}} onClick={handleAddAnnotationClick}>+</span>
           <hr style={{marginTop: '10px', color: 'gray'}}></hr>
-          {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} url={url} />}
+          {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} />}
         </div>
         {annotations.map((annotation, index) => (
           <SingleAnnotation annotation={annotation} onDelete= {handleDeleteAnnotation} key={index} username={annotation.user_name} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>

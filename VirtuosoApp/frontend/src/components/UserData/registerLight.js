@@ -49,7 +49,7 @@ const Register = () => {
       <video className={styles.videobg} src={bgVid} autoPlay muted loop />
       <div className={styles.wrapper}>
         <div className={styles.container}>
-        <form onSubmit={registerUser}> {/* Updated to use onSubmit event */}
+        <form onSubmit={registerUser} style={{maxWidth: '90vw'}}> {/* Updated to use onSubmit event */}
 
           <div className={styles.header}>
             <h1><a href='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
@@ -80,7 +80,7 @@ const Register = () => {
           </div>
 
           <button className={styles.btn} type="submit">Create Account</button> {/* Changed to type="submit" */}
-          <Authenticator/>
+          {/*<Authenticator/>*/}
         </form>
       </div>
       </div>

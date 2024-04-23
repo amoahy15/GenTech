@@ -13,6 +13,17 @@ function ReviewPage(props) {
   const [userReviewId, setUserReviewId] = useState(null);
   const nav = useHistory();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token){
+      nav.push("/login");
+    } else {
+      
+      fetchReviews();
+    }
+  }, [artworkID, nav]);
+  
   const fetchReviews = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`, {
@@ -54,25 +65,17 @@ const handleLike = async (reviewId) => {
   }
 };
 
-  useEffect(() => {
-    if (!localStorage.getItem('token')){
-      nav.push("/login2");
-    } else {
-      fetchReviews();
-    }
-  }, [artworkID]);
-
   const handleReviewSubmitted = () => {
     fetchReviews();
   };
 
   return (
     <div>
-      <div>
+      <div style={{marginTop: '2vh'}}>
         <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} userHasReviewed={userHasReviewed} userReviewId={userReviewId}/>
         <h1 style={{margin: '50px'}}>REVIEWS</h1>
         <Review onDel={deleteReview} reviews={reviews} handleLike={handleLike} />
-        <h1 style={{margin: '50px'}}>MORE LIKE THIS</h1>
+        <h1 style={{margin: '50px'}}>EXPLORE</h1>
       </div>
       <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
         <Carousel category={"painting"} />

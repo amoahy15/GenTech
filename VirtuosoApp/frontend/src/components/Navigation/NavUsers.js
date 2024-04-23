@@ -35,8 +35,6 @@ const NavUser = () => {
 
           <a href = '/collections'><Button2 text='Gallery' onClick={onClick}/></a>
 
-          <a href="/login"><Button2 text='Login' onClick={onClick}/></a>
-
           <UserIcon><UserDropDown></UserDropDown></UserIcon>
 
       </nav>

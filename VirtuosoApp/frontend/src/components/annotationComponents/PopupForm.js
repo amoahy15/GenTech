@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 //for more about image rendering i used this: https://docs.rs/imgref/latest/imgref/
 //TODO: Undo hardcoding of artworkid
-const PopupForm = ({ onSubmit, onClose, url }) => {
+const PopupForm = ({ onSubmit, onClose }) => {
   const [annotationText, setAnnotationText] = useState("");
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
   const [realclickCoordinates, setrealClickCoordinates] = useState({ x: null, y: null });
@@ -64,7 +64,6 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
         setImageUrl(response.data.image_url);
       } catch (error) {
         console.error('Error fetching artwork image:', error);
-        setImageUrl('/path/to/fallback/image.jpg');  // Set a fallback image on error
       }
     };
 
@@ -79,7 +78,7 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
     event.preventDefault();
     if (!userData) {
       console.error("Not logged in");
-      nav.push("/login2");
+      nav.push("/login");
       return;
     }
     if (realclickCoordinates.x === null || realclickCoordinates.y === null) {

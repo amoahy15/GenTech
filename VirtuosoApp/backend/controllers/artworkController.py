@@ -207,8 +207,6 @@ def gentech_artwork():
     current_app.logger.info("Attempting to create artwork")
     user_id = get_jwt_identity()
     user = User.objects(user_id=user_id).first()
-    if (user.user_id != "bc25829c-d3c5-4204-a4a4-6a4cc1d12a96"):
-        return jsonify ({"error": "User not found"}), 404
     if not user:
         current_app.logger.error("User not found")
         return jsonify({"error": "User not found"}), 404

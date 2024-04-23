@@ -34,9 +34,6 @@ const AboutPage = () => {
             <div className={styles.background}>
                 <img src={VirtuosoLogo} alt="Home Background" className={styles.backgroundImage}style={{marginTop: '100px', width: '40vw', paddingLeft: '10vw', paddingTop: '10vh'}} />
             </div>
-            <div className= {styles.btn}>
-            <a href ='./register'><Button text='Review Sneak Peak' onClick={onClick}/></a> <a href ='./register'><Button text='Trending Sneak Peak' onClick={onClick}/></a> <a href ='./register'><Button text='Annotations Sneak Peak' onClick={onClick}/></a> 
-            </div>
 
             <div className="about-section-image-container">
              
