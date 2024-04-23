@@ -78,7 +78,7 @@ const PopupForm = ({ onSubmit, onClose }) => {
     event.preventDefault();
     if (!userData) {
       console.error("Not logged in");
-      nav.push("/login2");
+      nav.push("/login");
       return;
     }
     if (realclickCoordinates.x === null || realclickCoordinates.y === null) {

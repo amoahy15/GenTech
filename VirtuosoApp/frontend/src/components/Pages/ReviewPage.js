@@ -56,7 +56,7 @@ const handleLike = async (reviewId) => {
 
   useEffect(() => {
     if (!localStorage.getItem('token')){
-      nav.push("/login2");
+      nav.push("/login");
     } else {
       fetchReviews();
     }
