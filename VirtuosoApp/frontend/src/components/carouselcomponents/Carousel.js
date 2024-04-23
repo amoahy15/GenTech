@@ -7,15 +7,51 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';  
 
 const Carousel = ({ category }) => {
+  // Define the function before you use it in any hooks
+  const getSliderSettings = (width) => {
+    if (width < 480) {
+      return {
+        dots: false,
+        infinite: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      };
+    } else if (width < 1024) {
+      return {
+        dots: true,
+        infinite: true,
+        slidesToShow: 2,
+        slidesToScroll: 2,
+      };
+    } else {
+      return {
+        dots: true,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+      };
+    }
+  };
+
   const [artworks, setArtworks] = useState([]);
-  const [settings, setSliderSettings] = useState({
-      dots: true,
-      infinite: true,
-      slidesToShow: 3,
-      slidesToScroll: 3,
-  
-  });
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [settings, setSliderSettings] = useState(getSliderSettings(window.innerWidth));
   const history = useHistory();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setSliderSettings(getSliderSettings(windowWidth));
+  }, [windowWidth]);
 
   useEffect(() => {
     const fetchArtworks = async () => {
@@ -23,7 +59,6 @@ const Carousel = ({ category }) => {
         try {
           const response = await axios.get(`http://127.0.0.1:8000/api/artwork/tags/${category}`);
           setArtworks(response.data.artworks || []);
-          updateSettings(response.data.artworks.length);
         } catch (error) {
           console.error(`Error fetching artworks with tag ${category}:`, error);
         }
@@ -33,35 +68,7 @@ const Carousel = ({ category }) => {
     fetchArtworks();
   }, [category]);
 
-  const updateSettings = (artworkCount) => {
-    if (artworkCount === 1) {
-      setSliderSettings({
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: false,
-      });
-    } else if(artworkCount == 2){
-        setSliderSettings({
-          dots: false,
-          infinite: false,
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          autoplay: false,
-        });
-    }
-    else {
-      setSliderSettings({
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 3
-      });
-    }
-  };
+
 
   const handleImageClick = async (artworkID) => {
     console.log('Attempting to post artwork view', artworkID);  

@@ -94,11 +94,14 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
 
   return (
     <div className={styles["art-container"]}>
+
       <div className={styles["flex-container"]}> 
         <div className={styles["image-col"]}>
             <ImageDisplay imageUrl={artwork.image_url} allowDotPlacement={allowDotPlacement} style={{ maxWidth: '100%', height: 'auto', maxHeight: '60vh'}} hoverCoordinates={hoverCoordinates}/>
           <div style={{ marginTop: '10px' }}>
           </div>
+
+          
           <div className={styles["btns"]}>
             {userHasReviewed ? (<button onClick={handleButtonClick3} 
             className={styles["button-style"]}>{'Edit Your Review'}</button>) :
