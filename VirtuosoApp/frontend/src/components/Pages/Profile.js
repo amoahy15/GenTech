@@ -123,6 +123,11 @@ function Profile() {
       <RecentlyViewedCarousel/>
       </div>    
       </Row>
+      <Row title="Other Users">
+      <div className={styles.containerColl} styles={{margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>  
+      <Collections category='user_art'/>
+      </div>    
+      </Row>
       </div>
 
 

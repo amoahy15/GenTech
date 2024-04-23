@@ -33,7 +33,7 @@ const NavUser = () => {
 
           <a href='/'><Button2 text='Community' onClick={onClick}/></a>
 
-          <a href = '/collections'><Button2 text='Collections' onClick={onClick}/></a>
+          <a href = '/collections'><Button2 text='Gallery' onClick={onClick}/></a>
 
           <a href="/login"><Button2 text='Login' onClick={onClick}/></a>
 
