@@ -7,7 +7,7 @@
     width: 20vw;
     height: 20vw;
     overflow: hidden;
-    margin-left: 5vw;
+    margin: auto;
   }
   
   .image-card img {
@@ -40,7 +40,9 @@
     display: block;
 }
 
+
 @media(max-width: 1024){
+  
   .image-card {
     width: 40vw;
     height: 40vw;
@@ -49,11 +51,3 @@
   }
 }
 
-@media(max-width: 480){
-  .image-card {
-    width: 90vw;
-    height: 90vw;
-    overflow: hidden;
-    margin-left: 5vw;
-  }
-}

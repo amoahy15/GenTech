@@ -22,6 +22,7 @@ const Carousel = ({ category }) => {
         infinite: true,
         slidesToShow: 2,
         slidesToScroll: 2,
+        
       };
     } else {
       return {
@@ -85,10 +86,10 @@ const Carousel = ({ category }) => {
   };
 
   return (
-    <Slider {...settings} key={JSON.stringify(settings)}>
+    <Slider {...settings} key={JSON.stringify(settings)} styles={{margin: 'auto'}}>
     {artworks.map((artwork, index) => (
         <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}
-        styles={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+        styles={{display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto'}}>
             <ImageCardHover src={artwork.image_url} alt={artwork.title} />
         </div>
     ))}

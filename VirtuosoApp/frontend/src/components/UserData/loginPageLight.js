@@ -14,7 +14,7 @@ const LoginPage2 = () => {
   const nav = useHistory();
   
   const loginUser = async (e) => {
-    e.preventDefault(); // Prevent the default form submit action
+    e.preventDefault();
 
     const userData = {
       email: email,
@@ -43,26 +43,30 @@ const LoginPage2 = () => {
       <video className={styles.videobg} src={bgVid} autoPlay muted loop /> 
       <div className={styles.wrapper}>
         <div className={styles.container}>
-        <form action=""> 
-          <div className={styles.header}> 
-            <h1><a href ='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
-          </div>
-          <div className={styles.inputbox}> 
-            <input className ={styles.input} value={email || userName} onChange={(e) => setEmail(e.target.value) || setUserName(e.target.value)} type="text" placeholder='Username' required/> 
-            <FaUser className={styles.icon}/>
-          </div>
-          <div className={styles.inputbox}> 
-            <input className ={styles.input} value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder='Password' required/> 
-            <IoLockClosedSharp className={styles.icon}/>
-          </div>
-          <div className={styles.forgot}> 
-            <label className={styles.in}><input className={styles.in} type="checkbox"/>Remember me</label>
-            <a className ={styles.a} href="#">Forgot password?</a>
-          </div>
-          <button className = {styles.btn} type="submit" onClick ={loginUser}>sign in</button>
-          <div className={styles.register}>
-            <p className={styles.p}>First time here?<a className ={styles.a2} href = './register'> Register</a></p>
-          </div>
+        <form action="" style={{maxWidth: '100vw'}}> 
+              <div className={styles.header}> 
+                <h1><a href ='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
+              </div>
+
+              <div className={styles.inputbox}> 
+                <input className ={styles.input} value={email || userName} onChange={(e) => setEmail(e.target.value) || setUserName(e.target.value)} type="text" placeholder='Username' required/> 
+                <FaUser className={styles.icon}/>
+              </div>
+
+              <div className={styles.inputbox}> 
+                <input className ={styles.input} value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder='Password' required/> 
+                <IoLockClosedSharp className={styles.icon}/>
+              </div>
+
+              <div className={styles.forgot}> 
+                <label className={styles.in}><input className={styles.in} type="checkbox"/>Remember me</label>
+                <a className ={styles.a} href="#">Forgot password?</a>
+              </div>
+
+              <button className = {styles.btn} type="submit" onClick ={loginUser}>sign in</button>
+              <div className={styles.register}>
+                <p className={styles.p}>First time here?<a className ={styles.a2} href = './register'> Register</a></p>
+              </div>
         </form>
       </div>
       </div>
