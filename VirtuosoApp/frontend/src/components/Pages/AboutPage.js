@@ -2,7 +2,7 @@ import styles from "../styles/homepage.module.css";
 import VirtuosoLogo from "../../assets/images/VirtuosoLogo.png"
 import Button from "../Navigation/Button";
 const AboutPage = () => {
-  const onClick = () => {
+  const handleClick = () => {
     console.log('click')
   }
   return (

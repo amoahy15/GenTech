@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField,ReferenceField, EmailField, DateTimeField, BooleanField, ListField, DictField, IntField
+from mongoengine import Document, StringField, ReferenceField, EmailField, DateTimeField, BooleanField, ListField, DictField, IntField
 from datetime import datetime, timezone
 
 class User(Document):
@@ -8,26 +8,26 @@ class User(Document):
     last_name = StringField(max_length=50)
     email = EmailField(required=True)
     password_hash = StringField(required=True)
-    profile_picture = StringField()  # URL to the user's profile picture
+    profile_picture = StringField()
     bio = StringField()
     location = StringField()
     favorite_artworks = ListField()
-    artwork_count = IntField(default=0)  
-    reviews = ListField(ReferenceField(), default=list)
-    review_count = IntField(default=0) 
+    artwork_count = IntField(default=0)
+    reviews = ListField(ReferenceField('Review'), default=list) 
+    review_count = IntField(default=0)
     artwork_created = ListField()
-    followers = ListField()  
+    followers = ListField()
     following = ListField()
     followers_count = IntField(default=0)
     following_count = IntField(default=0)
-    pending_follow_requests = ListField(StringField(), default=list) 
+    pending_follow_requests = ListField(StringField(), default=list)
     is_private = BooleanField(default=False)
     social_media_links = DictField()
     verification_status = BooleanField(default=False)
+    verification_token = StringField()
+    reset_token = StringField()
     preferences = DictField()
     joined_date = DateTimeField(default=datetime.now(timezone.utc))
-    
-
 
     def serialize(self):
         return {
@@ -40,8 +40,9 @@ class User(Document):
             "bio": self.bio,
             "location": self.location,
             "favorite_artworks": self.favorite_artworks,
-            "artwork_created" : self.artwork_created,
+            "artwork_created": self.artwork_created,
             "artwork_count": self.artwork_count,
+            "reviews": [review.id for review in self.reviews] if self.reviews else [], 
             "review_count": self.review_count,
             "followers": self.followers,
             "following": self.following,
@@ -51,7 +52,8 @@ class User(Document):
             "is_private": self.is_private,
             "social_media_links": self.social_media_links,
             "verification_status": self.verification_status,
+            "verification_token": self.verification_token,
+            "reset_token": self.reset_token,
             "preferences": self.preferences,
-            "joined_date": self.joined_date.isoformat(),
+            "joined_date": self.joined_date.isoformat() if self.joined_date else None,
         }
-        

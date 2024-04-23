@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 //for more about image rendering i used this: https://docs.rs/imgref/latest/imgref/
 //TODO: Undo hardcoding of artworkid
-const PopupForm = ({ onSubmit, onClose }) => {
+
+const PopupForm = ({ onSubmit, onClose, url }) => {
   const [annotationText, setAnnotationText] = useState("");
   const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null });
   const [realclickCoordinates, setrealClickCoordinates] = useState({ x: null, y: null });
@@ -39,7 +40,7 @@ const PopupForm = ({ onSubmit, onClose }) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -56,7 +57,7 @@ const PopupForm = ({ onSubmit, onClose }) => {
 
     const fetchArtworkImage = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/get_artwork/${artworkID}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -92,8 +93,8 @@ const PopupForm = ({ onSubmit, onClose }) => {
       y_coordinate: String(realclickCoordinates.y),
     };
     try {
-      await axios.post(
-        "http://127.0.0.1:8000/api/annotations/annotation",
+      axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/annotations/annotation`,
         payload,
         {
           headers: {

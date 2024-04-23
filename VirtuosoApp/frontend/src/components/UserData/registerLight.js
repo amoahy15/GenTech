@@ -27,21 +27,18 @@ const Register = () => {
       user_name: userName
     };
 
-    axios.post('http://127.0.0.1:8000/api/user/create_user', userData)
-      .then(function (response) {
-        console.log(response);
-        const token = response.data.auth ? response.data.auth.token : response.data.access_token;
-        localStorage.setItem('token', token);
-        nav.push("./profile");
-        window.location.reload();
-      }).catch(function (error) {
-        console.log(error);
-        if (error.response && error.response.status === 401) {
-          alert("Invalid credentials");
-        } else {
-          alert("Error. Please try again");
-        }
-      });
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/create_user`, userData);
+      console.log(response);
+      nav.push("/email-check");
+    } catch (error) {
+      console.error(error);
+      if (error.response && error.response.status === 401) {
+        alert("Invalid credentials");
+      } else {
+        alert("Error. Please try again");
+      }
+    }
   }
 
   return (
@@ -50,7 +47,6 @@ const Register = () => {
       <div className={styles.wrapper}>
         <div className={styles.container}>
         <form onSubmit={registerUser} style={{maxWidth: '90vw'}}> {/* Updated to use onSubmit event */}
-
           <div className={styles.header}>
             <h1><a href='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
           </div>
@@ -85,7 +81,7 @@ const Register = () => {
       </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default Register;

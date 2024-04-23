@@ -27,7 +27,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -64,7 +64,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
     console.log(artworkID);
     try {
       await axios.post(
-        "http://127.0.0.1:8000/api/review/create_review",
+        `${process.env.REACT_APP_API_BASE_URL}/review/create_review`,
         payload,
         {
           headers: {
