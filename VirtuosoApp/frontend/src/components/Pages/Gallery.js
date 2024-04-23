@@ -13,6 +13,11 @@ const Gallery = () => {
           </div>
           
         </Row>
+        <Row title="Renaissance">
+          <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
+          <Collections category="renaissance" />
+          </div>
+        </Row>
         <Row title="Degas">
           <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
             <Collections category="Degas" />
@@ -25,11 +30,7 @@ const Gallery = () => {
           </div>
           
         </Row>
-        <Row title="Renaissance">
-          <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
-          <Collections category="renaissance" />
-          </div>
-        </Row>
+        
         <Row title="Paintings">
           <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
             <Collections category="painting" />

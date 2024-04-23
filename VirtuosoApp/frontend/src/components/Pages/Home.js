@@ -5,6 +5,7 @@ import React, { useState, useEffect, onClick} from "react";
 const Home = () => {
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const isLoggedIn = !!localStorage.getItem('token'); 
 
   useEffect(() => {
     const handleResize = () => {
@@ -81,11 +82,13 @@ const Home = () => {
               <span style={{fontSize: '15px'}}>scholars to share their opinions, </span><br/>
               <span style={{fontSize: '15px'}}>and the curious to discover art</span>
               </div>
-              <div className={styles["btn"]}>
-                  <a style={{textDecoration: 'none', color: 'white'}}href="/register">
+              {!isLoggedIn && (
+                <div className={styles.btn}>
+                  <a style={{ textDecoration: 'none', color: 'white' }} href="/register">
                     SIGN UP
                   </a>
                 </div>
+              )}
         </div>
           </div>
 
