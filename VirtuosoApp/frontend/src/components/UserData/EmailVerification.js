@@ -16,7 +16,7 @@ function VerificationPage() {
         if (response.data.verified) {
           setStatus('Your account has been successfully verified!');
           setTimeout(() => {
-            history.push('/profile');
+            history.push('/login2');
           }, 3000);
         } else {
           setStatus('Verification failed.');
@@ -25,7 +25,7 @@ function VerificationPage() {
       })
       .catch(error => {
         setStatus('Verification failed.');
-        setError(`Error: ${error.response?.data?.error || 'Unknown error occurred'}`);  // Set error from API response or a default error message
+        setError(`Error: ${error.response?.data?.error || 'Unknown error occurred'}`);  
       });
   }, [userId, verificationToken, history]);
 

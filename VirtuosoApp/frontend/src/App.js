@@ -1,5 +1,5 @@
 import Nav from "./components/Navigation/Nav";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AboutPage from "./components/Pages/AboutPage";
 import Home from "./components/Pages/Home";
@@ -16,6 +16,8 @@ import TestSearch from "./components/Pages/TestSearch";
 import VerificationPage from "./components/UserData/EmailVerification";
 import EmailCheckPage from "./components/UserData/EmailCheckPage";
 import ResetPassword from "./components/UserData/ResetPassword";
+import ResetPasswordCheck from "./components/UserData/ResetPasswordCheck";
+import ResetPasswordPage from "./components/UserData/ResetPasswordPage";
 import Loading from "./components/Navigation/Loading";
 
 function App() {
@@ -23,15 +25,14 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000); 
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
-
 
   return (
     <Router>
       <div className="App">
-      {loading && <Loading />} 
+        {loading && <Loading />}
         <div className="Content">
           <Switch>
             <Route exact path="/">
@@ -82,12 +83,19 @@ function App() {
             <Route path="/reset-password">
               <ResetPassword />
             </Route>
+            <Route path="/reset-password-check">
+              <ResetPasswordCheck />
+            </Route>
             <Route path="/email-check">
               <EmailCheckPage />
             </Route>
             <Route
               path="/verify/:userId/:verificationToken"
               component={VerificationPage}
+            />
+            <Route
+              path="/reset_password/:resetToken"
+              component={ResetPasswordPage}
             />
           </Switch>
         </div>

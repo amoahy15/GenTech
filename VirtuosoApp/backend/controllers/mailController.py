@@ -9,16 +9,13 @@ mail_controller = Blueprint('mail_controller', __name__)
 logging.basicConfig(level=logging.DEBUG)
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../templates')
+template_dir2 =os.path.join(os.path.dirname(os.path.abspath(__file__)), './templates')
 env = Environment(loader=FileSystemLoader(template_dir))
 
 @mail_controller.route('/send_confirmation_email', methods=['POST'])
 def send_confirmation_email(email, verification_url):
-    data = request.get_json()
-    if not data or 'email' not in data or 'verification_url' not in data:
-        return jsonify({'error': 'Missing email or verification URL'}), 400
-
-    email = data['email']
-    verification_url = data['verification_url']
+    email = email
+    verification_url = verification_url
     current_app.logger.info(f"Preparing to send confirmation email to {email}")
     html_content = render_email_template(verification_url)
     
@@ -45,12 +42,8 @@ def render_email_template(verification_url):
 
 @mail_controller.route('/send_password_reset_email', methods=['POST'])
 def send_password_reset_email(email, reset_url):
-    data = request.get_json()
-    if not data or 'email' not in data or 'reset_url' not in data:
-        return jsonify({'error': 'Missing email or reset URL'}), 400
-
-    email = data['email']
-    reset_url = data['reset_url']
+    email = email
+    reset_url = reset_url
     
     current_app.logger.info(f"Preparing to send password reset email to {email}")
     html_content = render_password_email_template(reset_url)
@@ -74,5 +67,5 @@ def send_password_reset_email(email, reset_url):
         return jsonify({'error': 'Failed to send email', 'details': str(e)}), 500
 
 def render_password_email_template(reset_url):
-    template = env.get_template('password_reset_template.html')
+    template = env.get_template('reset_password_template.html')
     return template.render(reset_url=reset_url)

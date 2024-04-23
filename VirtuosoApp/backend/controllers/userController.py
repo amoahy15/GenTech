@@ -44,6 +44,7 @@ def create_user():
         is_private=data.get('is_private', False),
         social_media_links=data.get('social_media_links', {}),
         verification_status=data.get('verification_status', False),
+        reset_token = '',
         verification_token=verification_code,
         preferences=data.get('preferences', {}),
         joined_date=datetime.now(timezone.utc)
@@ -238,8 +239,11 @@ def request_password_reset():
         return jsonify({'error': 'User not found'}), 404
 
     reset_code = secrets.token_urlsafe(16)
+    user.reset_token = reset_code
+    user.save()
+
     base_url = os.getenv('BASE_URL', 'http://localhost:3000')
-    reset_url = f"{base_url}/reset_password/{user.user_id}/{reset_code}"
+    reset_url = f"{base_url}/reset_password/{reset_code}"
     try:
         send_password_reset_email(email=user.email, reset_url=reset_url)
         current_app.logger.info(f"Password reset email sent to {user.email}")
@@ -247,3 +251,27 @@ def request_password_reset():
     except Exception as e:
         current_app.logger.error(f"Failed to send password reset email to {user.email}: {str(e)}")
         return jsonify({'error': 'Failed to send password reset email', 'details': str(e)}), 500
+
+@user_controller.route('/reset_password/<reset_token>', methods=['PUT'])
+def reset_password(reset_token):
+    current_app.logger.info(f"Received password reset request for token: {reset_token}")
+    data = request.get_json()
+    if not data or 'password' not in data:
+        current_app.logger.warning("No password provided in the request data")
+        return jsonify({'error': 'Password is required'}), 400
+
+    user = User.objects(reset_token=reset_token).first()
+    if not user:
+        current_app.logger.warning(f"No user found with reset token: {reset_token}")
+        return jsonify({'error': 'Invalid or expired reset token'}), 404
+
+    new_password_hash = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    user.password_hash = new_password_hash
+    user.reset_token = None
+    try:
+        user.save()
+        current_app.logger.info("Password has been successfully reset")
+        return jsonify({'message': 'Password has been reset successfully'}), 200
+    except Exception as e:
+        current_app.logger.error(f"Failed to reset password: {str(e)}")
+        return jsonify({'error': 'Failed to reset password', 'details': str(e)}), 500
