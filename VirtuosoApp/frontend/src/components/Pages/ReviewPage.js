@@ -71,7 +71,7 @@ const handleLike = async (reviewId) => {
 
   return (
     <div>
-      <div>
+      <div style={{marginTop: '2vh'}}>
         <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} userHasReviewed={userHasReviewed} userReviewId={userReviewId}/>
         <h1 style={{margin: '50px'}}>REVIEWS</h1>
         <Review onDel={deleteReview} reviews={reviews} handleLike={handleLike} />
