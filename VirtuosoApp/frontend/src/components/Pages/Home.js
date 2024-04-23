@@ -1,12 +1,15 @@
 import styles from "../styles/homepage.module.css";
 import HomeBackground from "../../assets/images/HomeBackground.png";
 import Button from "../Navigation/Button";
-import React, { useState, useEffect, onClick} from "react";
+import React, { useState, useEffect} from "react";
 const Home = () => {
 
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const isLoggedIn = !!localStorage.getItem('token'); 
 
+  const handleClick = () => {
+    console.log("Button clicked!");
+};
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -64,7 +67,7 @@ const Home = () => {
                 </p>
                 <div >
                   <a href="/register">
-                    <Button text="Create an Account" onClick={onClick} />
+                    <Button text="Create an Account" onClick={handleClick} />
                   </a>
                 </div>
               </div>

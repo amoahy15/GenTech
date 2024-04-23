@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 
-const LoginPage2 = () => {
+const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -73,4 +73,4 @@ const LoginPage2 = () => {
     </div>
   )
 }
-export default LoginPage2
+export default LoginPage
