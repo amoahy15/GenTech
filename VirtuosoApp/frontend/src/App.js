@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AboutPage from "./components/Pages/AboutPage";
 import Home from "./components/Pages/Home";
 import ReviewPage from "./components/Pages/ReviewPage";
-import LoginPage2 from "./components/UserData/loginPageLight";
+import LoginPage from "./components/UserData/loginPageLight";
 import Register from "./components/UserData/registerLight";
 import Profile from "./components/Pages/Profile";
 import Gallery from "./components/Pages/Gallery";
@@ -58,7 +58,7 @@ function App() {
               <LoginPage />
             </Route>
             <Route path="/login2">
-              <LoginPage2 />
+              <LoginPage />
             </Route>
             <Route path="/register">
               <Register />
