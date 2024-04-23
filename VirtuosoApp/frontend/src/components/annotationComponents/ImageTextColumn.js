@@ -100,7 +100,7 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
 
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
             <button onClick={handleButtonClick} 
-            style={{ fontSize: '20px', color: 'gray', border: '1px solid #ccc', padding: '5px 10px', borderRadius: '8px' }}>{buttonText}</button>
+            className={styles["button-style"]}>{buttonText}</button>
           </div>
           {!!showPopup && 
               <RevPopup 
