@@ -26,25 +26,36 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
   const [artwork, setArtwork] = useState(null);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const fetchArtwork = async () => {
-      console.log('Fetching artwork with ID:', artworkID);  
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
-        console.log('Received data:', response.data);  
-        setArtwork(response.data);
-      } catch (err) {
-        console.error('Error fetching artwork:', err);  
-        if (err.response && err.response.data) {
-          setError(err.response.data.error);
-        } else {
-          setError('Failed to fetch artwork');
-        }
-      }
-    };
+  const [isMobile, setisMobile] = useState(window.innerWidth <= 768);
 
-    fetchArtwork();
-}, [artworkID]);  
+
+    useEffect(() => {
+      const fetchArtwork = async () => {
+          console.log('Fetching artwork with ID:', artworkID);  
+          try {
+              const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
+              console.log('Received data:', response.data);  
+              setArtwork(response.data);
+          } catch (err) {
+              console.error('Error fetching artwork:', err);  
+              if (err.response && err.response.data) {
+                  setError(err.response.data.error);
+              } else {
+                  setError('Failed to fetch artwork');
+              }
+          }
+      };
+  
+      const updateisMobile = () => {
+          setisMobile(window.innerWidth <= 768);
+      };
+  
+      fetchArtwork();
+      window.addEventListener('resize', updateisMobile);
+      return () => {
+          window.removeEventListener('resize', updateisMobile);
+      };
+  }, [artworkID]); 
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -81,6 +92,7 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
   //change appearance of buttons 
   const buttonText = showAnnotations ? 'View Information' : 'View Annotations';
 
+
   return (
     <div className={styles["art-container"]}>
 
@@ -99,8 +111,8 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
           </div>
 
           <div style={{ textAlign: 'center', paddingTop: '10px' }}>
-            <button onClick={handleButtonClick} 
-            className={styles["button-style"]}>{buttonText}</button>
+            {isMobile? <p>View on a larger screen to view annotations</p>: <button onClick={handleButtonClick} 
+            className={styles["button-style"]}>{buttonText}</button>}
           </div>
           {!!showPopup && 
               <RevPopup 
