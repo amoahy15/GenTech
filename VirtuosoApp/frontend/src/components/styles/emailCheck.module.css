@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  }
+
+.textContainer {
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8); 
+    max-width: 800px; 
+    text-align: center;
+  }
+.p {
+  margin-top: .5333333333rem;
+  margin-bottom: 2.3333333333rem;
+  font-size: 1.0666666667rem;
+  text-align: center;
+}
+.h1{
+    font-size: 45px;
+    padding-bottom: 20px;
+    color: rgba(153, 0, 0);
+}
+.buttonContainer {
+  padding: 20px;
+  align-self: flex-end;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.backgroundImage {
+  width: 421px;
+  height: 343px;
+  margin: auto; 
+  display: block; 
+}

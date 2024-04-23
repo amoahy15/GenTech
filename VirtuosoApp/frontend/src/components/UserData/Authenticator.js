@@ -31,7 +31,7 @@ const Authenticator = () => {
 
   const Backend = async (userData) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/user/create_user', userData);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/create_user`, userData);
       console.log(response);
       nav.push('./'); 
     } catch (error) {

@@ -31,7 +31,7 @@ function ReviewPage(props) {
   
   const fetchReviews = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`, {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/review/artwork/${artworkID}/reviews`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       setReviews(response.data.reviews);
@@ -43,10 +43,10 @@ function ReviewPage(props) {
       nav.push('/login')
     }
   };
-
+  
   const deleteReview = async (reviewId) => {
     try {
-        const response = await axios.delete(`http://127.0.0.1:8000/api/review/reviews/${reviewId}`, {
+        const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/review/reviews/${reviewId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         });
         if (response.status === 200) {
@@ -61,7 +61,7 @@ function ReviewPage(props) {
 
 const handleLike = async (reviewId) => {
   try {
-    const response = await axios.post(`http://127.0.0.1:8000/api/review/${reviewId}/like`, {}, {
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/review/${reviewId}/like`, {}, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     fetchReviews();
@@ -70,6 +70,7 @@ const handleLike = async (reviewId) => {
     console.error('Error liking the review:', error.response);
   }
 };
+
 
   const handleReviewSubmitted = () => {
     fetchReviews();

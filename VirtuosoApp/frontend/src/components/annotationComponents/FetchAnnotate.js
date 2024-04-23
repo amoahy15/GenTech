@@ -18,26 +18,25 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
 //get user info here (incl username) 
 //TODO: profile pic? (in info)
-
-
-  const fetchAnnotations = async () => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/annotations/artwork/${artworkID}/annotations`, {
+const fetchAnnotations = async () => {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/annotations/artwork/${artworkID}/annotations`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }});
-      const info = await Promise.all(
-        response.data.map(async (annotation) => {
-          return {
-            ...annotation,
-          };
-        })
-      );
-      setAnnotations(info);
-    } catch (error) {
-      console.error("Error fetching annotations:", error);
-    }
-  };
+      }
+    });
+    const info = await Promise.all(
+      response.data.map(async (annotation) => {
+        return {
+          ...annotation,
+        };
+      })
+    );
+    setAnnotations(info);
+  } catch (error) {
+    console.error("Error fetching annotations:", error);
+  }
+};
 
   useEffect(() => {
     if (artworkID) {
@@ -61,7 +60,7 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
   const handleDeleteAnnotation = async (annotationId) => {
     try {
-      await axios.delete(`http://127.0.0.1:8000/api/annotations/annotations/${annotationId}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/annotations/annotations/${annotationId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
       fetchAnnotations(); 
@@ -69,6 +68,7 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
       console.error("Error deleting annotation:", error);
     }
   };
+  
 
   return (
     <div style={{ flex: 2, maxWidth: '100%', border: '1px solid #cccccc', borderRadius: '10px', padding: '10px', maxHeight: '500px', overflowY: 'auto'}}>

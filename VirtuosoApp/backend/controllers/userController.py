@@ -1,11 +1,14 @@
 import uuid
+import logging
+import os
+import secrets
 from flask import Flask, Blueprint, request, jsonify, current_app
 from models.userModel import User
 from mongoengine.errors import NotUniqueError, ValidationError
 from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-import logging
+from .mailController import send_confirmation_email, send_password_reset_email
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -23,8 +26,9 @@ def create_user():
 
     if User.objects(email=data['email']).first():
         current_app.logger.error("Email already exists")
-        return jsonify({"error": "Email already exists"}), 409
-
+        return jsonify({"error": "Email already exists"}), 409     
+     
+    verification_code = secrets.token_urlsafe(16)
     new_user = User(
         user_id=str(uuid.uuid4()),
         user_name=data['user_name'],
@@ -40,20 +44,24 @@ def create_user():
         is_private=data.get('is_private', False),
         social_media_links=data.get('social_media_links', {}),
         verification_status=data.get('verification_status', False),
+        reset_token = '',
+        verification_token=verification_code,
         preferences=data.get('preferences', {}),
         joined_date=datetime.now(timezone.utc)
     )
     try:
         new_user.save()
-        current_app.logger.info(f"User {new_user.user_name} created successfully with ID {new_user.user_id}.")
-        return jsonify({"message": "User created successfully", "user_id": new_user.user_id}), 201
+        base_url = os.getenv('BASE_URL', 'http://localhost:3000')
+        verification_url = f"{base_url}/verify/{new_user.user_id}/{verification_code}"
+        send_confirmation_email(new_user.email, verification_url)
+        return jsonify({"message": "User created successfully, please check your email to verify your account", "user_id": new_user.user_id}), 201
+        
     except ValidationError as e:
         current_app.logger.error("Validation error during user creation", exc_info=True)
         return jsonify({"error": str(e)}), 400
     except NotUniqueError:
         current_app.logger.error("User already exists with the provided username or email", exc_info=True)
         return jsonify({"error": "User already exists"}), 409
-
 
 @user_controller.route('/update_user', methods=['PUT'])
 @jwt_required()
@@ -250,6 +258,72 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user")
         return jsonify({"error": "Not following this user"}), 400
-    
 
-    #TODO: return user reviews based on id (reviews in object)
+@user_controller.route('/verify/<user_id>/<verification_token>', methods=['GET'])
+def verify_user(user_id, verification_token):
+    current_app.logger.debug(f"Verifying user {user_id} with token {verification_token}")
+    user = User.objects(user_id=user_id).first()
+    if not user:
+        current_app.logger.warning(f"User not found: {user_id}")
+        return jsonify({"error": "User not found"}), 404
+    if user.verification_status:
+        current_app.logger.info(f"User already verified: {user_id}")
+        return jsonify({"message": "User already verified"}), 200
+    if user.verification_token == verification_token:
+        user.verification_status = True
+        user.save()
+        current_app.logger.info(f"User verified successfully: {user_id}")
+        return jsonify({"verified": True, "message": "User successfully verified"}), 200
+    else:
+        current_app.logger.warning(f"Invalid verification token for user {user_id}: {verification_token}")
+        return jsonify({"error": "Invalid verification token"}), 400
+
+@user_controller.route('/request_password_reset', methods=['POST'])
+def request_password_reset():
+    data = request.get_json()
+    if not data or 'email' not in data:
+        current_app.logger.error("Email field is missing in request data")
+        return jsonify({'error': 'Email is required'}), 400
+
+    user = User.objects(email=data['email']).first()
+    if not user:
+        current_app.logger.warning(f"User not found with email: {data['email']}")
+        return jsonify({'error': 'User not found'}), 404
+
+    reset_code = secrets.token_urlsafe(16)
+    user.reset_token = reset_code
+    user.save()
+
+    base_url = os.getenv('BASE_URL', 'http://localhost:3000')
+    reset_url = f"{base_url}/reset_password/{reset_code}"
+    try:
+        send_password_reset_email(email=user.email, reset_url=reset_url)
+        current_app.logger.info(f"Password reset email sent to {user.email}")
+        return jsonify({'message': 'Password reset email sent successfully'}), 200
+    except Exception as e:
+        current_app.logger.error(f"Failed to send password reset email to {user.email}: {str(e)}")
+        return jsonify({'error': 'Failed to send password reset email', 'details': str(e)}), 500
+
+@user_controller.route('/reset_password/<reset_token>', methods=['PUT'])
+def reset_password(reset_token):
+    current_app.logger.info(f"Received password reset request for token: {reset_token}")
+    data = request.get_json()
+    if not data or 'password' not in data:
+        current_app.logger.warning("No password provided in the request data")
+        return jsonify({'error': 'Password is required'}), 400
+
+    user = User.objects(reset_token=reset_token).first()
+    if not user:
+        current_app.logger.warning(f"No user found with reset token: {reset_token}")
+        return jsonify({'error': 'Invalid or expired reset token'}), 404
+
+    new_password_hash = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    user.password_hash = new_password_hash
+    user.reset_token = None
+    try:
+        user.save()
+        current_app.logger.info("Password has been successfully reset")
+        return jsonify({'message': 'Password has been reset successfully'}), 200
+    except Exception as e:
+        current_app.logger.error(f"Failed to reset password: {str(e)}")
+        return jsonify({'error': 'Failed to reset password', 'details': str(e)}), 500

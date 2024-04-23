@@ -8,7 +8,7 @@ class User(Document):
     last_name = StringField(max_length=50)
     email = EmailField(required=True)
     password_hash = StringField(required=True)
-    profile_picture = StringField()  # URL to the user's profile picture
+    profile_picture = StringField()
     bio = StringField()
     location = StringField()
     favorite_artworks = ListField()
@@ -16,18 +16,18 @@ class User(Document):
     reviews = ListField(ReferenceField(), default=list)
     review_count = IntField(default=0) 
     artwork_created = ListField()
-    followers = ListField()  
+    followers = ListField()
     following = ListField()
     followers_count = IntField(default=0)
     following_count = IntField(default=0)
-    pending_follow_requests = ListField(StringField(), default=list) 
+    pending_follow_requests = ListField(StringField(), default=list)
     is_private = BooleanField(default=False)
     social_media_links = DictField()
     verification_status = BooleanField(default=False)
+    verification_token = StringField()
+    reset_token = StringField()
     preferences = DictField()
     joined_date = DateTimeField(default=datetime.now(timezone.utc))
-    
-
 
     def serialize(self):
         return {
@@ -40,7 +40,7 @@ class User(Document):
             "bio": self.bio,
             "location": self.location,
             "favorite_artworks": self.favorite_artworks,
-            "artwork_created" : self.artwork_created,
+            "artwork_created": self.artwork_created,
             "artwork_count": self.artwork_count,
             "review_count": self.review_count,
             "followers": self.followers,
@@ -54,4 +54,3 @@ class User(Document):
             "preferences": self.preferences,
             "joined_date": self.joined_date.isoformat(),
         }
-        

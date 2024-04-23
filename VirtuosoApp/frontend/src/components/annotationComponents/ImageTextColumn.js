@@ -29,22 +29,25 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
   const [isMobile, setisMobile] = useState(window.innerWidth <= 768);
 
 
-    useEffect(() => {
-      const fetchArtwork = async () => {
-          console.log('Fetching artwork with ID:', artworkID);  
-          try {
-              const response = await axios.get(`http://127.0.0.1:8000/api/artwork/get_artwork/${artworkID}`);
-              console.log('Received data:', response.data);  
-              setArtwork(response.data);
-          } catch (err) {
-              console.error('Error fetching artwork:', err);  
-              if (err.response && err.response.data) {
-                  setError(err.response.data.error);
-              } else {
-                  setError('Failed to fetch artwork');
-              }
-          }
-      };
+  useEffect(() => {
+    const fetchArtwork = async () => {
+      console.log('Fetching artwork with ID:', artworkID);  
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/get_artwork/${artworkID}`);
+        console.log('Received data:', response.data);  
+        setArtwork(response.data);
+      } catch (err) {
+        console.error('Error fetching artwork:', err);  
+        if (err.response && err.response.data) {
+          setError(err.response.data.error);
+        } else {
+          setError('Failed to fetch artwork');
+        }
+      }
+    };
+    fetchArtwork();
+  }, [artworkID]);
+  
   
       const updateisMobile = () => {
           setisMobile(window.innerWidth <= 768);

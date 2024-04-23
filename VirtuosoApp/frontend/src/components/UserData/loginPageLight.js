@@ -22,7 +22,7 @@ const LoginPage2 = () => {
       user_name: userName
     };
 
-    axios.post('http://127.0.0.1:8000/api/user/login', userData)
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/user/login`, userData)
         .then(function (response) {
         const token = response.data.auth ? response.data.auth.token : response.data.access_token;
         localStorage.setItem('token', token); 
@@ -60,7 +60,7 @@ const LoginPage2 = () => {
 
               <div className={styles.forgot}> 
                 <label className={styles.in}><input className={styles.in} type="checkbox"/>Remember me</label>
-                <a className ={styles.a} href="#">Forgot password?</a>
+                <a className ={styles.a} href="./reset-password">Forgot password?</a>
               </div>
 
               <button className = {styles.btn} type="submit" onClick ={loginUser}>sign in</button>
