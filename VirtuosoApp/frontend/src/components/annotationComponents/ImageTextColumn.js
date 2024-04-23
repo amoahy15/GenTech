@@ -77,17 +77,6 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
       setClickCoordinates({ x, y });
     }
   };
-  
-
-{/* old test annotations */}
-  const annotations = [
-    { username: "user1", comment: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam" },
-    { username: "user2", comment: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." },
-    { username: "user3", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-    { username: "user5", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-    { username: "user6", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." },
-    { username: "user4", comment: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum." }
-  ];
 
   //change appearance of buttons 
   const buttonText = showAnnotations ? 'View Information' : 'View Annotations';
@@ -97,11 +86,11 @@ const ArtTextCols = ({artworkID, handleSubmit, userHasReviewed, userReviewId}) =
 
       <div className={styles["flex-container"]}> 
         <div className={styles["image-col"]}>
-            <ImageDisplay imageUrl={artwork.image_url} allowDotPlacement={allowDotPlacement} style={{ maxWidth: '100%', height: 'auto', maxHeight: '60vh'}} hoverCoordinates={hoverCoordinates}/>
+            <ImageDisplay imageUrl={artwork.image_url} allowDotPlacement={allowDotPlacement} style={{ maxWidth: '100%', height: 'auto'}} hoverCoordinates={hoverCoordinates}/>
           <div style={{ marginTop: '10px' }}>
           </div>
 
-          
+
           <div className={styles["btns"]}>
             {userHasReviewed ? (<button onClick={handleButtonClick3} 
             className={styles["button-style"]}>{'Edit Your Review'}</button>) :

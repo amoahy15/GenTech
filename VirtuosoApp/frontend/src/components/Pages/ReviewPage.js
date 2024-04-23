@@ -13,6 +13,17 @@ function ReviewPage(props) {
   const [userReviewId, setUserReviewId] = useState(null);
   const nav = useHistory();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token){
+      nav.push("/login");
+    } else {
+      
+      fetchReviews();
+    }
+  }, [artworkID, nav]);
+  
   const fetchReviews = async () => {
     try {
       const response = await axios.get(`http://127.0.0.1:8000/api/review/artwork/${artworkID}/reviews`, {
@@ -53,14 +64,6 @@ const handleLike = async (reviewId) => {
     console.error('Error liking the review:', error.response);
   }
 };
-
-  useEffect(() => {
-    if (!localStorage.getItem('token')){
-      nav.push("/login");
-    } else {
-      fetchReviews();
-    }
-  }, [artworkID]);
 
   const handleReviewSubmitted = () => {
     fetchReviews();
