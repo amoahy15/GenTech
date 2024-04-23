@@ -75,7 +75,7 @@ const handleLike = async (reviewId) => {
         <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} userHasReviewed={userHasReviewed} userReviewId={userReviewId}/>
         <h1 style={{margin: '50px'}}>REVIEWS</h1>
         <Review onDel={deleteReview} reviews={reviews} handleLike={handleLike} />
-        <h1 style={{margin: '50px'}}>MORE LIKE THIS</h1>
+        <h1 style={{margin: '50px'}}>EXPLORE</h1>
       </div>
       <div style={{paddingBottom: '50px', padding: '10px 8vw'}}>
         <Carousel category={"painting"} />

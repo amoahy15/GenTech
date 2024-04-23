@@ -84,16 +84,15 @@ const Carousel = ({ category }) => {
     window.location.reload();
   };
 
-
-
   return (
     <Slider {...settings} key={JSON.stringify(settings)}>
     {artworks.map((artwork, index) => (
-        <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}>
+        <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}
+        styles={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <ImageCardHover src={artwork.image_url} alt={artwork.title} />
         </div>
     ))}
-</Slider>
+    </Slider>
   );
 };
 
