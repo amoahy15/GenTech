@@ -16,7 +16,6 @@ def create_review():
     user_id = get_jwt_identity()
     data = request.get_json()
     current_app.logger.info(f"Attempting to create review by user {user_id} for artwork {data.get('artwork_id')}")
-    current_app.logger.setLevel(logging.INFO)
     try:
         user = User.objects.get(user_id=user_id)
         artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
@@ -27,22 +26,24 @@ def create_review():
             rating=data['rating'],
             comment=data.get('comment', ''),
         )
-        #TODO: User append
+
+        if user_id not in artwork.tags:
+            Artwork.objects(artwork_id=data['artwork_id']).update_one(push__tags=user_id)
+
         new_review.save()
         updateRating(data['artwork_id'])
-        current_app.logger.info(f"Review successfully created.")
-
-        return jsonify({"message": "Review created successfully", "review_id": review_id}), 201
+        current_app.logger.info("Review successfully created.")
+        return jsonify({"message": "Review created successfully"}), 201
 
     except ValidationError as e:
         current_app.logger.error(f"Validation error during review creation: {str(e)}")
         return jsonify({"error": str(e)}), 400
-    except NotUniqueError:
+    except NotUniqueError as e:
         current_app.logger.error("Duplicate review not allowed")
         return jsonify({"error": "Review already exists"}), 409
-    except Exception as e:
-        current_app.logger.exception("Unexpected error occurred during review creation.")
-        return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
+    except DoesNotExist as e:
+        current_app.logger.error("Artwork or user not found")
+        return jsonify({"error": "Artwork or user not found", "details": str(e)}), 
 
 @review_controller.route('/reviews/<string:review_id>', methods=['GET'])
 @jwt_required()

@@ -10,7 +10,7 @@ class Artwork(Document):
     artist_name = StringField(required=True)
     year = StringField(required=True)
     image_url = StringField(required=True)
-    tags = ListField(StringField(max_length=50))
+    tags = ListField(StringField())
     description = StringField()
     image_location = StringField()
     annotations = ListField(StringField()) #optional

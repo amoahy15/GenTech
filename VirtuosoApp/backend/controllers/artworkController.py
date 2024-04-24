@@ -164,7 +164,6 @@ def get_user_artworks():
 def get_artworks_by_collection(collection_name):
     artworks = Artwork.objects(collection=collection_name)
     if artworks:
-        # Wrap the serialized artworks in an object under the 'images' key
         response = {
             "images": [artwork.serialize() for artwork in artworks]
         }
@@ -182,7 +181,6 @@ def get_artwork_url(artwork_id):
         current_app.logger.error("Artwork not found")
         return jsonify({"error": "Artwork not found"}), 404
 
-    # Assuming the image_url field contains the direct URL to the image in S3
     image_url = artwork.image_url
     
     return jsonify({"image_url": image_url}), 200
