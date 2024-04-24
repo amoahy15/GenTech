@@ -23,6 +23,7 @@ function ReviewPage(props) {
 
     if (!token){
       nav.push("/login");
+      window.location.reload();
     } else {
       
       fetchReviews();
@@ -40,7 +41,8 @@ function ReviewPage(props) {
       console.log(userHasReviewed)
     } catch (error) {
       console.error('Error fetching reviews:', error);
-      nav.push('/login')
+      nav.push('/login');
+      window.location.reload();
     }
   };
   
@@ -74,12 +76,13 @@ const handleLike = async (reviewId) => {
 
   const handleReviewSubmitted = () => {
     fetchReviews();
+    
   };
 
   return (
     <div>
       <div style={{marginTop: '2vh'}}>
-        <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} userHasReviewed={userHasReviewed} userReviewId={userReviewId}/>
+        <ArtTextCols artworkID={artworkID} handleSubmit={handleReviewSubmitted} userHasReviewed={userHasReviewed} fetch = {fetchReviews} userReviewId={userReviewId}/>
         <h1 style={{margin: '50px'}}>REVIEWS</h1>
         <Review onDel={deleteReview} reviews={reviews} handleLike={handleLike} />
         <h1 style={{margin: '50px'}}>EXPLORE</h1>

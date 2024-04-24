@@ -18,6 +18,7 @@ const ArtTextCols = ({
   handleSubmit,
   userHasReviewed,
   userReviewId,
+  fetch,
 }) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
