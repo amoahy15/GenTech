@@ -50,6 +50,8 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
         });
       } catch (error) {
         console.error('Error fetching user details:', error);
+        nav.push('/login')
+        window.location.reload();
       }
     };
 

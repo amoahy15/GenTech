@@ -9,7 +9,8 @@ from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .mailController import send_confirmation_email, send_password_reset_email
-
+from models.reviewModel import Review
+from models.artworkModel import Artwork
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
@@ -327,3 +328,31 @@ def reset_password(reset_token):
     except Exception as e:
         current_app.logger.error(f"Failed to reset password: {str(e)}")
         return jsonify({'error': 'Failed to reset password', 'details': str(e)}), 500
+
+@user_controller.route('/getreviews', methods=['GET'])
+@jwt_required()
+def get_user_reviews():
+    user_id = get_jwt_identity()
+    try:
+        user = User.objects(user_id=user_id).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        reviews = Review.objects(user_id=user).order_by('-rating')
+
+        results = []
+        for review in reviews:
+            artwork = Artwork.objects.with_id(review.artwork_id.id)
+            if artwork:
+                review_data = review.serialize()
+                review_data.update({
+                    "artwork_name": artwork.title,
+                    "artwork_image_url": artwork.image_url
+                })
+                results.append(review_data)
+            else:
+                continue
+
+        return jsonify(results), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

@@ -6,15 +6,11 @@ class Artwork(Document):
     artwork_id = StringField(required=True, unique=True)
     title = StringField(required=True)
     user_id = StringField(required=True) 
-    # Reference to the User document of the artist, required
     artist = StringField(required=True) 
     artist_name = StringField(required=True)
     year = StringField(required=True)
-    # URL to the image of the artwork, required
     image_url = StringField(required=True)
-    # List of tags associated with the artwork, each tag's max length is 50
     tags = ListField(StringField(max_length=50))
-    # Description of the artwork, optional
     description = StringField()
     image_location = StringField()
     annotations = ListField(StringField()) #optional
