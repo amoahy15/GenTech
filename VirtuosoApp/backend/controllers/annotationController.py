@@ -5,7 +5,7 @@ from models.annotationModel import Annotation
 from models.userModel import User
 import datetime
 import uuid
-
+from models.artworkModel import Artwork
 annotation_controller = Blueprint('annotation_controller', __name__)
 
 @annotation_controller.route('/annotation', methods=['POST'])
@@ -28,6 +28,10 @@ def create_annotation():
             y_coordinate=data['y_coordinate'],
         )
         new_annotation.save()
+        artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
+        if user_id not in artwork.tags:
+            Artwork.objects(artwork_id=data['artwork_id']).update_one(push__tags=user_id)
+
 
         return jsonify({"message": "Annotation created successfully!", "annotation_id": str(new_annotation.id)}), 201
     except ValidationError as e:
