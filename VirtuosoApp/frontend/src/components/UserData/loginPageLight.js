@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "../styles/loginFormLight.module.css";
 import { FaUser } from "react-icons/fa";
 import { IoLockClosedSharp } from "react-icons/io5";
 import bgVid from '../../assets/videos/lightvid.mp4';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-
-
+import placeholder from '../../assets/images/Edgar_Degas/Edgar_Degas_12.jpg'
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const nav = useHistory();
-  
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+
   const loginUser = async (e) => {
     e.preventDefault();
 
@@ -40,7 +52,11 @@ const LoginPage = () => {
 
   return (
     <div className={styles.main}>
-      <video className={styles.videobg} src={bgVid} autoPlay muted loop /> 
+      {isMobile ? (
+        <img src={placeholder} alt="Background" className={styles.videobg}/>
+      ) : (
+        <video className={styles.videobg} src={bgVid} autoPlay muted loop />
+      )}
       <div className={styles.wrapper}>
         <div className={styles.container}>
         <form action="" style={{maxWidth: '100vw'}}> 

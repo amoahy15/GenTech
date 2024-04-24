@@ -247,3 +247,7 @@ def gentech_artwork():
         current_app.logger.exception("Unexpected error during artwork creation")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
     
+@artwork_controller.route('/getartwork', methods=['GET'])
+def getartwork():
+    artworks = Artwork.objects.all()
+    return jsonify([artwork.serialize() for artwork in artworks]), 200

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "../styles/registerLight.module.css";
 import { FaUser } from "react-icons/fa";
 import { IoLockClosedSharp } from "react-icons/io5";
@@ -6,6 +6,7 @@ import bgVid from '../../assets/videos/lightvid.mp4';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Authenticator from './Authenticator';
+import placeholder from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg'
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +16,19 @@ const Register = () => {
   const [userName, setUserName] = useState('');
 
   const nav = useHistory();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   const registerUser = async (e) => {
     e.preventDefault();
@@ -43,7 +57,14 @@ const Register = () => {
 
   return (
     <div className={styles.main}>
+       
+    {isMobile ? (
+        <img src={placeholder} alt="Background" className={styles.videobg} style={{ display: 'cover',height: '100vh', opacity: '0.5'}}/>
+        
+    ) : (
       <video className={styles.videobg} src={bgVid} autoPlay muted loop />
+    )}
+      
       <div className={styles.wrapper}>
         <div className={styles.container}>
         <form onSubmit={registerUser} style={{maxWidth: '90vw'}}> {/* Updated to use onSubmit event */}
@@ -75,7 +96,7 @@ const Register = () => {
             </div>
           </div>
 
-          <button className={styles.btn} type="submit">Create Account</button> {/* Changed to type="submit" */}
+          <button className={styles["btn"]} type="submit">Create Account</button> {/* Changed to type="submit" */}
           {/*<Authenticator/>*/}
         </form>
       </div>

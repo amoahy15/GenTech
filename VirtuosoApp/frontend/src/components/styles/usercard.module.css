@@ -1,0 +1,31 @@
+.userGrid {
+    display: grid;
+    grid-template-rows: repeat(4, 1fr); 
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .userCard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center; 
+  }
+  
+  .profilePhoto {
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%; 
+    object-fit: cover; 
+  }
+  
+  .userName {
+    margin-top: 10px; 
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .userGrid {
+      grid-template-columns: repeat(2, 1fr); 
+    }
+  }

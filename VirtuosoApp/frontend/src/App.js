@@ -18,7 +18,7 @@ import ResetPassword from "./components/UserData/ResetPassword";
 import ResetPasswordCheck from "./components/UserData/ResetPasswordCheck";
 import ResetPasswordPage from "./components/UserData/ResetPasswordPage";
 import Loading from "./components/Navigation/Loading";
-
+import Search from "./components/API/Search";
 function App() {
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
@@ -87,6 +87,9 @@ function App() {
             </Route>
             <Route path="/email-check">
               <EmailCheckPage />
+            </Route>
+            <Route path="/search">
+              <Search />
             </Route>
             <Route
               path="/verify/:userId/:verificationToken"

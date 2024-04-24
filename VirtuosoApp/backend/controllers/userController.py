@@ -347,7 +347,8 @@ def get_user_reviews():
                 review_data = review.serialize()
                 review_data.update({
                     "artwork_name": artwork.title,
-                    "artwork_image_url": artwork.image_url
+                    "artwork_image_url": artwork.image_url,
+                    "artwork_id": artwork.artwork_id
                 })
                 results.append(review_data)
             else:
