@@ -105,7 +105,7 @@ function App() {
             {token ? <NavUser /> : <Nav />}
               <AdvancedSettings/>
             </Route>
-            <Route path="/other-users/:username" component={OtherUser} />
+            <Route path="/profile/:username" component={OtherUser} />
           </Switch>
         </div>
       </div>
