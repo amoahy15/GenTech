@@ -15,7 +15,7 @@ const OtherUser = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/user/details/${username}`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details/${username}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`  
           }

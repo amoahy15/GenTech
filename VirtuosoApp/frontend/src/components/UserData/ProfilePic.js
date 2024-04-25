@@ -11,7 +11,7 @@ const ProfilePic = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/user/details`, {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`  
           }
