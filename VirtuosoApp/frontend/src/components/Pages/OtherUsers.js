@@ -49,7 +49,7 @@ const OtherUser = () => {
 
       <Row title="Recently Rated">
           <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
-            <Collections category={username} />
+            <Collections category={userData.user_id} />
           </div>   
         </Row>
 
