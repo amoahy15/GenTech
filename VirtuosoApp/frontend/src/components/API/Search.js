@@ -7,8 +7,8 @@ import { useHistory } from 'react-router-dom';
 
 const Search = () => {
   const [input, setInput] = useState("");
-  const [userNames, setUserNames] = useState([]);
-  const [filteredUserNames, setFilteredUserNames] = useState([]);
+  const [items, setitems] = useState([]);
+  const [filtereditems, setfiltereditems] = useState([]);
   const nav = useHistory();
 
   useEffect(() => {
@@ -16,6 +16,7 @@ const Search = () => {
     if (!token) {
       console.error("No token found!");
       nav.push('/login');
+      window.location.reload();
       return;
     }
   
@@ -23,30 +24,32 @@ const Search = () => {
       headers: { 'Authorization': `Bearer ${token}` }
     });
   
-    const fetchArtworks = axios.get(`http://127.0.0.1:8000/api/artwork/getartwork`, {
+    const fetchArtworks = axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/getartwork`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
   
+    
     Promise.all([fetchUsers, fetchArtworks]).then(results => {
       const [usersResponse, artworksResponse] = results;
   
       const users = usersResponse.data.map(user => ({
         id: user.user_id,
         name: user.user_name,
-        imageUrl: user.profile_picture,
-        type: 'user' // distinguish between user and artwork
+        imageurl: user.profile_picture,
+        username: user.user_name,
+        type: 'user' 
       }));
-      console.log(users)
+      //console.log(users)
       const artworks = artworksResponse.data.map(artwork => ({
         id: artwork.artwork_id,
         name: artwork.title,
-        imageUrl: artwork.image_url,
-        type: 'artwork' // distinguish between user and artwork
+        imageurl: artwork.image_url,
+        type: 'artwork'
       }));
   
-      const combinedData = [...users, ...artworks];
-      setUserNames(combinedData);
-      setFilteredUserNames([]);
+      const data = [...users, ...artworks];
+      setitems(data);
+      setfiltereditems([]);
     }).catch(error => {
       console.error("Failed to fetch data:", error);
       nav.push('/login');
@@ -55,24 +58,23 @@ const Search = () => {
   
 
   useEffect(() => {
+    //if we have more time we can filter by artist name, etc
     const filtered = input.trim()
-      ? userNames.filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
-      : [];
-    setFilteredUserNames(filtered);
-  }, [input, userNames]);
+      ? items.filter(item => item.name.toLowerCase().includes(input.toLowerCase()))
+      : []; 
+    setfiltereditems(filtered);
+  }, [input, items]);
 
   return (
-    <div>
+    <div style={{minHeight: '80vh' , paddingTop: '3vh', minHeight: '80vh',justifyContent: 'center' }}>
       <div className={styles.searchbar}>
         <FaSearch id="search-icon" style={{color: 'rgb(153,0,0)'}}/>
-        <input
-          className={styles.input}
-          placeholder="Search by username or artwork name"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
+        <input className={styles.input}
+          placeholder="Search for users by username or artwork by its title"
+          value={input} onChange={(e) => setInput(e.target.value)} />
       </div>
-      {input && <SearchList results={filteredUserNames} />}
+      {/* only shows results if the user inputs something */}
+      {input && <SearchList results={filtereditems} />}
     </div>
   );
 }

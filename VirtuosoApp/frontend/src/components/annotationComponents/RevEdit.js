@@ -13,7 +13,7 @@ const RevEdit = ({ onSubmit, onClose, handleSubmit, reviewId }) => {
     if (reviewId) {
       const fetchReviewData = async () => {
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/review/reviews/${reviewId}`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/review/reviews/${reviewId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           });
           setComment(response.data.comment);
@@ -49,7 +49,7 @@ const RevEdit = ({ onSubmit, onClose, handleSubmit, reviewId }) => {
       comment: comment,
     };
     try {
-      await axios.put(`http://127.0.0.1:8000/api/review/reviews/${reviewId}`, payload, {
+      await axios.put(`${process.env.REACT_APP_API_BASE_URL}/review/reviews/${reviewId}`, payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
       });
       console.log("Review update successful");

@@ -13,7 +13,7 @@ const ProfilePic = ({ category }) => {
     const fetchArtwork = async () => {
       if (category) {
         try {
-          const response = await axios.get(`http://127.0.0.1:8000/api/artwork/tags/${category}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
           setArtworks(response.data.artworks || []);
         } catch (error) {
           console.error(`Error fetching artworks with tag ${category}:`, error);

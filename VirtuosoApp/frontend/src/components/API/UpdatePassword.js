@@ -19,7 +19,7 @@ function UpdatePassword() {
     console.log('Token used:', token); 
 
     try {
-      const response = await axios.put('http://127.0.0.1:8000/api/user/update_password', {
+      const response = await axios.put(`${process.env.REACT_APP_API_BASE_URL}/user/update_password`, {
         old_password: oldPassword,
         new_password: newPassword
       }, {

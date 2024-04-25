@@ -15,7 +15,7 @@ function Post() {
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append('image', file);
-    const response = await axios.post('http://127.0.0.1:8000/api/s3/upload', formData, {
+    const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/s3/upload`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${localStorage.getItem('token')}`

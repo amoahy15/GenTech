@@ -31,7 +31,7 @@ const NavUser = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='/'><Button2 text='Community' onClick={onClick}/></a>
+          <a href='/search'><Button2 text='Search' onClick={onClick}/></a>
 
           <a href = '/collections'><Button2 text='Gallery' onClick={onClick}/></a>
 
