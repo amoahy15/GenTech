@@ -19,6 +19,9 @@ import ResetPasswordCheck from "./components/UserData/ResetPasswordCheck";
 import ResetPasswordPage from "./components/UserData/ResetPasswordPage";
 import Loading from "./components/Navigation/Loading";
 import Search from "./components/API/Search";
+import AdvancedSettings from "./components/UserData/AdvancedSettings";
+import OtherUser from "./components/Pages/OtherUsers";
+
 function App() {
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
@@ -99,6 +102,11 @@ function App() {
               path="/reset_password/:resetToken"
               component={ResetPasswordPage}
             />
+            <Route path="/settings">
+            {token ? <NavUser /> : <Nav />}
+              <AdvancedSettings/>
+            </Route>
+            <Route path="/review/:reviewId" component={OtherUser} />
           </Switch>
         </div>
       </div>

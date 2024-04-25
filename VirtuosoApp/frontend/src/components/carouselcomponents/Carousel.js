@@ -72,17 +72,10 @@ const Carousel = ({ category }) => {
 
 
   const handleImageClick = async (artworkID) => {
-    console.log('Attempting to post artwork view', artworkID);  
-    try {
-        const response = await axios.post('http://127.0.0.1:8000/api/artwork/click_artwork', { artwork_id: artworkID });
-        console.log('Post response:', response);  
-        alert("Recent stored");
-    } catch (error) {
-        console.error('Error posting artwork view:', error);
-        console.log('Error data:', error.response);  
-    }
+
     history.push(`/reviews/${artworkID}`);
     window.location.reload();
+    
   };
 
   return (

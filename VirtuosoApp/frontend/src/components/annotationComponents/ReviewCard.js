@@ -8,7 +8,7 @@ const ReviewCard = ({ rating, likes, user, review, revid, is_owner, onDelete, on
   return (
     <div className={styles['review-card']}>
       <StaticStarRating rating={rating}/>
-      <p style={{fontSize: '20px', paddingBottom: '5px'}}>{user}</p>
+      <a href= "/review/:reviewId" style={{fontSize: '20px', paddingBottom: '5px'}}>{user}</a>
       <p style={{overflow: 'default'}}>{review}</p>
       <div className={styles['actions']}>
         <button onClick={() => onLike(revid)} className={styles['like-button']}>

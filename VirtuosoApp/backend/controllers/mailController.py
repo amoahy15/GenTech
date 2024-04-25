@@ -5,6 +5,7 @@ import logging
 import mailtrap as mt
 
 
+
 mail_controller = Blueprint('mail_controller', __name__)
 logging.basicConfig(level=logging.DEBUG)
 

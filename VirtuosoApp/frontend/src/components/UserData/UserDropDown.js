@@ -83,7 +83,7 @@ const UserDropDown = () => {
              <a><DropDownItems>Filler 3</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems>Filler 4</DropDownItems></a>
+             <a href='/settings'><DropDownItems>Advanced Settings</DropDownItems></a>
             </li>
         </ul>
         </div>

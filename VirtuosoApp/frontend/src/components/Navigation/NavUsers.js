@@ -35,7 +35,7 @@ const NavUser = () => {
 
           <a href = '/collections'><Button2 text='Gallery' onClick={onClick}/></a>
 
-          <UserIcon><UserDropDown></UserDropDown></UserIcon>
+          <UserIcon category = "profile"><UserDropDown></UserDropDown></UserIcon>
 
       </nav>
       </header>  

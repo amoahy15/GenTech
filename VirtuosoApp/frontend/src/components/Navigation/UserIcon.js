@@ -4,7 +4,7 @@ import ProfilePic from '../UserData/ProfilePic';
 const UserIcon = (props) => {
 
   
-    const child = <ProfilePic size={10}/>;
+    const child = <ProfilePic category = "profile" size={10}/>;
     const[open, setOpen] = useState(false);
     const ref = useRef();
 

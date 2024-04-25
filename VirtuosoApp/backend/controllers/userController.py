@@ -357,3 +357,4 @@ def get_user_reviews():
         return jsonify(results), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    

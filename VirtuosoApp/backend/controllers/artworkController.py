@@ -6,7 +6,6 @@ import os
 from mongoengine import ValidationError, NotUniqueError
 from models.artworkModel import Artwork
 from models.userModel import User
-from models.recentsModel import Recents
 from flask_jwt_extended import jwt_required, get_jwt_identity
 import uuid
 
@@ -27,7 +26,7 @@ def create_artwork():
         return jsonify({"error": "User not found"}), 404
 
     data = request.get_json()
-    required_fields = ['title', 'year', 'image_url']
+    required_fields = ['title', 'year', 'image_url', 'description']
     missing_fields = [field for field in required_fields if field not in data]
 
     if missing_fields:
@@ -44,7 +43,8 @@ def create_artwork():
             artist = data['artist'],
             year=data['year'],
             image_url=data['image_url'],
-            tags = ["user_art"],
+            description=data['description'],
+            tags = [user.email],
         )
 
         new_artwork.save()
@@ -108,43 +108,6 @@ def get_artwork(artwork_id):
     
     return jsonify(artwork.serialize()), 200
 
-@artwork_controller.route('/recent_artworks', methods=['GET'])
-@jwt_required()
-def get_recent_artworks():
-    user_id = get_jwt_identity()
-    recent = Recents.objects(user_id=user_id).first()
-    if recent:
-        artworks = [artwork.serialize() for artwork in recent.artworks]
-        return jsonify(artworks), 200
-    return jsonify({"message": "No recently viewed artworks found"}), 404
-
-@artwork_controller.route('/click_artwork', methods=['POST'])
-@jwt_required()
-def handle_view_artwork():
-    user_id = get_jwt_identity()
-    artwork_id = request.json['artwork_id']
-
-    try:
-        # Retrieve the artwork to ensure it exists
-        artwork = Artwork.objects.get(id=artwork_id)
-    except Artwork.DoesNotExist:
-        return jsonify({"error": "Artwork not found"}), 404
-
-    # Check if there's an existing recent view entry for the user
-    recent_view = Recents.objects(user_id=user_id).first()
-
-    if not recent_view:
-        # Create new if no recent views exist
-        recent_view = Recents(user_id=user_id, artworks=[artwork], viewed_dates=[datetime.utcnow()])
-    else:
-        # Add to existing document
-        if artwork not in recent_view.artworks:
-            recent_view.artworks.append(artwork)
-            recent_view.viewed_dates.append(datetime.utcnow())
-        # Optional: limit the number of recent views or implement other logic
-
-    recent_view.save()
-    return jsonify({"message": "Artwork view updated"}), 200
 
 @artwork_controller.route('/user_artwork', methods=['GET'])
 @jwt_required()

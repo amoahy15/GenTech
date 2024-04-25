@@ -1,24 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Carousel from '../carouselcomponents/Carousel.js';
-import profilephoto from '../../assets/images/Frida_Kahlo/Frida_Kahlo_3.jpg';
-import background from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg';
-import img from '../../assets/images/testImage.jpeg';
-import img2 from '../../assets/images/testImage2.jpeg';
-import img3 from '../../assets/images/testImage3.jpeg';
 import EditUser from '../UserData/EditUser.js';
 import EditItem from '../UserData/EditItem.js';
 import styles from '../styles/user.module.css';
 import Collections from './Collections.js';
 import Row from '../Navigation/rowScroll.js';
 import Post from '../API/Post.js';
-import UserArtworks from '../API/UserArtworks.js';
-import RecentlyViewedCarousel from '../carouselcomponents/RecentlyViewed.js';
+
 
 function Profile() {
 
 
   const [userData, setUserData] = useState({
+    email: '',
     id: '',
     user_name: 'Loading...',
     bio: 'Loading bio...',
@@ -30,12 +24,14 @@ function Profile() {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
+        const response = await axios.get(`http://127.0.0.1:8000/api/user/details`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
         });
+        console.log('API Response:', response.data);
         setUserData({
+          email: response.data.email,
           id: response.data.user_id,
           user_name: response.data.user_name, 
           bio: response.data.bio,
@@ -63,7 +59,7 @@ function Profile() {
   
     try {
       const token = localStorage.getItem('token');
-      const url = `${process.env.REACT_APP_API_BASE_URL}/update_user/${userData.id}`;
+      const url = `${process.env.REACT_APP_API_BASE_URL}/user/update_bio`;
   
       const response = await axios.put(
         url,
@@ -88,7 +84,7 @@ function Profile() {
     }
   };
   
-
+  console.log(userData.id)
   return (
     <div>
     <div className={styles.info}>
@@ -111,20 +107,22 @@ function Profile() {
           </div>
           <div>
           <Post/>
-          <h1>My Artwork</h1>
-          
           </div>
       </div>
       </div>
+      
 
-      <div>
-      <Row title="Recently Viewed">
-      <div className={styles.containerColl} styles={{margin: '0 auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>  
-      <RecentlyViewedCarousel/>
-      </div>    
-      </Row>
-      </div>
+      <Row title="Recently Rated">
+          <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
+            <Collections category={userData.id} />
+          </div>   
+        </Row>
 
+        <Row title="My Art">
+          <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
+            <Collections category={userData.email} />
+          </div>   
+        </Row>
 
     </div>
   );
