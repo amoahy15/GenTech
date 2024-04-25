@@ -31,7 +31,7 @@ const Nav = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='/'><Button2 text='Community' onClick={handleClick}/></a>
+          <a href='/search'><Button2 text='Search' onClick={handleClick}/></a>
 
           <a href = '/collections'><Button2 text='Collections' onClick={handleClick}/></a>
 
