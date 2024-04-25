@@ -5,8 +5,8 @@ import { IoLockClosedSharp } from "react-icons/io5";
 import bgVid from '../../assets/videos/lightvid.mp4';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import Authenticator from './Authenticator';
 import placeholder from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg'
+
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -14,6 +14,8 @@ const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
+  const [profilePicture, setProfilePicture] = useState('');
+  const [category, setCategory] = useState('default_category');
 
   const nav = useHistory();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -29,6 +31,29 @@ const Register = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchArtworks = async () => {
+      if (category) {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
+          const artworks = response.data.artworks || [];
+          if (artworks.length > 0) {
+            const randomIndex = Math.floor(Math.random() * artworks.length);
+            setProfilePicture(artworks[randomIndex].image_url);
+          } else {
+            setProfilePicture(''); 
+          }
+        } catch (error) {
+          console.error(`Error fetching artworks with tag ${category}:`, error);
+          setProfilePicture('');
+        }
+      }
+    };
+    fetchArtworks();
+  }, [category]);
+
+
+
 
   const registerUser = async (e) => {
     e.preventDefault();
@@ -38,7 +63,8 @@ const Register = () => {
       password: password,
       first_name: firstName, 
       last_name: lastName, 
-      user_name: userName
+      user_name: userName,
+      profile_picture: profilePicture
     };
 
     try {

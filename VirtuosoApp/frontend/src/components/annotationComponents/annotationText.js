@@ -10,7 +10,7 @@ const SingleAnnotation = ({ onDelete, username, comment, x, y, onHover, annotati
   console.log(annotation); 
   return (
     <div className="single-annotation" style={{ marginBottom: '20px' }} onMouseEnter={() => onHover({ x, y })} onMouseLeave={() => onHover({ x: null, y: null })}>
-      <p style={{color: 'gray'}}><b><Link to={`/other-users/${username}`}>{username}</Link></b></p>
+      <p style={{color: 'gray'}}><b><Link to={`/profiles/${username}`}>{username}</Link></b></p>
       <p style={{paddingBottom: '8px'}}>{comment}</p>
       {/*<p style={{paddingBottom: '8px'}}>{[x, " ", y]}</p>*/}
       {/*<p style={{paddingBottom: '8px'}}>{["^", likes]}</p>*/}

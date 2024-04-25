@@ -358,13 +358,6 @@ def get_user_reviews():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-def serialize_minimal(self):
-    return {
-        "user_id": self.user_id,
-        "bio": self.bio,
-        "profile_picture": self.profile_picture
-    }
-
 
 @user_controller.route('/details/<string:user_name>', methods=['GET'])
 @jwt_required()
@@ -372,7 +365,8 @@ def get_user_details_by_username(user_name):
     try:
         # Directly using user_name to fetch user details
         user = User.objects.get(user_name=user_name)
-        return jsonify(user.serialize_minimal()), 200
+
+        return jsonify(user.serialize()), 200
     except DoesNotExist:
         current_app.logger.error(f"User with username {user_name} not found")
         return jsonify({"error": "User not found"}), 404

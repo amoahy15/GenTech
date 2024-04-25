@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import Row from '../Navigation/rowScroll';
+import Collections from './Collections';
 
 const OtherUser = () => {
   const [userData, setUserData] = useState({ user_id: '', bio: '', profile_picture: '' });
@@ -40,9 +42,17 @@ const OtherUser = () => {
   return (
     <div>
       <h1>User Profile</h1>
-      {userData.profile_picture && <img src={userData.profile_picture} alt="Profile" />}
+      {/*{userData.profile_picture && <img src={userData.profile_picture} alt="Profile" />}*/}
+      <p><strong>Username:</strong> {username}</p>
       <p><strong>User ID:</strong> {userData.user_id}</p>
       <p><strong>Bio:</strong> {userData.bio}</p>
+
+      <Row title="Recently Rated">
+          <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
+            <Collections category={username} />
+          </div>   
+        </Row>
+
     </div>
   );
 };
