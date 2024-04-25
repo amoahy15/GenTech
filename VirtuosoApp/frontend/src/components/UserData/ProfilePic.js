@@ -2,37 +2,41 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../styles/profilepic.module.css';
 
-const ProfilePic = ({ category }) => {
-  const [artworks, setArtworks] = useState([]);
-  const [imageUrl, setImageUrl] = useState('');
+const ProfilePic = () => {
+  const [userData, setUserData] = useState({ user_id: '', bio: '', profile_picture: '' });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
 
   useEffect(() => {
-    const fetchArtworks = async () => {
-      if (category) {
-        try {
-          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
-          const artworks = response.data.artworks || [];
-          setArtworks(artworks);
-          if (artworks.length > 0) {
-            const randomIndex = Math.floor(Math.random() * artworks.length);
-            setImageUrl(artworks[randomIndex].image_url);
-          } else {
-            setImageUrl(''); 
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/user/details`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`  
           }
-        } catch (error) {
-          console.error(`Error fetching artworks with tag ${category}:`, error);
-          setImageUrl(''); 
-        }
+        });
+        setUserData({
+          user_id: response.data.user_id,
+          bio: response.data.bio,
+          profile_picture: response.data.profile_picture
+        });
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch user data:', err);
+        setError('Failed to fetch user data');
+        setLoading(false);
       }
     };
 
-    fetchArtworks();
-  }, [category]);
+    fetchUserData();
+  }, []);
+
 
   
   return (
     <div className={styles.profilephoto}>
-      <img src={imageUrl} alt={imageUrl ? "Profile artwork" : "No profile artwork available"} />
+      {userData.profile_picture && <img src={userData.profile_picture} alt="Profile" />}
     </div>
   );
 }

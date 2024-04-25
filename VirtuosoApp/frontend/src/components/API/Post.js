@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from '../styles/popup.module.css'
 
 function Post() {
   const [file, setFile] = useState(null);
@@ -51,6 +52,18 @@ function Post() {
       alert('Failed to create artwork. Please check the console for more details.');
     }
   };
+
+  const [isOpen, setIsOpen] = useState(true);
+
+  
+  function onClose() {
+    setIsOpen(false); 
+  }
+
+  if (!isOpen) {
+    return null; 
+  }
+  
   
   return (
     <form onSubmit={handleSubmit}>
@@ -59,7 +72,8 @@ function Post() {
       <input type="text" value={artist} onChange={(e) => setArtist(e.target.value)} placeholder="Artist" />
       <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
       <input type="file" onChange={handleFileChange} />
-      <button type="submit">Upload Artwork</button>
+      <button className={styles.btn} type="button" onClick={onClose}>Upload</button>
+      <button className={styles.btn} type="button" onClick={onClose}>Cancel</button>
     </form>
   );
 }

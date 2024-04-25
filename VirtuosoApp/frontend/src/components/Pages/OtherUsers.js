@@ -34,7 +34,7 @@ const OtherUser = () => {
     };
 
     fetchUserData();
-  }, [username]);  // Re-fetch if username changes
+  }, [username]);  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

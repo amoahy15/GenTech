@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import EditUser from '../UserData/EditUser.js';
 import EditItem from '../UserData/EditItem.js';
-import styles from '../styles/user.module.css';
 import Collections from './Collections.js';
 import Row from '../Navigation/rowScroll.js';
 import Post from '../API/Post.js';
@@ -83,19 +82,23 @@ function Profile() {
       console.log(userData.id);
     }
   };
+
+  const [isOpen, setIsOpen] = useState(true);
+
   
-  console.log(userData.id)
+  function onClose() {
+    setIsOpen(false); 
+  }
+
+  if (!isOpen) {
+    return null; 
+  }
+
   return (
     <div>
-    <div className={styles.info}>
-     <div className={styles.container}>
-        <div className={styles.info}>
-        <div style = {{paddingRight: '2vh', fontSize: '20px'}}>{userData.user_name}</div>
-        <div>
-          <EditItem><EditUser/></EditItem>
-        </div>
-        </div>
-        <div>{userData.bio}</div>
+    <div style = {{paddingRight: '2vh', fontSize: '20px'}}>{userData.user_name}</div>
+    <div>{userData.bio}</div>
+      <div>
         <div className='textEntry'>
               <input 
                 type="text" 
@@ -104,12 +107,19 @@ function Profile() {
                 placeholder="Edit your bio"
               />
                <button onClick={handleUpdateBio}>Save</button>
+               <button onClick={onClose}>Cancel</button>
           </div>
+        </div>
+      
+
+
           <div>
           <Post/>
           </div>
-      </div>
-      </div>
+          
+         
+    
+      
       
 
       <Row title="Recently Rated">
