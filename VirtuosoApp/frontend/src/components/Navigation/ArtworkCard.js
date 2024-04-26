@@ -21,13 +21,14 @@ const ArtworkCard = ({ artwork }) => {
     };
 
     return (
-      <div className={styles['image-card-container']}>
+      <div className={styles['image-card-container']} onClick={handleClick}>
             <div
                 className={styles['image-card']}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                
             >
-                <img src={artwork.imageurl} />
+                <img src={artwork.imageurl}/>
                 {isHovering && (
                     <div className={styles.hoverContent}>
                         <p>{artwork.name}</p>

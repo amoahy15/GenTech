@@ -84,6 +84,10 @@ const PopupForm = ({ onSubmit, onClose, url }) => {
       nav.push("/login");
       return;
     }
+    if (!annotationText.trim()) {
+      setError("Annotation text cannot be empty.");
+      return;
+    }
     if (realclickCoordinates.x === null || realclickCoordinates.y === null) {
       setError("Please select a point on the image before submitting your comment.");
       return;
