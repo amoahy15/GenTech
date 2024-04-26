@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 //for more about image rendering i used this: https://docs.rs/imgref/latest/imgref/
-//TODO: Undo hardcoding of artworkid
 
 const PopupForm = ({ onSubmit, onClose, url }) => {
   const [annotationText, setAnnotationText] = useState("");

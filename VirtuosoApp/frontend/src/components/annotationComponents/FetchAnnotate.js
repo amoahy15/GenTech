@@ -51,8 +51,9 @@ const fetchAnnotations = async () => {
 
   //refresh 
   const handleAnnotationSubmit = async () => {
-    try {
+    try { //dont touch this
       await fetchAnnotations();
+      console.log("fetching")
     } catch (error) {
       console.error("Error adding annotation:", error);
     }
