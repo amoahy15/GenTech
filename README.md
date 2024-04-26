@@ -13,4 +13,5 @@ Virtuoso is a social platform for artists, art connoisseurs, and the casual enjo
 * Annotation
   * Annotations allow a user to select a specific part of an artwork and comment on it.
   * Once users have submitted their annotation, anyone can hover over the annotation and the marker will be rendered on the image.
-    ![alt text] ([https://github.com/amoahy15/GenTech/blob/main/VirtuosoApp/frontend/src/assets/images/hoverannotate.png])
+    ![image](https://github.com/amoahy15/GenTech/assets/141963248/6e1d197f-6ae8-4d85-9eee-d058b8d0f3ec)
+
