@@ -31,3 +31,6 @@ Virtuoso is accessible at https://virtuoso-419315.web.app/
     * and the second being the search page, which also displays links to user profiles.
       ![image](https://github.com/amoahy15/GenTech/assets/141963248/7cb2fc14-e148-4063-ba0c-a158ac48cba0)
 
+## Contribution
+To get started working on Virtuoso, see [our getting started documentation](https://github.com/amoahy15/GenTech/blob/main/Docs/Contribution_getting_started.md)
+
