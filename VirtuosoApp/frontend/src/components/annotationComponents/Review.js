@@ -32,20 +32,6 @@ const Review = ({ reviews, onDel, isLiked, handleLike}) => {
 
   const reviewRows = rows(reviews, 2);
 
-  const deleteReview = async (reviewId) => {
-    try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/review/reviews/${reviewId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-        if (response.status === 200) {
-            console.log("Review deleted successfully");
-            window.location.reload();
-        }
-    } catch (error) {
-        console.error("Failed to delete review", error.response.data);
-    }
-}
-
   return (
     <div style={{ marginLeft: '5vw', marginRight: '5vw' }}>
       <div className={styles['review-container']}>

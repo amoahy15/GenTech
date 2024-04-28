@@ -4,36 +4,23 @@ import SingleAnnotation from "./annotationText.js";
 import TextColumn from "./TextCol.js";
 import AnnotationComments from "./AnnotationComments.js";
 import placeholderImage from "../../assets/images/art5.webp";
-import ImageDisplay from "./ClickableImg.js";
+import ImageDisplay from "./ImageDisplay.js";
 import FetchAnnotate from "./FetchAnnotate.js";
 import RevPopup from "./RevPopup.js";
 import axios from "axios";
 import RevEdit from "./RevEdit.js";
 import { useParams } from "react-router-dom";
 import styles from "../styles/reviewcols.module.css";
-//todo: pass in info directly from reviewpage.js
-//todo: top priority refactoring
-const ArtTextCols = ({
-  artworkID,
-  handleSubmit,
-  userHasReviewed,
-  userReviewId,
-  fetch,
-}) => {
+const ArtTextCols = ({ artworkID, handleSubmit, userHasReviewed,
+  userReviewId, fetch,}) => {
   const [showAnnotations, setShowAnnotations] = useState(false);
   const [allowDotPlacement, setAllowDotPlacement] = useState(false);
-  const [clickCoordinates, setClickCoordinates] = useState({
-    x: null,
-    y: null,
-  });
+  const [clickCoordinates, setClickCoordinates] = useState({ x: null, y: null,});
   const [showPopup, setShowPopup] = useState(false);
   const [showEdit, setShowEdit] = useState(0);
 
   //actually called in fetchannotate
-  const [hoverCoordinates, setHoverCoordinates] = useState({
-    x: null,
-    y: null,
-  });
+  const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null,});
   const [artwork, setArtwork] = useState(null);
   const [error, setError] = useState("");
   const [isMobile, setisMobile] = useState(window.innerWidth <= 768);
@@ -76,10 +63,6 @@ const ArtTextCols = ({
     return <div>Loading...</div>;
   }
 
-  const handleAddCommentClick = () => {
-    setAllowDotPlacement(true);
-  };
-
   //toggle annotations
   const handleButtonClick = () => {
     setShowAnnotations(!showAnnotations);
@@ -90,14 +73,6 @@ const ArtTextCols = ({
   };
   const handleButtonClick3 = () => {
     setShowEdit(!showEdit);
-  };
-  const handleImageClick = (event) => {
-    if (allowDotPlacement) {
-      const rect = event.target.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      setClickCoordinates({ x, y });
-    }
   };
 
   //change appearance of buttons

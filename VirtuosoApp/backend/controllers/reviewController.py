@@ -62,7 +62,7 @@ def get_review(review_id):
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 
 @review_controller.route('/reviews/<string:review_id>', methods=['PUT'])
-@jwt_required()
+@jwt_required() # TODO: user auth
 def update_review(review_id):
     data = request.get_json()
     try:

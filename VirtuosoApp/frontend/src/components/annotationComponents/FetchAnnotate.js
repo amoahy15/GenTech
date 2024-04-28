@@ -11,13 +11,6 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
   //const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null });
 
-
-  const handleAnnotationHover = (x, y) => {
-    setHoverCoordinates({ x, y });
-  };
-
-//get user info here (incl username) 
-//TODO: profile pic? (in info)
 const fetchAnnotations = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/annotations/artwork/${artworkID}/annotations`, {
@@ -51,7 +44,7 @@ const fetchAnnotations = async () => {
 
   //refresh 
   const handleAnnotationSubmit = async () => {
-    try { //dont touch this
+    try {
       await fetchAnnotations();
       console.log("fetching")
     } catch (error) {

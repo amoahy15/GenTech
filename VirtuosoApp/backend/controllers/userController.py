@@ -360,10 +360,9 @@ def get_user_reviews():
     
 
 @user_controller.route('/details/<string:user_name>', methods=['GET'])
-@jwt_required()
+@jwt_required() 
 def get_user_details_by_username(user_name):
     try:
-        # Directly using user_name to fetch user details
         user = User.objects.get(user_name=user_name)
 
         return jsonify(user.serialize()), 200

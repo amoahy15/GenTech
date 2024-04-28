@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import ArtTextCols from "../annotationComponents/ImageTextColumn";
+import ArtTextCols from "../annotationComponents/ArtTextCols.js";
 import Carousel from '../carouselcomponents/Carousel.js';
 import Review from "../annotationComponents/Review.js";
 import axios from 'axios';
