@@ -1,110 +1,113 @@
-= SPEC-1: User Management Documentation
-:sectnums:
-:toc:
+# User Management
 
-== Background
+## Background 
 
-The VirtuosoApp requires a robust user management system to facilitate user authentication, profile management, and social features like following other users. The system is designed to support a rich user experience in an art-centric social platform.
+The user model and endpoints contain additional abilities beyond what is deployed in the app. These were created earlier on in hopes that this project could continue, but certain attributes needed work beyond the limitations of 9 weeks. 
 
-== Requirements
+## Review Model
 
-* Must support user creation, authentication, and profile updates.
-* Must allow users to follow and unfollow other users.
-* Should handle password encryption securely.
-* Should provide JWT tokens for session management.
-* Must enable CRUD operations on user data.
+The User model represents a user made in the application via registration. Each user is uniquely identified and includes information about the user, and contains capabilites that could be used for future development, such as links to their other social media profiles (see VirtuosoApp/backend/models/userModel.py).
 
-== Method
+## Review Controller
 
-=== Architecture Design
+## POST /create_user
+- **Description**: Registers a new user in the system.
+- **Authorization**: None 
+- **Data body**: `user_name`, `email`, `password` (all required) 
+  - Optional:  `first_name`, `last_name`, `profile_picture`, `bio`, `location`, `favorite_artworks`, `is_private`, and `social_media_links`. (see future work)
+- **Returns**:
+  - `201 Created`: Returns user ID and a message to verify account via email; the endpoint also sends the verification email. 
+## PUT /update_user
+- **Description**: updates the profile details of the currently logged-in user
+- **Authorization**: token required
+- **Data body** (JSON): `user_name`: (optional , new username)
+- **Returns**:
+  - `200 OK`: {"message": "User updated successfully"}
 
-image::userComponentDiagram.png[User Component Diagram,align="center"]
+## PUT /update_password
+- **Description**: updates the password for the currently logged-in user.
+- **Authorization**: token required
+- **Data body**: `old_password`, `new_password` (required) 
+- **Returns**:
+  - `200 OK`: {"message": "Password updated successfully"}
+## PUT /update_bio
+- **Description**: Updates the bio of the currently logged-in user.
+- **Authorization**: token required
+- **Data body** (JSON): `bio` (optional)
+- **Response**:
+  - `200 OK`: "User bio updated successfully for user ID {user_id}
+## POST /login
+- **Description**: authenticates a user and provides a JWT
+- **Authorization**: None 
+- **Data body** (JSON):
+  - `user_name`: Username (required).
+  - `password`: Password (required).
+- **Returns**:
+  - `200 OK`: Login successful messge and access token.
+## DELETE /delete_user/{user_id}
+- **Description**: Deletes a user object from database
+- **Authorization**: token required
+- **Data body**:
+- **Response**:
+  - `200 OK`: User deleted successfully.
+## POST /authenticate_user
+- **Description**: checks if user credentials are valid (already in the database) 
+- **Authorization**: token required
+- **Data body** (JSON):`email`, `password`
+- **Response**:
+  - `200 OK`: Authentication successful.
+## GET /list_users
+- **Description**: retrieves a list of all users in the database.
+- **Authorization**: token required
+- **Response**:
+  - `200 OK`: Successfully fetched all users and returns list of user data in JSON format
+## GET /details
+- **Description**: Retrieves details of the currently logged-in user (such as bio and username)
+- **Authorization**: Required (JWT Token).
+- **Response**:
+  - `200 OK`: Details fetched successfully and returns user details in JSON format
+## POST /follow
+- **Description**: Allows the current user to follow another user (not deployed)
+- **Authorization**: token required
+- **Data body** : `target_user_id` (id of the user to be followed) 
+- **Response**:
+  - `200 OK`: {"message": "Successfully followed the user"} or {"message": "Follow request sent"}
 
-=== Database Schema
+## POST /unfollow
+- **Description**: Allows the current user to unfollow another user (not deployed, see future work) 
+- **Authorization**: Required (JWT Token).
+- **Data body** (JSON): `target_user_id`(id of user to be unfollowed)
+- **Response**:
+  - `200 OK`: {"message": "Successfully unfollowed the user"}
+## GET /verify/{user_id}/{verification_token}
+- **Description**: Verifies a user's email address.
+- **Authorization**: None 
+- **Parameters**: `user_id`, `verification_token` (via the user's email) 
+- **Response**:
+  - `200 OK`: User successfully verified.
+## POST /request_password_reset
+- **Description**: initiates a password reset process by sending an email to the user.
+- **Authorization**: None 
+- **Data body** : `email`
+- **Response**:
+  - `200 OK`: Password reset email sent successfully.
+## PUT /reset_password/{reset_token}
+- **Description**: resets the user's password via a token received by email.
+- **Authorization**: None (reset token)
+- **Parameters**:`reset_token`
+- **Data body**:`password`
+- **Response**:
+  - `200 OK`: Password reset successfully.
+## GET /getreviews
+- **Description**: returns all reviews associated with currently-logged in user
+- **Authorization**: token required 
+- **Returns**: JSON formatted reviews, including information like `artwork_name`, `artwork_image_url`, and `artwork_id`
+## GET /details/<string:user_name>
+- **Description**: retrieves user details via username (not token or user id)
+- **Authorization**: token required
+- **Parameters**: `user_name` (of user to be fetched) 
+- **Returns**: JSON formatted user details
 
-[plantuml, schema-user, png]
-----
-entity "User" as User {
-  *user_id : string <<generated>>
-  --
-  *user_name : string
-  *email : email
-  *password_hash : string
-  --
-  first_name : string
-  last_name : string
-  profile_picture : url
-  bio : string
-  location : string
-  favorite_artworks : array[string]
-  reviews : array[string]
-  artwork_created : array[string]
-  followers : array[string]
-  following : array[string]
-  pending_follow_requests : array[string]
-  is_private : boolean = false
-  social_media_links : dictionary
-  verification_status : boolean = false
-  preferences : dictionary
-  joined_date : datetime
-}
-----
+# Future Work:
 
-=== Algorithms
-
-* Password Encryption: Utilizes `bcrypt` for hashing passwords before storage.
-* Authentication: Implements JWT token generation for session management after successful authentication.
-* Follow/Unfollow Logic: Manages user relationships and privacy settings to control follow requests.
-
-== Implementation
-
-1. Initialization of Flask application and necessary extensions like Flask-JWT and Flask-Bcrypt.
-2. Definition of User model in `userModel.py` with fields corresponding to the database schema.
-3. Implementation of user-related operations in `userController.py`, including routes for user creation, authentication, profile updates, and follow/unfollow functionalities.
-
-== Sending Requests
-
-To interact with the user management system, one can use Postman to send HTTP requests. Here's how:
-
-1. **User Creation (Signup):** 
-   - Method: POST
-   - URL: `http://<your_server>/api/users/signup`
-   - Body: JSON with `user_name`, `email`, `password`, and other optional fields.
-   - Example:
-     ```
-     {
-       "user_name": "john_doe",
-       "email": "john@example.com",
-       "password": "your_secure_password"
-     }
-     ```
-
-2. **User Login (Authentication):**
-   - Method: POST
-   - URL: `http://<your_server>/api/users/login`
-   - Body: JSON with `email` and `password`.
-   - This request returns a JWT token upon successful authentication.
-   - Example:
-     ```
-     {
-       "email": "john@example.com",
-       "password": "your_secure_password"
-     }
-     ```
-
-3. **Accessing Protected Routes:**
-   - Use the JWT token received from the login as a Bearer Token in the Authorization header.
-   - Example:
-     - Header: `Authorization: Bearer <your_jwt_token>`
-   - This token is required to access routes that require authentication, such as profile updates or following another user.
-
-== Milestones
-
-1. Setup of Flask application with JWT and Bcrypt extensions.
-2. Completion of the User model.
-3. Implementation and testing of all user-related routes.
-
-== Gathering Results
-
-* Unit tests for each user operation to validate functionality and security.
-* Performance testing to ensure scalability with an increasing number of users.
+* Implement unfollowing/following other users (this was primarily not done since we did not have the capacity to create a feed) 
