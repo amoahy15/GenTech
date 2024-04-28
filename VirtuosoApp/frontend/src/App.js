@@ -97,7 +97,9 @@ function App() {
                 <EmailCheckPage />
               </Route>
               <Route path="/search">
+               {token ? <NavUser /> : <Nav />}
                 <Search />
+                <Footer></Footer>
               </Route>
               <Route
                 path="/verify/:userId/:verificationToken"
