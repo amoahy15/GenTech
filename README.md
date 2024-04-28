@@ -22,15 +22,9 @@ Virtuoso is accessible at https://virtuoso-419315.web.app/
 * Reviews
   * We recognized that the art community wished to write reviews and rate works of art, so we allowed users to write a single review, including a star rating on a 5-point scale, and to comment on the overall work, with both being optional features for a user's review.
     ![image](https://github.com/amoahy15/GenTech/assets/141963248/2c610698-a00c-4042-8cb9-b114c57163f4)
-* Users
-* Settings
-* Finding Images and Users
-    * There are two ways of finding artwork, the first being via the 'Gallery' or 'Collections' page. This page has capabilities to display a number of collections dependent on attributes such as period, artist, and media.
-      ![image](https://github.com/amoahy15/GenTech/assets/141963248/866b3edc-4fb4-4ccc-a6ca-507436edfd84)
-
-    * and the second being the search page, which also displays links to user profiles.
-      ![image](https://github.com/amoahy15/GenTech/assets/141963248/7cb2fc14-e148-4063-ba0c-a158ac48cba0)
 
 ## Contribution
 To get started working on Virtuoso, see [our getting started documentation](https://github.com/amoahy15/GenTech/blob/main/Docs/Contribution_getting_started.md)
 
+## Read More
+If you would like to read more about the non-technical details of the site, including user details, finding images to review, and signing up, see our [General Info](https://github.com/amoahy15/GenTech/blob/main/Docs/General_Info.md) page. 
