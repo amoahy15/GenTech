@@ -9,7 +9,7 @@ The annotation model and endpoints contain additional abilities beyond what is d
 The annotation model represents an annotation made in the application via the review page ([read more](https://github.com/amoahy15/GenTech/blob/main/Docs/General_Info.md). 
 Each annotation is uniquely identified and includes the coordinates of the image, as well as information about the corresponding comment. 
 
-## Annotatoin Controller
+## Annotation Controller
 
 ## POST /annotation
 - **Description**: Creates a new annotation on an existing artwork
