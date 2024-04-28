@@ -6,7 +6,9 @@
 Virtuoso is a social platform for artists, art connoisseurs, and the casual enjoyer to come together and critique, rate, and annotate pieces. Virtuoso seeks to provide a robust variety of art galleries/exhibits, pieces, and collages that tailors to every user’s specific experience and preferences.
 
 Virtuoso is accessible at https://virtuoso-419315.web.app/
-
+## Audience
+* Virtuoso was inspired by online stories of art lovers wishing they had a place to review art, in an environment akin to sites like Letterboxd and Goodreads. Utilizing our knowledge of art history courses and how students dissect specific components of a work, we decided to also include annotations to emulate an art history classroom and foster discussion.
+  
 ## Technologies Used
 * Flask
 * MongoDB
@@ -25,6 +27,16 @@ Virtuoso is accessible at https://virtuoso-419315.web.app/
 
 ## Contribution
 To get started working on Virtuoso, see [our getting started documentation](https://github.com/amoahy15/GenTech/blob/main/Docs/Contribution_getting_started.md)
+
+## Special Thanks
+All images used on our site are from the [National Gallery of Art](https://www.nga.gov/), with a few works from the [MET](https://www.metmuseum.org/), under their respective open source policies. 
+
+## Team Gentech
+* [Chloe Bickel](mailto:chl.bickel@gmail.com)
+* Humphrey Amoakohene
+* Ivan Martinez-Kay
+* Jose Izaguirre I
+* Tierra Ablorh
 
 ## Read More
 If you would like to read more about the non-technical details of the site, including user details, finding images to review, and signing up, see our [General Info](https://github.com/amoahy15/GenTech/blob/main/Docs/General_Info.md) page. 
