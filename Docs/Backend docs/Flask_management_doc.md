@@ -48,3 +48,6 @@ These variables must be set in a `.env` file located at the project root. The `d
    * [Artwork Management](https://github.com/amoahy15/GenTech/blob/main/Docs/Backend%20docs/API/Artwork_managment_doc.md)
    * [Review Management](https://github.com/amoahy15/GenTech/blob/main/Docs/Backend%20docs/API/Review_managment_doc.md)
    * [User Management](https://github.com/amoahy15/GenTech/blob/main/Docs/Backend%20docs/API/User_management_doc.md)
+   * [Annotation Management](https://github.com/amoahy15/GenTech/blob/main/Docs/Backend%20docs/API/Annotation_management.md)
+   * [s3 Management]()
+   * [email Management]()
