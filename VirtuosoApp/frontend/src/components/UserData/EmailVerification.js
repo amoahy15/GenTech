@@ -16,7 +16,7 @@ function VerificationPage() {
         if (response.data.verified) {
           setStatus('Your account has been successfully verified!');
           setTimeout(() => {
-            history.push('/login2');
+            history.push('/login');
           }, 3000);
         } else {
           setStatus('Verification failed.');
