@@ -27,6 +27,9 @@ const DropDownMenuMobile = () => {
                <a href='/collections'><DropDownItems>Galleries</DropDownItems></a>
              </li>
              <li>
+             <a href='/about'><DropDownItems >About Us</DropDownItems></a>
+            </li>
+             <li>
              <a href='/disclaimer'><DropDownItems >Disclaimer</DropDownItems></a>
             </li>
          </ul> 
