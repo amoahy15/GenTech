@@ -15,7 +15,6 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
-  const [category, setCategory] = useState('profile');
 
   const nav = useHistory();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -33,26 +32,24 @@ const Register = () => {
 
   useEffect(() => {
     const fetchArtworks = async () => {
-      if (category) {
-        try {
-          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
-          const artworks = response.data.artworks || [];
-          if (artworks.length > 0) {
-            const randomIndex = Math.floor(Math.random() * artworks.length);
-            setProfilePicture(artworks[randomIndex].image_url);
-          } else {
-            setProfilePicture(''); 
-          }
-        } catch (error) {
-          console.error(`Error fetching artworks with tag ${category}:`, error);
-          setProfilePicture('');
+      const category = 'profile'; 
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
+        const artworks = response.data.artworks || [];
+        if (artworks.length > 0) {
+          const randomIndex = Math.floor(Math.random() * artworks.length);
+          setProfilePicture(artworks[randomIndex].image_url);
+        } else {
+          setProfilePicture(placeholder);
         }
+      } catch (error) {
+        console.error(`Error fetching artworks with tag ${category}:`, error);
+        setProfilePicture(placeholder);
       }
     };
+  
     fetchArtworks();
-  }, [category]);
-
-
+  }, []);
 
 
   const registerUser = async (e) => {
@@ -122,7 +119,7 @@ const Register = () => {
             </div>
           </div>
 
-          <button className={styles["btn"]} type="submit">Create Account</button> {/* Changed to type="submit" */}
+          <button className={styles["btn"]} type="submit" disabled={!profilePicture || profilePicture === placeholder}>Create Account</button> {/* Changed to type="submit" */}
           {/*<Authenticator/>*/}
         </form>
       </div>
