@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import EditUser from '../UserData/EditUser.js';
-import EditItem from '../UserData/EditItem.js';
 import Collections from './Collections.js';
 import Row from '../Navigation/rowScroll.js';
 import Post from '../API/Post.js';
+import styles from '../styles/profilepopup.module.css'
+import ProfilePic from '../UserData/ProfilePic.js';
 
 
 function Profile() {
@@ -83,39 +83,82 @@ function Profile() {
     }
   };
 
-  const [isOpen, setIsOpen] = useState(true);
+    const [popup, setPopup] = useState(false);
+
+    const togglePopup = () =>{
+        setPopup(!popup)
+    }
+
+    function handleSave() {
+      handleUpdateBio();
+      togglePopup();
+      window.location.reload();
+    }
 
   
-  function onClose() {
-    setIsOpen(false); 
-  }
-
-  if (!isOpen) {
-    return null; 
-  }
 
   return (
     <div>
-    <div style = {{paddingRight: '2vh', fontSize: '20px'}}>{userData.user_name}</div>
-    <div>{userData.bio}</div>
-      <div>
-        <div className='textEntry'>
-              <input 
+    <div style={{marginTop: '7vh',display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+    <div className={styles.pic}>
+    <ProfilePic/>
+    </div>
+    </div>
+
+    <div style={{marginTop: '2vh',display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+    <div className={styles.user}>
+    {userData.user_name}
+    </div>
+    </div>
+    
+   
+    
+    <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+   
+    <div style={{flex: 2, maxWidth: '50%', border: '1px solid #cccccc', borderRadius: '10px', marginTop: '7vh', marginBottom: '15vh', padding: '10px', maxHeight: '600px', overflow: 'auto' }}>
+    <h1 style ={{marginLeft: '3vh', marginBottom: '1vh'}} className={styles.h1}>Bio:</h1>
+    <div style={{marginLeft:'2vh',marginRight: '2vh',flex: 2, maxWidth: '100%', border: '1px solid #cccccc', borderRadius: '10px', padding: '10px', maxHeight: '500px', overflow: 'auto' }}>
+    <div className={styles.bio} style ={{marginTop:'2vh'}}><p>{userData.bio}</p></div>
+    </div>
+    
+      
+    
+    <div style={{ display: 'flex', justifyContent: 'center'}}>
+    <button style ={{marginBottom: '2vh', marginTop: '2vh'}}
+    onClick = {togglePopup}
+    className={styles.btn2}
+    >
+    Edit Bio
+    </button>
+    </div>
+   
+    {popup && (<div>
+        <div className={styles.background}>
+        <div className={styles.box}>
+              <input className={styles.input}
                 type="text" 
                 value={bioText} 
                 onChange={handleBioChange} 
                 placeholder="Edit your bio"
               />
-               <button onClick={handleUpdateBio}>Save</button>
-               <button onClick={onClose}>Cancel</button>
+              <div className={styles.group}>
+               <button className={styles.btn} onClick={handleSave}>Save</button>
+               <button className={styles.btn} onClick={togglePopup}>Close</button>
+              </div>
           </div>
-        </div>
+          </div>
+        </div>)}
+      
+      
       
 
 
           <div>
           <Post/>
           </div>
+          </div>
+          </div>
+
           
          
     

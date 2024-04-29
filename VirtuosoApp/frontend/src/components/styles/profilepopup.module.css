@@ -1,0 +1,136 @@
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align top */
+    z-index: 1000;
+    padding: 20px;
+    overflow: auto; /* Allow scrolling on the background if needed */
+    box-sizing: border-box;
+}
+
+.box {
+    margin-top: 10vh;
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    max-height: 80vh; /* Reduce the max height to prevent overflow */
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    overflow: auto; /* Ensure scrolling within the popup */
+}
+  
+  .input {
+    width: 90%; 
+    height: 10vh;
+    overflow-y: auto;
+    overflow-x: hidden; 
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin: 10px 5%;
+  }
+
+  .group {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    padding: 10px 0;
+  }
+  
+  .btn {
+    font-size: 16px; 
+    padding: 10px 20px; 
+    margin: 0 10px;
+  }
+
+  .input {
+    width: 90%; 
+    height: 10vh;
+    overflow-y: auto;
+    overflow-x: hidden; 
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin: 10px 5%;
+  }
+
+  .input2 {
+    width: 90%; 
+    height: 5vh;
+    overflow-y: auto;
+    overflow-x: hidden; 
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin: 10px 5%;
+  }
+
+  .btn2 {
+    font-size: 20px;
+    color: gray;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    border-radius: 8px;
+  }
+
+  .pic {
+    width: 20vh;
+    height: 20vh;
+    border: 5px solid transparent;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 3vh;
+    z-index: 1;
+    transition: border 1200ms;
+  }
+
+  .pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user{
+    font-size: calc(1.3*(1vh + 1vw));
+    color: rgba(0, 0, 0, 0.7);
+    font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
+  }
+
+  .bio{
+    font-size: calc(.9*(1vh + 1vw));
+    color: rgba(0, 0, 0, 0.7);
+    font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
+    font-style: italic;
+  }
+
+  .h1{
+    font-size: calc(1.0*(1vh + 1vw));
+    color: rgba(0, 0, 0, 0.7);
+    font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", serif;
+    font-weight: bold;
+  }
+
+  .user a{
+    text-decoration: none;
+  }
+
+  .delete {
+    color: rgba(0, 0, 0, 0.7);
+    transition: color 700ms;
+  }
+
+  .delete:hover{
+    color: rgba(153,0,0,1);
+  }
+
+  

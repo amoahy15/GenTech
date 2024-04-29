@@ -1,6 +1,6 @@
 import Nav from "./components/Navigation/Nav";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, useHistory} from "react-router-dom";
 import AboutPage from "./components/Pages/AboutPage";
 import Home from "./components/Pages/Home";
 import ReviewPage from "./components/Pages/ReviewPage";
@@ -23,11 +23,27 @@ import AdvancedSettings from "./components/UserData/AdvancedSettings";
 import OtherUser from "./components/Pages/OtherUsers";
 import { NotificationProvider } from './components/Notifications/notificationProvider.js';
 import NotificationBar from './components/Notifications/notificationBar.js';
+import NavUsersMobile from "./components/Navigation/NavUsersMobile";
+import NavMobile from "./components/Navigation/NavMobile";
+
+
+
 
 
 function App() {
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 2000);
@@ -43,12 +59,12 @@ function App() {
           <div className="Content">
             <Switch>
               <Route exact path="/">
-                {token ? <NavUser /> : <Nav />}
+              {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
                 <Home />
                 <Footer />
               </Route>
               <Route path="/about">
-                {token ? <NavUser /> : <Nav />}
+              {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
                 <AboutPage />
                 <Footer />
               </Route>
@@ -56,7 +72,7 @@ function App() {
                 path="/reviews/:artworkID"
                 render={(props) => (
                   <div>
-                    {token ? <NavUser /> : <Nav />}
+                    {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
                     <ReviewPage {...props} />
                     <Footer />
                   </div>
@@ -72,12 +88,12 @@ function App() {
                 <Register />
               </Route>
               <Route path="/profile">
-                {token ? <NavUser /> : <Nav />}
+              {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
                 <Profile />
                 <Footer />
               </Route>
               <Route path="/collections">
-                {token ? <NavUser /> : <Nav />}
+              {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
                 <Gallery />
                 <Footer />
               </Route>
@@ -108,10 +124,13 @@ function App() {
                 component={ResetPasswordPage}
               />
                <Route path="/settings">
-            {token ? <NavUser /> : <Nav />}
+               {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
               <AdvancedSettings/>
             </Route>
-            <Route path="/profiles/:username" component={OtherUser} />
+            <Route path="/profiles/:username">
+            {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
+            <OtherUser/>
+            </Route>
             </Switch>
           </div>
         </NotificationProvider>

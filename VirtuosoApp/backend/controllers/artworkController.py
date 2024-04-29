@@ -96,11 +96,14 @@ def gentech_artwork():
     if not user:
         current_app.logger.error("User not found")
         return jsonify({"error": "User not found"}), 404
-    if user.user_id != '2dc5f45f-ded6-4d9f-90a4-5af9da1eaf1e':
+    if user.user_id != '14eee051-64b1-44a4-a76d-82c061c8aa36':
         current_app.logger.error("Unauthorized access attempt by user: {}".format(user.user_name))
         return jsonify({"error": "Unauthorized access"}), 403
     data = request.get_json()
-    required_fields = ['title', 'year', 'image_url']
+
+    data['tags'] = [user.email]
+    
+    required_fields = ['title', 'year', 'image_url', 'tags', 'description', 'artist']
     missing_fields = [field for field in required_fields if field not in data]
 
     if missing_fields:
@@ -109,6 +112,7 @@ def gentech_artwork():
 
 
     try:
+        
         new_artwork = Artwork(
             artwork_id=str(uuid.uuid4()),
             title=data['title'],

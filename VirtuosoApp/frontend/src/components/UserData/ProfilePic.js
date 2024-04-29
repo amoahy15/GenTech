@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from '../styles/profilepic.module.css';
+
 
 const ProfilePic = () => {
   const [userData, setUserData] = useState({ user_id: '', bio: '', profile_picture: '' });
@@ -35,7 +35,7 @@ const ProfilePic = () => {
 
   
   return (
-    <div className={styles.profilephoto}>
+    <div>
       {userData.profile_picture && <img src={userData.profile_picture} alt="Profile" />}
     </div>
   );

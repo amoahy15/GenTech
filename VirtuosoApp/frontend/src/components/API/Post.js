@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import styles from '../styles/popup.module.css'
+import styles from '../styles/profilepopup.module.css'
+
 
 function Post() {
   const [file, setFile] = useState(null);
@@ -17,7 +18,7 @@ function Post() {
     const formData = new FormData();
     formData.append('image', file);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/s3/upload`, formData, {
+      const response = await axios.post(`http://127.0.0.1:8000/api/s3/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -35,7 +36,7 @@ function Post() {
     e.preventDefault();
     try {
       const imageUrl = await uploadImage();
-      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/artwork/create_artwork`, {
+      await axios.post(`http://127.0.0.1:8000/api/artwork/create_artwork`, {
         title,
         artist,
         year,
@@ -46,35 +47,59 @@ function Post() {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
       });
-      alert('Artwork uploaded successfully!');
+      togglePopup();
+      window.location.reload();
     } catch (error) {
       console.error('Error creating artwork:', error);
-      alert('Failed to create artwork. Please check the console for more details.');
+      alert('Failed to create artwork. You are not an authorized user.');
     }
   };
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [popup, setPopup] = useState(false);
+
+  const togglePopup = () =>{
+      setPopup(!popup)
+  }
+
 
   
-  function onClose() {
-    setIsOpen(false); 
-  }
-
-  if (!isOpen) {
-    return null; 
-  }
+  
+  
   
   
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
-      <input type="number" value={year} onChange={(e) => setYear(e.target.value)} placeholder="Year" />
-      <input type="text" value={artist} onChange={(e) => setArtist(e.target.value)} placeholder="Artist" />
-      <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
-      <input type="file" onChange={handleFileChange} />
-      <button className={styles.btn} type="button" onClick={onClose}>Upload</button>
-      <button className={styles.btn} type="button" onClick={onClose}>Cancel</button>
-    </form>
+    <div>
+    <div style={{ display: 'flex', justifyContent: 'center'}}>
+    <button style ={{marginBottom: '1vh'}}
+    onClick = {togglePopup}
+    className={styles.btn2}
+    >
+    For Verified Users Only
+    </button>
+    </div>
+
+    {popup && (<div className={styles.background}>
+        <div className={styles.box}>
+            
+            <form onSubmit={handleSubmit}>
+                <p className={styles.bio}>This will not work if you do not have authourized access. Email us at <a href={`mailto:gentech.emory@gmail.com`}>gentech.emory@gmail.com</a> for access.</p>
+                <input className={styles.input} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+                <input className={styles.input} type="number" value={year} onChange={(e) => setYear(e.target.value)} placeholder="Year" />
+                <input className={styles.input} type="text" value={artist} onChange={(e) => setArtist(e.target.value)} placeholder="Artist" />
+                <input className={styles.input} type="text" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
+                <input className={styles.btn2} type="file" onChange={handleFileChange} />
+                <div className={styles.group}>
+                <button className={styles.btn} type ="submit" >Upload Artwork</button>
+                <button className={styles.btn} onClick={togglePopup}>Close</button>
+                </div>
+            </form>
+        </div>
+    </div>)}
+
+    
+
+    </div> 
+    
   );
 }
 

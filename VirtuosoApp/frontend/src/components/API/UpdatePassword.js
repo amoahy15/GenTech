@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from '../styles/profilepopup.module.css'
 
 function UpdatePassword() {
   const [oldPassword, setOldPassword] = useState('');
@@ -36,9 +37,9 @@ function UpdatePassword() {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>
+        <label className={styles.h1}>
           Old Password:
-          <input
+          <input className={styles.input2}
             type="password"
             value={oldPassword}
             onChange={handleOldPasswordChange}
@@ -47,9 +48,9 @@ function UpdatePassword() {
         </label>
       </div>
       <div>
-        <label>
+        <label className={styles.h1}>
           New Password:
-          <input
+          <input className={styles.input2}
             type="password"
             value={newPassword}
             onChange={handleNewPasswordChange}
@@ -57,7 +58,7 @@ function UpdatePassword() {
           />
         </label>
       </div>
-      <button type="submit">Update Password</button>
+      <button style ={{marginTop: '1vh'}} className = {styles.btn2} type="submit">Update Password</button>
     </form>
   );
   

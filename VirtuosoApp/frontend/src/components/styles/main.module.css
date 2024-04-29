@@ -11,14 +11,6 @@
     padding-top: 2%;
   }
 
-  .logo {
-    position: absolute;
-    height: 6vh;
-    width: auto;
-    z-index: 1;
-    transform: translate(145%,-20%);
-    
-  }
   
   .Nav { 
     display: flex;
