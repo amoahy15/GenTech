@@ -15,7 +15,7 @@ const Register = () => {
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
   const [profilePicture, setProfilePicture] = useState('');
-  const [category, setCategory] = useState('default_category');
+  const [category, setCategory] = useState('profile');
 
   const nav = useHistory();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
