@@ -1,13 +1,19 @@
 import React from "react";
 import styles from "../styles/usercard.module.css"
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+
 
 const UserCard = ({ user }) => {
-    console.log(user)
+
+    const history = useHistory();
+    const onclick = () => {
+        history.push(`/profiles/${user.name}`);
+        window.location.reload();
+    };
     return (
-      <div className={styles.userCard}>
-        <Link to={`/profiles/${user.name}`}><img src={user.imageurl} className={styles['profilePhoto']} /></Link>
-        <div className={styles.userName}><Link to={`/profiles/${user.name}`}>{user.name}</Link></div>
+      <div className={styles.userCard} onClick={onclick}>
+        <img src={user.imageurl} className={styles['profilePhoto']} />
+        <div className={styles.userName}>{user.name}</div>
         <p>{user.profilePictureUrl}</p>
       </div>
     );
