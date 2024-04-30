@@ -3,3 +3,12 @@
     width: 90%;
     margin: auto;
   }
+  .link {
+    color: gray; 
+    text-decoration: none; 
+  }
+  
+  .link:hover {
+    color: black; 
+    text-decoration: underline;
+  }

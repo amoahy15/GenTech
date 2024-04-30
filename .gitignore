@@ -259,3 +259,10 @@ VirtuosoApp/backend/cert.pem
 .gitignore
 .gitignore
 VirtuosoApp/backend/key.pem
+VirtuosoApp/frontend/.env.development
+VirtuosoApp/frontend/.env.production
+VirtuosoApp/backend/.env.yaml
+VirtuosoApp/backend/app.yaml
+VirtuosoApp/backend/app.yaml
+VirtuosoApp/frontend/.env.development
+VirtuosoApp/frontend/.env.production

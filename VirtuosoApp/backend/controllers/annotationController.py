@@ -5,7 +5,7 @@ from models.annotationModel import Annotation
 from models.userModel import User
 import datetime
 import uuid
-
+from models.artworkModel import Artwork
 annotation_controller = Blueprint('annotation_controller', __name__)
 
 @annotation_controller.route('/annotation', methods=['POST'])
@@ -28,6 +28,10 @@ def create_annotation():
             y_coordinate=data['y_coordinate'],
         )
         new_annotation.save()
+        artwork = Artwork.objects.get(artwork_id=data['artwork_id'])
+        if user_id not in artwork.tags:
+            Artwork.objects(artwork_id=data['artwork_id']).update_one(push__tags=user_id)
+
 
         return jsonify({"message": "Annotation created successfully!", "annotation_id": str(new_annotation.id)}), 201
     except ValidationError as e:
@@ -65,8 +69,10 @@ def delete_annotation(annotation_id):
         return jsonify({"error": "Annotation not found or access denied"}), 404
 
 @annotation_controller.route('/artwork/<artwork_id>/annotations', methods=['GET'])
+@jwt_required(optional=True)
 def get_annotations_for_artwork(artwork_id):
-    #took out token req.
+    #returns is_owner for each annotation if the current user made each annotation
+    curruser = get_jwt_identity()
     try:
         annotations = Annotation.objects(artwork_id=artwork_id)
         annotations_list = []
@@ -81,6 +87,8 @@ def get_annotations_for_artwork(artwork_id):
                     'message': annotation.message,
                     'x_coordinate': annotation.x_coordinate,
                     'y_coordinate': annotation.y_coordinate,
+                    "is_owner": annotation.user_id == curruser,
+                    "use": curruser
                 })
         return jsonify(annotations_list), 200
     except DoesNotExist:

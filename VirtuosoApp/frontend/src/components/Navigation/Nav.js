@@ -6,11 +6,12 @@ import DropDownMenu from "./DropDownMenu";
 import Button2 from "./navButton";
 import Search from "../API/Search";
 import SearchList from "./SearchList";
+import { Link } from "react-router-dom";
 
 
 const Nav = () => {
     
-    const onClick = () => {
+    const handleClick = () => {
         console.log('click')
     }
 
@@ -30,16 +31,15 @@ const Nav = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='./'><Button2 text='Community' onClick={onClick}/></a>
+          <a href='/search'><Button2 text='Search' onClick={handleClick}/></a>
 
-          <a href = './collections'><Button2 text='Collections' onClick={onClick}/></a>
+          <a href = '/collections'><Button2 text='Collections' onClick={handleClick}/></a>
 
-          <a href="./"><Button2 text='Filler' onClick={onClick}/></a>
 
           <ul className={styles.userlist} style ={{marginBottom: "1vh"}}>
-            <li><a href="./login2"><button onClick={onClick} className={styles.userbtn}>
+            <li><a href="/login"><button onClick={handleClick} className={styles.userbtn}>
               Login</button></a></li>
-            <li><a href="./register"><button onClick={onClick} className={styles.userbtn2}>
+            <li><a href="/register"><button onClick={handleClick} className={styles.userbtn2}>
               Sign Up</button></a></li>
           </ul>
 

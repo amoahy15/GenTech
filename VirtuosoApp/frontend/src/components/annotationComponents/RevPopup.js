@@ -6,7 +6,7 @@ import StarRating from './stars'
 import { useParams } from "react-router-dom";
 
 //TODO: Undo hardcoding of artworkid
-const RevPopup = ({ onSubmit, onClose, artworkID}) => {
+const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
   const [annotationText, setAnnotationText] = useState("");
   const imgref = useRef(null);
   const [userData, setUserData] = useState();
@@ -27,7 +27,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/user/details', {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -37,6 +37,8 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
         });
       } catch (error) {
         console.error('Error fetching user details:', error);
+        nav.push("/login");
+        window.location.reload();
       }
     };
 
@@ -49,7 +51,8 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
     event.preventDefault();
     if (!userData) {
       console.error("Not logged in");
-      nav.push("/login2");
+      nav.push("/login");
+      window.location.reload();
       return;
     }
     
@@ -61,7 +64,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
     console.log(artworkID);
     try {
       await axios.post(
-        "http://127.0.0.1:8000/api/review/create_review",
+        `${process.env.REACT_APP_API_BASE_URL}/review/create_review`,
         payload,
         {
           headers: {
@@ -70,6 +73,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
         }
       );
       console.log("Successful submission");
+      handleSubmit();
       onSubmit();
     } catch (error) {
       console.error("Error during submission:", error);
@@ -89,9 +93,12 @@ const RevPopup = ({ onSubmit, onClose, artworkID}) => {
 
         </div>
         <form onSubmit={handleFormSubmit}>
-            <input className={styles["input"]} type="text" value={annotationText} onChange={handleTextChange} placeholder="Type your review here"/>
-            <button className={styles["btn"]} style={{alignItems: 'right'}}type="submit">Add</button>
-            <button className={styles["btn"]} type="button" onClick={onClose}>Cancel</button>
+        <textarea className={styles.input} value={annotationText} onChange={handleTextChange}
+                  placeholder="Type your review here"/>
+          <div className={styles.buttonGroup}>
+            <button className={styles.btn} type="submit">Submit</button>
+            <button className={styles.btn} type="button" onClick={onClose}>Cancel</button>
+          </div>
         </form>
         </div>
 
