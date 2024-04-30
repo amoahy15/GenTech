@@ -8,7 +8,10 @@ Virtuoso is a social platform for artists, art connoisseurs, and the casual enjo
 Virtuoso is accessible at https://virtuoso-419315.web.app/
 ## Audience
 * Virtuoso was inspired by online stories of art lovers wishing they had a place to review art, in an environment akin to sites like Letterboxd and Goodreads. Utilizing our knowledge of art history courses and how students dissect specific components of a work, we decided to also include annotations to emulate an art history classroom and foster discussion.
-  
+
+View our official marketing video below to learn more:
+https://youtu.be/QDKzhx0asTo?si=G_xPF6gfBLu4VmSO
+
 ## Technologies Used
 * Flask
 * MongoDB
