@@ -54,12 +54,21 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
 ## Components
 
 * found in VirtuosoApp/frontend/src/components
+* Note: At this point all API calls will use the user's generated token as an authourization header for safety befores pulling or posting any data to the database.
 
 - **post:**
-  * Overview: Authorized Users may create art. If a user wants access, they may request by emailing us [gentech.emory@gmail.com](mailto:gentech.emory@gmail.com) and providing us with their UserID (can be found in advanced settings) and a brief art portfolio. We reserve the rights to reject requests.
+  * Overview: Authorized Users may create art. If a user wants access, they may request by emailing us [gentech.emory@gmail.com](mailto:gentech.emory@gmail.com) and providing us with their user ID (can be found in advanced settings) and a brief art portfolio. We reserve the rights to reject requests.
+   * `handleFileChange` allows user to select a file from local machine.
+   * `UploadImage` deals with the generation of an s3 link (s3 controller /upload). The image file chosen will be pushed to the database in the context of a url of the image stored in our s3 bucket.
+   * `handleSubmit` makes an api call to /create_artwork which will verify that your user ID is authourized to make a post. This will also submit the s3 image url to the database rather than the entire image.
+   * `togglePopup` shows and closes the pop up form where the user can specify description, artist, year, and title.
   
 - **ProfilePic:**
+  * Overview: Simple component that pulls the profile picture from the API endpoint /details so that it can be dynamically styled. Not much else to know here.
+    
 - **UpdatePassword:**
+  * Overview: 
+    
 - **UpdateUsername:**
 - **DeleteUser:**
 
