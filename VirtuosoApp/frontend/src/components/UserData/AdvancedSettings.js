@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import UpdatePassword from '../API/UpdatePassword'
 import UpdateUsername from '../API/UpdateUserName'
@@ -6,8 +7,9 @@ import styles from '../styles/profilepopup.module.css'
 import ProfilePic from './ProfilePic';
 import DeleteUser from '../API/DeleteUser';
 
-const AdvancedSettings = () => {
 
+const AdvancedSettings = () => {
+  const history = useHistory();
   const [userData, setUserData] = useState({
     email: '',
     id: '',
@@ -18,6 +20,15 @@ const AdvancedSettings = () => {
   });
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found!");
+      history.push('/login'); // Redirect to login if no token
+      window.location.reload();
+      return;
+    }
+
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
