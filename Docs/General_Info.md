@@ -46,8 +46,8 @@ Follow along at https://virtuoso-419315.web.app/
   * We recognized that the art community wished to write reviews and rate works of art, so we allowed users to write a single review, including a star rating on a 5-point scale, and to comment on the overall work, with both being optional features for a user's review.
     ![image](https://github.com/amoahy15/GenTech/assets/141963248/2c610698-a00c-4042-8cb9-b114c57163f4)
 ### Profile
-  * Your user profile is a place where you can track your own history and art pieces. You can update your bio here, and create posts (if you are an authorized user). Your history of reviews and annotations will appear here along with your uploads.
-    ![image](https://github.com/amoahy15/GenTech/assets/141963248/866b3edc-4fb4-4ccc-a6ca-507436edfd84)
+  * Your user profile is a place where you can track your own history and art pieces. This is also your landing page upon login. You can update your bio here, and create posts (if you are an authorized user). Your history of reviews and annotations will appear here along with your uploads.
+    
 
 
 ### Settings
