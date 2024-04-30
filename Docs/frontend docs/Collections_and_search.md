@@ -1,7 +1,11 @@
 # Collection and Search Components
-These components are used for the search and gallery pages on the site, as well as any carousel components
+* These components are used for the search and gallery pages on the site, as well as any carousel components.
+  
 ![image](https://github.com/amoahy15/GenTech/assets/141963248/68c37cff-4fc8-49a7-b290-9ea751b8a13c)
-Both parent pages may be found in VirtuosoApp/frontend/src/components/pages
+
+* Search can be found in VirtuosoApp/frontend/src/components/API/Search.js
+* Carousel can be found in VirtuosoApp/frontend/src/components/API/Carousel.js
+  
 ## UserCard
 The display of a user card(circular to distinguish from artcard)
 ## ArtCard
