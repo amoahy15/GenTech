@@ -47,7 +47,10 @@ Follow along at https://virtuoso-419315.web.app/
     ![image](https://github.com/amoahy15/GenTech/assets/141963248/2c610698-a00c-4042-8cb9-b114c57163f4)
 ### Profile
   * Your user profile is a place where you can track your own history and art pieces. This is also your landing page upon login. You can update your bio here, and create posts (if you are an authorized user). Your history of reviews and annotations will appear here along with your uploads.
-    
+    <img width="1440" alt="Screenshot 2024-04-30 at 1 08 02 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/1277577d-467f-4054-9686-e359e1cdc85c">
+    <img width="1440" alt="Screenshot 2024-04-30 at 1 08 51 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/59c752a4-3bc5-4e58-9c69-6a4b10dad3a8">
+    <img width="1440" alt="Screenshot 2024-04-30 at 1 09 24 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/9c3e9df5-af15-4a3b-8cb4-c4b66c7f2140">
+
 
 
 ### Settings
