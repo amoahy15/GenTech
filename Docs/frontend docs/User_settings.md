@@ -6,6 +6,10 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
 
 * Found in VirtuosoApp/frontend/src/components/UserData/registerLight.js
 * Your first instance of user related interactions should be through login and registration.
+  * `registerUser` will make an API call to create_user and ensure the data filled in the form is used
+  * `UseEffect` is utilized as our random profile picture selector.
+    * We have configured an array of paintings that this algorithm chooses the user's profile picture from.
+    * The random artwork is then called in `registerUser` as part of the data set to be pushed to the database.
 ![image](https://github.com/amoahy15/GenTech/assets/141963248/2b583b4b-2870-40b8-a66f-db1b45738d83)
 
 * Upon entering details, the user will be prompted to look at their email
