@@ -55,7 +55,7 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
 
 * Note: At this point all API calls will use the user's generated token as an authourization header for safety befores pulling or posting any data to the database.
 
-- **post:**
+- **Post:**
   * found in VirtuosoApp/frontend/src/components/API/Post.js
   * Overview: Authorized Users may create art. If a user wants access, they may request by emailing us [gentech.emory@gmail.com](mailto:gentech.emory@gmail.com) and providing us with their user ID (can be found in advanced settings) and a brief art portfolio. We reserve the rights to reject requests.
    * `handleFileChange` allows user to select a file from local machine.
