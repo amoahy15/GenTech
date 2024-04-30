@@ -54,7 +54,7 @@ Follow along at https://virtuoso-419315.web.app/
 
 
 ### Settings
-  * Here you will find all the information about your account that you need. You can change your password and username here. The one thing that remains constant is your user ID, so hold onto it with all costs. You may also completely delete your account from our database here (We do not collect information).
+  * Here you will find all the information about your account that you need. You can change your password and username here. The one thing that remains constant is your user ID, so hold onto it with all costs. You may also completely delete your account from our database here (We do not collect information) by pressing the delete account button; this will toggle a pop up for confirmation. We want to ensure you don't accidentally delete anything.
 <img width="1437" alt="Screenshot 2024-04-30 at 1 26 12 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/412e0249-f07d-4c9d-a89b-8d84c6f2274c">
 <img width="1440" alt="Screenshot 2024-04-30 at 1 26 59 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/5b89340f-3ee2-4708-b36c-3b5b8d9b76ed">
 <img width="1440" alt="Screenshot 2024-04-30 at 1 27 27 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/c765f338-7381-4df6-9937-d9566b88a76a">
