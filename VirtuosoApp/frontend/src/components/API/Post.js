@@ -82,7 +82,9 @@ function Post() {
         <div className={styles.box}>
             
             <form onSubmit={handleSubmit}>
-                <p className={styles.bio}>This will not work if you do not have authourized access. Email us at <a href={`mailto:gentech.emory@gmail.com`}>gentech.emory@gmail.com</a> for access.</p>
+                <p className={styles.bio}>This will not work if you do not have authourized access.</p>
+                <p className={styles.bio}>Email us at <a href={`mailto:gentech.emory@gmail.com`}>gentech.emory@gmail.com</a> to request access.</p>
+                <p className={styles.bio}>Please provide the following in your request: user ID and a portfolio of your art. Thanks!</p>
                 <input className={styles.input} type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
                 <input className={styles.input} type="number" value={year} onChange={(e) => setYear(e.target.value)} placeholder="Year" />
                 <input className={styles.input} type="text" value={artist} onChange={(e) => setArtist(e.target.value)} placeholder="Artist" />

@@ -5,7 +5,7 @@ import {FaSearch} from "react-icons/fa";
 import UserIcon from "./UserIcon";
 import Button2 from "./navButton";
 import DropDownMenu from "./DropDownMenu";
-import UserDropDownMobile from "../UserData/UserDropDownMobile";
+import UserDropDownMobile from "./UserDropDownMobile";
 import NavItem from "./NavItem";
 import Search from "../API/Search";
 

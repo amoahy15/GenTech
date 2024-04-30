@@ -12,23 +12,23 @@ const Team = () => {
         <img src={TeamImg} alt="Our Team" className={styles.teamImage} />
         <div className={styles.captionContainer}>
           <div className={styles.caption} style={{ top: '75%', left: '4%' }}>
-            <div>Chloe Bickel-Smith</div>
+            <div style={{color: 'black'}}>Chloe Bickel-Smith</div>
             <div>Computer Science</div>
           </div>
           <div className={styles.caption} style={{ top: '75%', left: '22%' }}>
-            <div>Humphrey Amoakhene</div>
+            <div  style={{color: 'black'}}>Humphrey Amoakhene</div>
            <div>Computer Science</div>
           </div>
             <div className={styles.caption} style={{ top: '75%', left: '42%' }}>
-            <div>Ivan Martinez-Key</div>
+            <div  style={{color: 'black'}}>Ivan Martinez-Kay</div>
             <div>Computer Science</div>
           </div>
           <div className={styles.caption} style={{ top: '75%', left: '60%' }}>
-            <div>Jose Izaguirre I</div>
+            <div  style={{color: 'black'}}>Jose Izaguirre I</div>
             <div>Computer Science</div>
           </div>
           <div className={styles.caption} style={{ top: '75%', left: '80%' }}>
-            <div>Tierra Ablorh</div>
+            <div  style={{color: 'black'}}>Tierra Ablorh</div>
             <div>Computer Science</div>
         </div>
         </div>

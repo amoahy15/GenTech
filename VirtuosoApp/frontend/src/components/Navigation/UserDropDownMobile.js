@@ -2,11 +2,11 @@ import React, {useState, useRef, useEffect} from 'react'
 import styles from '../styles/userdropdown.module.css'
 import { CSSTransition } from 'react-transition-group';
 import { BiArrowBack } from "react-icons/bi";
-import Logout from "./Logout"
+import Logout from "../UserData/Logout"
 
  
 
-const UserDropDown = () => {
+const UserDropDownMobile = () => {
 
     const [activeMenu, setActiveMenu] = useState('main');
     const [menuHeight, setMenuHeight] = useState(null);
@@ -54,6 +54,12 @@ const UserDropDown = () => {
              <a><DropDownItems goToMenu = 'settings'>Settings</DropDownItems></a>
             </li>
             <li>
+             <a href = "/collections"><DropDownItems>Galleries</DropDownItems></a>
+            </li>
+            <li>
+             <a href = "/search"><DropDownItems>Search</DropDownItems></a>
+            </li>
+            <li>
              <a><DropDownItems><Logout/></DropDownItems></a>
             </li>
          </ul> 
@@ -77,10 +83,10 @@ const UserDropDown = () => {
              <a><DropDownItems goToMenu = 'main'><BiArrowBack /></DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems>Filler 2</DropDownItems></a>
+             <a href ="/disclaimer"><DropDownItems>Disclaimer</DropDownItems></a>
             </li>
             <li>
-             <a><DropDownItems>Filler 3</DropDownItems></a>
+             <a><DropDownItems>The Team</DropDownItems></a>
             </li>
             <li>
              <a href='/settings'><DropDownItems>Advanced Settings</DropDownItems></a>
@@ -92,4 +98,4 @@ const UserDropDown = () => {
   )
 }
 
-export default UserDropDown
+export default UserDropDownMobile

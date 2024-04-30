@@ -133,4 +133,10 @@
     color: rgba(153,0,0,1);
   }
 
-  
+  @media (max-width: 768px) {
+    .btn2 {
+        font-size: 14px; /* Smaller font size for smaller screens */
+        padding: 3px 6px; 
+        border-radius: 5px;
+    }
+}

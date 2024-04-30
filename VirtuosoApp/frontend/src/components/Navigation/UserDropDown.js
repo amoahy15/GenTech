@@ -2,11 +2,13 @@ import React, {useState, useRef, useEffect} from 'react'
 import styles from '../styles/userdropdown.module.css'
 import { CSSTransition } from 'react-transition-group';
 import { BiArrowBack } from "react-icons/bi";
-import Logout from "./Logout"
-
+import Logout from "../UserData/Logout"
+import { FaUser } from "react-icons/fa";
+import { FaTools } from "react-icons/fa";
+import { ImExit } from "react-icons/im";
  
 
-const UserDropDownMobile = () => {
+const UserDropDown = () => {
 
     const [activeMenu, setActiveMenu] = useState('main');
     const [menuHeight, setMenuHeight] = useState(null);
@@ -48,19 +50,13 @@ const UserDropDownMobile = () => {
        <div className = {styles.menu}>
         <ul>  
              <li>
-               <a href = "/profile"><DropDownItems>Profile</DropDownItems></a>
+               <a href = "/profile"><DropDownItems><FaUser style ={{padding: '1vh'}}/>Profile</DropDownItems></a>
              </li>
              <li>
-             <a><DropDownItems goToMenu = 'settings'>Settings</DropDownItems></a>
+             <a><DropDownItems goToMenu = 'settings'><FaTools style ={{padding: '1vh'}}/>Tools</DropDownItems></a>
             </li>
             <li>
-             <a href = "/collections"><DropDownItems>Galleries</DropDownItems></a>
-            </li>
-            <li>
-             <a href = "/search"><DropDownItems>Search</DropDownItems></a>
-            </li>
-            <li>
-             <a><DropDownItems><Logout/></DropDownItems></a>
+             <a><DropDownItems><ImExit style ={{padding: '1vh'}}/><Logout/></DropDownItems></a>
             </li>
          </ul> 
         </div>
@@ -83,13 +79,13 @@ const UserDropDownMobile = () => {
              <a><DropDownItems goToMenu = 'main'><BiArrowBack /></DropDownItems></a>
             </li>
             <li>
-             <a href ="/disclaimer"><DropDownItems>Disclaimer</DropDownItems></a>
-            </li>
-            <li>
-             <a><DropDownItems>The Team</DropDownItems></a>
-            </li>
-            <li>
              <a href='/settings'><DropDownItems>Advanced Settings</DropDownItems></a>
+            </li>
+            <li>
+             <a href = '/team'><DropDownItems>The Team</DropDownItems></a>
+            </li>
+            <li>
+            <a href="mailto:gentech.emory@gmail.com"><DropDownItems>Contact Us</DropDownItems></a>
             </li>
         </ul>
         </div>
@@ -98,4 +94,4 @@ const UserDropDownMobile = () => {
   )
 }
 
-export default UserDropDownMobile
+export default UserDropDown

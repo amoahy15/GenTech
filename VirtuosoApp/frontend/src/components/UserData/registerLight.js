@@ -120,7 +120,6 @@ const Register = () => {
           </div>
 
           <button className={styles["btn"]} type="submit" disabled={!profilePicture || profilePicture === placeholder}>Create Account</button> {/* Changed to type="submit" */}
-          {/*<Authenticator/>*/}
         </form>
       </div>
       </div>

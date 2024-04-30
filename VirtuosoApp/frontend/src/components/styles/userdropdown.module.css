@@ -30,7 +30,6 @@
 .item:hover{
     color: rgba(153, 0, 0, 1);
     background-color: rgba(153, 0, 0, .1);
-    text-decoration: underline;
 }
 
 .menu{

@@ -11,7 +11,6 @@ import Gallery from "./components/Pages/Gallery";
 import Footer from "./components/Footer";
 import NavUser from "./components/Navigation/NavUsers";
 import Disclaimer from "./components/Pages/Disclaimer";
-import TestSearch from "./components/Pages/TestSearch";
 import VerificationPage from "./components/UserData/EmailVerification";
 import EmailCheckPage from "./components/UserData/EmailCheckPage";
 import ResetPassword from "./components/UserData/ResetPassword";
@@ -96,9 +95,6 @@ function App() {
               </Route>
               <Route path="/disclaimer">
                 <Disclaimer />
-              </Route>
-              <Route path="/test">
-                <TestSearch />
               </Route>
               <Route path="/reset-password">
                 <ResetPassword />

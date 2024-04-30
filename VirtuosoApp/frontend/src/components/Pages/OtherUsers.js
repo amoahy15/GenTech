@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Row from '../Navigation/rowScroll';
@@ -6,14 +7,24 @@ import Collections from './Collections';
 import styles from '../styles/profilepopup.module.css'
 
 const OtherUser = () => {
+  
   const [userData, setUserData] = useState({ user_id: '', bio: '', profile_picture: '' });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
   const { username } = useParams();  
   console.log(username)
+  const history = useHistory();
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found!");
+      history.push('/login'); // Redirect to login if no token
+      window.location.reload();
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details/${username}`, {

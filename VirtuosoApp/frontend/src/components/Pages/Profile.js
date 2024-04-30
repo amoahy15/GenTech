@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Collections from './Collections.js';
 import Row from '../Navigation/rowScroll.js';
 import Post from '../API/Post.js';
 import styles from '../styles/profilepopup.module.css'
 import ProfilePic from '../UserData/ProfilePic.js';
-
+import { IoMdSettings } from "react-icons/io";
 
 function Profile() {
 
-
+  const history = useHistory();
   const [userData, setUserData] = useState({
     email: '',
     id: '',
@@ -21,6 +22,15 @@ function Profile() {
   const [bioText, setBioText] = useState('');
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error("No token found!");
+      history.push('/login'); // Redirect to login if no token
+      window.location.reload();
+      return;
+    }
+
     const fetchUserDetails = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/user/details`, {
@@ -107,7 +117,7 @@ function Profile() {
 
     <div style={{marginTop: '2vh',display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
     <div className={styles.user}>
-    {userData.user_name}
+    {userData.user_name}<a className = {styles.delete} href ='/settings'><IoMdSettings style={{marginLeft: '1vh'}}/></a>
     </div>
     </div>
     
@@ -149,22 +159,12 @@ function Profile() {
           </div>
         </div>)}
       
-      
-      
-
-
-          <div>
+        <div>
           <Post/>
-          </div>
-          </div>
-          </div>
-
-          
-         
+        </div>
+      </div>
+      </div>
     
-      
-      
-
       <Row title="Recently Rated">
           <div style={{paddingBottom: '50px', padding: '40px 8vw'}}>
             <Collections category={userData.id} />
