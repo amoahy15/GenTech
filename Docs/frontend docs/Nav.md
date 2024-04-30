@@ -11,29 +11,28 @@ that conditionally render depending on the user's status (signed in or not). Ple
   
   ![IMG_5335](https://github.com/amoahy15/GenTech/assets/75340434/473bf507-b8af-4216-b361-d8319ce7de3a)
 
-
-
-* Found in VirtuosoApp/frontend/src/components/Navigation
-
 ## Components
 
-- **Button** 
+- **Nav**
+  * Overview: The navbar for users that are not signed in (displays login and sign up buttons; `navbutton.js`). 
+    
+- **NavUsers**
+  * Overview: The navbar for users that are signed in (displays profile picture and links to profile page and settings).
+
+- **Button**
+ * Found in VirtuosoApp/frontend/src/components/Navigation/Button.js
  * Overview: A single button that takes in text and onClick as parameters. This is for ease of use since it already has preset styling.
 
+- **NavItem, UserIcon**
+  * Overview: Toggles children components (DropDownMenu and UserDropdown) depending token presence.
+    * `UserIcon` renders the user's profile picture as the dropdown toggle button.
+
 - **DropDownMenu**
-Hardcoded links and titles to about page and terms of service page
+  * Overview: This is the styling and setup of the dropdown after toggle.
+    * `DropDownItems` passes in each element as a prop in the list. These are the toggled children.
 
-- **Nav**
+- **UserDropDown**
+  * Overview: This is the styling and setup of the dropdown after toggle. This dropdown replaces the login and register buttons when a token is present (.....so after login).
+    * `DropDownItems` passes in each element as a prop in the list. These are the toggled children.
+    * This dropdown has a multilayer effect through CSSTransition. The settings child when clicked will toggle another set of children.
 
-The navbar for users that are not signed in (displays login and sign up) 
-
-- **NavItem**
-Toggles children components (DropDownMenu) 
-
-- **NavUsers**
-
-Navbar for users that are signed in (displays profile picture and links to profile page and settings
-
-- **UserIcon** 
-
-Profile photo displayed in NavUsers
