@@ -15,6 +15,7 @@ The model file contains a function updateRating, which updates the average ratin
     * Description: creates a new artwork object in the database
     * Data body: title, year, image_url, description (all required)
         * token required
+        * Only specific user ID's have access
     * Return: 201 Created, {"message": "Artwork created successfully!"}
  *  DELETE /delete_artwork/<artwork_id>:
     * Description: Deletes an artwork object in the database
