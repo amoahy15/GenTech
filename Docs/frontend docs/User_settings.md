@@ -51,3 +51,15 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
 <img width="1440" alt="Screenshot 2024-04-30 at 1 26 59 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/b1c272c7-1e83-4985-92e0-7c0c79a9659c">
 <img width="1440" alt="Screenshot 2024-04-30 at 1 27 27 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/34487cbf-2fd7-4984-bbcf-9467fb92ec98">
 
+## Components
+
+* found in VirtuosoApp/frontend/src/components
+
+- **post:**
+  * Overview: Authorized Users may create art. If a user wants access, they may request by emailing us [gentech.emory@gmail.com](mailto:gentech.emory@gmail.com) and providing us with their UserID (can be found in advanced settings) and a brief art portfolio. We reserve the rights to reject requests.
+  
+- **ProfilePic:**
+- **UpdatePassword:**
+- **UpdateUsername:**
+- **DeleteUser:**
+
