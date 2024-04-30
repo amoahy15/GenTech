@@ -37,7 +37,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
         });
       } catch (error) {
         console.error('Error fetching user details:', error);
-        nav.push("/login2");
+        nav.push("/login");
         window.location.reload();
       }
     };
@@ -51,7 +51,7 @@ const RevPopup = ({ onSubmit, onClose, artworkID, handleSubmit}) => {
     event.preventDefault();
     if (!userData) {
       console.error("Not logged in");
-      nav.push("/login2");
+      nav.push("/login");
       window.location.reload();
       return;
     }

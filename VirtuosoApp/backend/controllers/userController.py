@@ -4,12 +4,13 @@ import os
 import secrets
 from flask import Flask, Blueprint, request, jsonify, current_app
 from models.userModel import User
-from mongoengine.errors import NotUniqueError, ValidationError
+from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
 from datetime import datetime, timezone
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from .mailController import send_confirmation_email, send_password_reset_email
-
+from models.reviewModel import Review
+from models.artworkModel import Artwork
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
@@ -87,6 +88,58 @@ def update_user():
     except Exception as e:
         current_app.logger.error(f"Error updating user {user_id}: {str(e)}")
         return jsonify({"error": "Error updating user"}), 500
+
+@user_controller.route('/update_password', methods=['PUT'])
+@jwt_required()
+def update_password():
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
+
+    if not user:
+        current_app.logger.error("User not found")
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+    if 'old_password' in data and 'new_password' in data:
+        if bcrypt.check_password_hash(user.password_hash, data['old_password']):
+            new_hashed_password = bcrypt.generate_password_hash(data['new_password']).decode('utf-8')
+            user.password_hash = new_hashed_password
+            try:
+                user.save()
+                return jsonify({"message": "Password updated successfully"}), 200
+            except Exception as e:
+                current_app.logger.error(f"Error updating password for user {user_id}: {str(e)}")
+                return jsonify({"error": "Error updating password"}), 500
+        else:
+            return jsonify({"error": "Incorrect old password"}), 400
+    else:
+        return jsonify({"error": "Required password fields missing"}), 400
+    
+@user_controller.route('/update_bio', methods=['PUT'])
+@jwt_required()
+def update_bio():
+    user_id = get_jwt_identity()
+    user = User.objects(user_id=user_id).first()
+
+    if not user:
+        current_app.logger.error("User not found for bio update")
+        return jsonify({"error": "User not found"}), 404
+
+    data = request.get_json()
+    if 'bio' in data:
+        user.bio = data['bio']
+        current_app.logger.info(f"Updating bio for user ID {user_id} to {data['bio']}")
+    else:
+        current_app.logger.warning(f"No 'bio' found in request data for user ID {user_id}")
+
+    try:
+        user.save()
+        current_app.logger.info(f"User bio updated successfully for user ID {user_id}")
+        return jsonify({"message": "User bio updated successfully"}), 200
+    except Exception as e:
+        current_app.logger.error(f"Error updating bio for user {user_id}: {str(e)}")
+        return jsonify({"error": "Error updating user bio"}), 500
+
     
 @user_controller.route('/login', methods=['POST'])
 def login_user():
@@ -275,3 +328,47 @@ def reset_password(reset_token):
     except Exception as e:
         current_app.logger.error(f"Failed to reset password: {str(e)}")
         return jsonify({'error': 'Failed to reset password', 'details': str(e)}), 500
+
+@user_controller.route('/getreviews', methods=['GET'])
+@jwt_required()
+def get_user_reviews():
+    user_id = get_jwt_identity()
+    try:
+        user = User.objects(user_id=user_id).first()
+        if not user:
+            return jsonify({"error": "User not found"}), 404
+
+        reviews = Review.objects(user_id=user).order_by('-rating')
+
+        results = []
+        for review in reviews:
+            artwork = Artwork.objects.with_id(review.artwork_id.id)
+            if artwork:
+                review_data = review.serialize()
+                review_data.update({
+                    "artwork_name": artwork.title,
+                    "artwork_image_url": artwork.image_url,
+                    "artwork_id": artwork.artwork_id
+                })
+                results.append(review_data)
+            else:
+                continue
+
+        return jsonify(results), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+
+@user_controller.route('/details/<string:user_name>', methods=['GET'])
+@jwt_required() 
+def get_user_details_by_username(user_name):
+    try:
+        user = User.objects.get(user_name=user_name)
+
+        return jsonify(user.serialize()), 200
+    except DoesNotExist:
+        current_app.logger.error(f"User with username {user_name} not found")
+        return jsonify({"error": "User not found"}), 404
+    except Exception as e:
+        current_app.logger.error(f"Unexpected error fetching user {user_name}: {str(e)}")
+        return jsonify({"error": str(e)}), 500

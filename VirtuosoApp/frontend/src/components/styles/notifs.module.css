@@ -1,0 +1,44 @@
+.notificationWrapper {
+    position: fixed;
+    top: 10px; 
+    left: 39%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 300px;
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.notificationText {
+    margin: 0;
+    padding: 10px;
+}
+
+.bar {
+    height: 10px;
+    background-color: gray; 
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}

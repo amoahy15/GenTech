@@ -1,6 +1,7 @@
 .container {
     position: relative;
     width: 100vw;
+    
 }
 
 .background {
@@ -22,19 +23,41 @@
 
 .content {
     position: relative;
+    
 }
 
 .textContainer {
-    margin: 15vh;
+    margin-top: 3vh;
+    margin-left: 5vw;
+    margin-right: 5vw;
     flex: 2;
     max-width: 100%;
     border: 1px solid #cccccc;
     border-radius: 10px;
-    padding: 10px;
+    padding: 15px;
     max-height: 5000px;
     overflow-y: auto;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.8); /* Adjust the background color and opacity as needed */
+    
+    background-color: rgba(255, 255, 255, 0.8);
+    background: url(../../assets/images/HomeBackground.png) no-repeat center center;
+    background-position: right 10px top 10px;
+    background-size: 50vw;
+}
+.textContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 5vw;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 1;
+}
+
+.textContainer > * {
+    position: relative;
+    z-index: 2;
 }
 
 .h2 {
@@ -47,3 +70,62 @@
     font-size: 45px;
     padding-bottom: 20px;
 }
+
+.btn {
+    padding: 12px 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    float: right;
+    margin-left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color:rgb(255, 255, 255);
+    text-decoration: none;
+    transition: background 700ms;
+    text-decoration: none;
+  }
+
+  .btn:hover{
+    background-color: rgba(153, 0, 0, 0.7);
+    color: rgba(153,0,0,1);
+  }
+  
+@media (max-width: 768px) {
+    .txt {
+        position: relative;
+        overflow: hidden; 
+        width: 100%; 
+        height: 80vh; 
+        justify-content: center; 
+        align-items: center;
+        background-size: cover;
+        text-align: center;
+        background-repeat: no-repeat;
+        animation: slideshow 30s infinite;
+        display: flex;
+        flex-direction: column;
+    }
+
+    @keyframes slideshow {
+        0% { background-image: url('../../assets/images/Edgar_Degas/Edgar_Degas_24.jpg'); 
+        opacity: 0.7;}
+        33% {opacity: 0.7; background-image: url('../../assets/images/Salvador_Dali/Salvador_Dali_11.jpg'); }
+        66% {opacity: 0.7; background-image: url('../../assets/images/Frida_Kahlo/Frida_Kahlo_8.jpg'); }
+        100% {opacity: 0.7;background-image: url('../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg'); }
+    }
+    .textOverlay {
+        color: white;
+        font-size: 20px;
+        padding: 20px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 10px;  
+        z-index: 2;
+        margin-top: 20vh;
+        margin-right: 5vw;
+        margin-left: 5vw;
+        padding-top: 5vh;
+        margin-bottom: 5vh;
+    }
+  }

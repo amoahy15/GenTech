@@ -1,26 +1,41 @@
-.popup-background {
+
+
+  .images img {
+    max-width: 50%;
+    max-height: 400px;
+    height: auto;
+    width: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  .popup-background {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    right: 0;
+    bottom: 0;
     background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Align top */
     z-index: 1000;
-  }
-  
-  .popup-box {
+    padding: 20px;
+    overflow: auto; /* Allow scrolling on the background if needed */
+    box-sizing: border-box;
+}
+
+.popup-box {
     background-color: white;
     border-radius: 5px;
-    z-index: 999;
+    padding: 20px;
+    max-height: 80vh; /* Reduce the max height to prevent overflow */
     width: 60vw;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-  }
+    overflow: auto; /* Ensure scrolling within the popup */
+}
   
   .input {
     width: 90%; 
@@ -47,9 +62,38 @@
 
   .annotation-icon{
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background-color: red;
+    width: 5px;
+    height: 5px;
+    background-color: rgb(253, 0, 0, 0.9);
     border-radius: 50%;
+    border: 1px solid black;
     transform: translate(-50%, -50%),
+  }
+
+  .closeButton{
+    font-size: 18px;
+  }
+
+  .h2{
+    margin: 2vh 0;
+  }
+
+  .p{
+    margin: 2vh;
+  }
+
+  @media(max-width: 720px){
+    .popup-box {
+      margin-top: 5vw;
+      background-color: white;
+      border-radius: 5px;
+      z-index: 999;
+      max-height: calc(100% - 40px);
+      width: 80vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      overflow: auto;
+    }
   }

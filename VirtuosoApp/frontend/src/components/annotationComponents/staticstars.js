@@ -1,7 +1,7 @@
 import React from "react";
 import button from "../styles/stars.module.css";
 
-const StaticStarRating = ({ rating }) => {
+const StaticStars = ({ rating }) => {
   return (
     <div className={button["button"]}>
       {[...Array(5)].map((_, index) => {
@@ -20,4 +20,4 @@ const StaticStarRating = ({ rating }) => {
   );
 };
 
-export default StaticStarRating;
+export default StaticStars;

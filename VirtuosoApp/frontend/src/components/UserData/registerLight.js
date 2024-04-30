@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "../styles/registerLight.module.css";
 import { FaUser } from "react-icons/fa";
 import { IoLockClosedSharp } from "react-icons/io5";
 import bgVid from '../../assets/videos/lightvid.mp4';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-import Authenticator from './Authenticator';
+import placeholder from '../../assets/images/Gustav_Klimt/Gustav_Klimt_2.jpg'
+
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -13,8 +14,43 @@ const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
+  const [profilePicture, setProfilePicture] = useState('');
 
   const nav = useHistory();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchArtworks = async () => {
+      const category = 'profile'; 
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
+        const artworks = response.data.artworks || [];
+        if (artworks.length > 0) {
+          const randomIndex = Math.floor(Math.random() * artworks.length);
+          setProfilePicture(artworks[randomIndex].image_url);
+        } else {
+          setProfilePicture(placeholder);
+        }
+      } catch (error) {
+        console.error(`Error fetching artworks with tag ${category}:`, error);
+        setProfilePicture(placeholder);
+      }
+    };
+  
+    fetchArtworks();
+  }, []);
+
 
   const registerUser = async (e) => {
     e.preventDefault();
@@ -24,7 +60,8 @@ const Register = () => {
       password: password,
       first_name: firstName, 
       last_name: lastName, 
-      user_name: userName
+      user_name: userName,
+      profile_picture: profilePicture
     };
 
     try {
@@ -43,11 +80,17 @@ const Register = () => {
 
   return (
     <div className={styles.main}>
+       
+    {isMobile ? (
+        <img src={placeholder} alt="Background" className={styles.videobg} style={{ display: 'cover',height: '100vh', opacity: '0.5'}}/>
+        
+    ) : (
       <video className={styles.videobg} src={bgVid} autoPlay muted loop />
+    )}
+      
       <div className={styles.wrapper}>
         <div className={styles.container}>
-        <form onSubmit={registerUser}>
-
+        <form onSubmit={registerUser} style={{maxWidth: '90vw'}}> {/* Updated to use onSubmit event */}
           <div className={styles.header}>
             <h1><a href='./'><span className={styles.h1}>VIRTUOS</span><span className={styles.h2}>O</span></a></h1>
           </div>
@@ -76,8 +119,7 @@ const Register = () => {
             </div>
           </div>
 
-          <button className={styles.btn} type="submit">Create Account</button>
-          <Authenticator/>
+          <button className={styles["btn"]} type="submit" disabled={!profilePicture || profilePicture === placeholder}>Create Account</button> {/* Changed to type="submit" */}
         </form>
       </div>
       </div>

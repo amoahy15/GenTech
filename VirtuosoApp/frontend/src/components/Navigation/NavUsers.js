@@ -5,7 +5,7 @@ import {FaSearch} from "react-icons/fa";
 import UserIcon from "./UserIcon";
 import Button2 from "./navButton";
 import DropDownMenu from "./DropDownMenu";
-import UserDropDown from "../UserData/UserDropDown";
+import UserDropDown from "./UserDropDown";
 import NavItem from "./NavItem";
 import Search from "../API/Search";
 
@@ -31,13 +31,11 @@ const NavUser = () => {
 
           <NavItem><DropDownMenu></DropDownMenu></NavItem> 
 
-          <a href='/'><Button2 text='Community' onClick={onClick}/></a>
+          <a href='/search'><Button2 text='Search' onClick={onClick}/></a>
 
-          <a href = '/collections'><Button2 text='Collections' onClick={onClick}/></a>
+          <a href = '/collections'><Button2 text='Gallery' onClick={onClick}/></a>
 
-          <a href="/login2"><Button2 text='Login' onClick={onClick}/></a>
-
-          <UserIcon><UserDropDown></UserDropDown></UserIcon>
+          <UserIcon category = "profile"><UserDropDown></UserDropDown></UserIcon>
 
       </nav>
       </header>  

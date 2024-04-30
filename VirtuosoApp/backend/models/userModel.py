@@ -1,4 +1,4 @@
-from mongoengine import Document, StringField, EmailField, DateTimeField, BooleanField, ListField, DictField, IntField
+from mongoengine import Document, StringField, ReferenceField, EmailField, DateTimeField, BooleanField, ListField, DictField, IntField
 from datetime import datetime, timezone
 
 class User(Document):
@@ -13,7 +13,7 @@ class User(Document):
     location = StringField()
     favorite_artworks = ListField()
     artwork_count = IntField(default=0)
-    reviews = ListField()
+    reviews = ListField(ReferenceField('Review'), default=list) 
     review_count = IntField(default=0)
     artwork_created = ListField()
     followers = ListField()
@@ -42,6 +42,7 @@ class User(Document):
             "favorite_artworks": self.favorite_artworks,
             "artwork_created": self.artwork_created,
             "artwork_count": self.artwork_count,
+            "reviews": [review.id for review in self.reviews] if self.reviews else [], 
             "review_count": self.review_count,
             "followers": self.followers,
             "following": self.following,
@@ -51,6 +52,8 @@ class User(Document):
             "is_private": self.is_private,
             "social_media_links": self.social_media_links,
             "verification_status": self.verification_status,
+            "verification_token": self.verification_token,
+            "reset_token": self.reset_token,
             "preferences": self.preferences,
-            "joined_date": self.joined_date.isoformat(),
+            "joined_date": self.joined_date.isoformat() if self.joined_date else None,
         }

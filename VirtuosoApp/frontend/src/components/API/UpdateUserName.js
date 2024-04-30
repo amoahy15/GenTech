@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import styles from '../styles/profilepopup.module.css'
 
 function UpdateUsername() {
   const [username, setUsername] = useState('');
@@ -26,13 +27,13 @@ function UpdateUsername() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input
+      <input className={styles.input2}
         type="text"
         value={username}
         onChange={handleUsernameChange}
         placeholder="New Username"
       />
-      <button type="submit">Update Username</button>
+      <button style ={{marginTop: '1vh'}} className = {styles.btn2} type="submit">Update Username</button>
     </form>
   );
 }

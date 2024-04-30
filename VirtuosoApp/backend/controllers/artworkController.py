@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import current_app, request, jsonify, Blueprint
 from werkzeug.utils import secure_filename
 import boto3
@@ -11,54 +12,6 @@ import uuid
 
 artwork_controller = Blueprint('artwork_controller', __name__)
 
-
-
-@artwork_controller.route('/create_artwork', methods=['POST'])
-@jwt_required()  
-def create_artwork():
-    current_app.logger.info("Attempting to create artwork")
-    user_id = get_jwt_identity()
-    user = User.objects(user_id=user_id).first()
-    
-    if not user:
-        current_app.logger.error("User not found")
-        return jsonify({"error": "User not found"}), 404
-
-    data = request.get_json()
-    required_fields = ['title', 'year', 'image_url']
-    missing_fields = [field for field in required_fields if field not in data]
-
-    if missing_fields:
-        current_app.logger.error("Missing required fields: %s", ', '.join(missing_fields))
-        return jsonify({"error": f"Missing required fields: {', '.join(missing_fields)}"}), 400
-
-
-    try:
-        new_artwork = Artwork(
-            artwork_id=str(uuid.uuid4()),
-            title=data['title'],
-            user_id=user.user_id,  
-            artist_name=data['artist'],
-            artist = data['artist'],
-            year=data['year'],
-            image_url=data['image_url'],
-            tags = ["user_art"],
-        )
-
-        new_artwork.save()
-        current_app.logger.info("Artwork created successfully")
-
-        user.update(inc__artwork_count=1)  
-        current_app.logger.info("Artwork count updated for user.")
-
-        return jsonify({"message": "Artwork created successfully!"}), 201
-    except ValidationError as e:
-        current_app.logger.exception("Validation error during artwork creation")
-        return jsonify({"error": str(e)}), 400
-    except Exception as e:
-        current_app.logger.exception("Unexpected error during artwork creation")
-        return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
-    
 @artwork_controller.route('/delete_artwork/<string:artwork_id>', methods=['DELETE'])
 @jwt_required()
 def delete_artwork(artwork_id):
@@ -106,7 +59,8 @@ def get_artwork(artwork_id):
     
     return jsonify(artwork.serialize()), 200
 
-@artwork_controller.route('/get_user_artworks', methods=['GET'])
+
+@artwork_controller.route('/user_artwork', methods=['GET'])
 @jwt_required()
 def get_user_artworks():
     user_id = get_jwt_identity() 
@@ -118,34 +72,6 @@ def get_user_artworks():
     else:
         current_app.logger.error("No artworks found for this user")
         return jsonify({"error": "No artworks found"}), 404
-
-@artwork_controller.route('/artworks/collection/<string:collection_name>', methods=['GET'])
-@jwt_required()  
-def get_artworks_by_collection(collection_name):
-    artworks = Artwork.objects(collection=collection_name)
-    if artworks:
-        # Wrap the serialized artworks in an object under the 'images' key
-        response = {
-            "images": [artwork.serialize() for artwork in artworks]
-        }
-        return jsonify(response), 200
-    else:
-        return jsonify({"error": "No artworks found in this collection"}), 404
-
-@artwork_controller.route('/get_artwork_url/<string:artwork_id>', methods=['GET'])
-@jwt_required()  
-def get_artwork_url(artwork_id):
-    current_app.logger.info("Attempting to fetch artwork URL")
-    artwork = Artwork.objects(artwork_id=artwork_id).first()
-    
-    if not artwork:
-        current_app.logger.error("Artwork not found")
-        return jsonify({"error": "Artwork not found"}), 404
-
-    # Assuming the image_url field contains the direct URL to the image in S3
-    image_url = artwork.image_url
-    
-    return jsonify({"image_url": image_url}), 200
 
 @artwork_controller.route('/tags/<string:tag>', methods=['GET'])
 @jwt_required(optional=True)
@@ -161,20 +87,23 @@ def get_artworks_by_tag(tag):
         current_app.logger.error(f"Failed to fetch artworks with tag {tag}: {e}")
         return jsonify({"error": "An unexpected error occurred", "details": str(e)}), 500
 
-@artwork_controller.route('/create_artwork/gentech', methods=['POST'])
+@artwork_controller.route('/create_artwork', methods=['POST'])
 @jwt_required()  
 def gentech_artwork():
     current_app.logger.info("Attempting to create artwork")
     user_id = get_jwt_identity()
     user = User.objects(user_id=user_id).first()
-    if (user.user_id != "bc25829c-d3c5-4204-a4a4-6a4cc1d12a96"):
-        return jsonify ({"error": "User not found"}), 404
     if not user:
         current_app.logger.error("User not found")
         return jsonify({"error": "User not found"}), 404
-
+    if user.user_id != '14eee051-64b1-44a4-a76d-82c061c8aa36':
+        current_app.logger.error("Unauthorized access attempt by user: {}".format(user.user_name))
+        return jsonify({"error": "Unauthorized access"}), 403
     data = request.get_json()
-    required_fields = ['title', 'year', 'image_url']
+
+    data['tags'] = [user.email]
+    
+    required_fields = ['title', 'year', 'image_url', 'tags', 'description', 'artist']
     missing_fields = [field for field in required_fields if field not in data]
 
     if missing_fields:
@@ -183,6 +112,7 @@ def gentech_artwork():
 
 
     try:
+        
         new_artwork = Artwork(
             artwork_id=str(uuid.uuid4()),
             title=data['title'],
@@ -209,3 +139,7 @@ def gentech_artwork():
         current_app.logger.exception("Unexpected error during artwork creation")
         return jsonify({'error': 'Unexpected error', 'details': str(e)}), 500
     
+@artwork_controller.route('/getartwork', methods=['GET'])
+def getartwork():
+    artworks = Artwork.objects.all()
+    return jsonify([artwork.serialize() for artwork in artworks]), 200

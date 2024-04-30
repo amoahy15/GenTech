@@ -5,7 +5,8 @@ import {jwtDecode} from "jwt-decode";
 import axios from 'axios';
 
 
-const Review = ({ reviews, onDel }) => {
+
+const Review = ({ reviews, onDel, isLiked, handleLike}) => {
   const token = localStorage.getItem('token');
   const [userId, setUserData] = useState();
 
@@ -15,17 +16,6 @@ const Review = ({ reviews, onDel }) => {
       setUserData(decodedToken.userId);
     }
   }, [token]);
-
-  const currentUserReviewIndex = reviews.findIndex(review => review.user_id === userId);
-
-  let userHasReview = false;
-  let currentUserReview;
-  if (currentUserReviewIndex !== -1) {
-    userHasReview = true;
-    [currentUserReview] = reviews.splice(currentUserReviewIndex, 1);
-    reviews.unshift(currentUserReview);
-  }
-
 
   if (!reviews || reviews.length === 0) {
     return <div style={{marginLeft: '5vw'}}>Start the conversation!</div>;
@@ -42,28 +32,10 @@ const Review = ({ reviews, onDel }) => {
 
   const reviewRows = rows(reviews, 2);
 
-  const deleteReview = async (reviewId) => {
-    try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/review/reviews/${reviewId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-      });
-        if (response.status === 200) {
-            console.log("Review deleted successfully");
-            window.location.reload();
-        }
-    } catch (error) {
-        console.error("Failed to delete review", error.response.data);
-    }
-}
-
   return (
     <div style={{ marginLeft: '5vw', marginRight: '5vw' }}>
       <div className={styles['review-container']}>
-        {!userHasReview && (
-          <div>
-            <button >+</button>
-          </div>
-        )}
+        
         {reviewRows.map((row, index) => (
           <div key={index} className={styles['row']}>
             {row.map((review, reviewIndex) => (
@@ -71,15 +43,19 @@ const Review = ({ reviews, onDel }) => {
                 key={reviewIndex}
                 rating={review.rating}
                 user={review.user_name}
-                review={review.review}
-                revid = {review.revid}
+                review={review.comment}
+                revid = {review.review_id}
                 is_owner={review.is_owner}
                 onDelete = {onDel}
+                isLiked={review.liked_status}
+                likes = {review.like_count}
+                onLike={()=> handleLike(review.review_id)}
               />
             ))}
           </div>
         ))}
       </div>
+
     </div>
   );
 };

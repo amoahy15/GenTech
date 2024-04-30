@@ -18,10 +18,10 @@ const DropDownMenu = () => {
        
         <ul className={styles.menu}>  
              <li>
-               <a href='./about'><DropDownItems>About Us</DropDownItems></a>
+               <a href='/about'><DropDownItems>About Us</DropDownItems></a>
              </li>
              <li>
-             <a><DropDownItems >Terms of Service</DropDownItems></a>
+             <a href='/disclaimer'><DropDownItems >Disclaimer</DropDownItems></a>
             </li>
          </ul> 
         

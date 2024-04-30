@@ -7,15 +7,51 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';  
 
 const Carousel = ({ category }) => {
-  const [artworks, setArtworks] = useState([]);
-  const [settings, setSliderSettings] = useState({
+  const getSliderSettings = (width, count) => {
+    const baseSettings = {
       dots: true,
-      infinite: true,
-      slidesToShow: 3,
-      slidesToScroll: 3,
-  
-  });
+      infinite: count > 3,
+      speed: 500,
+      slidesToScroll: 1,
+    };
+
+    if (width < 480) {
+      return {
+        ...baseSettings,
+        slidesToShow: 1,
+      };
+    } else if (width < 1024) {
+      return {
+        ...baseSettings,
+        slidesToShow: 2,
+      };
+    } else {
+      return {
+        ...baseSettings,
+        slidesToShow: 3,
+      };
+    }
+  };
+
+  const [artworks, setArtworks] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [settings, setSliderSettings] = useState(getSliderSettings(window.innerWidth, artworks.length));
   const history = useHistory();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setSliderSettings(getSliderSettings(windowWidth, artworks.length));
+  }, [windowWidth, artworks]);
 
   useEffect(() => {
     const fetchArtworks = async () => {
@@ -23,7 +59,6 @@ const Carousel = ({ category }) => {
         try {
           const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/artwork/tags/${category}`);
           setArtworks(response.data.artworks || []);
-          updateSettings(response.data.artworks.length);
         } catch (error) {
           console.error(`Error fetching artworks with tag ${category}:`, error);
         }
@@ -33,49 +68,20 @@ const Carousel = ({ category }) => {
     fetchArtworks();
   }, [category]);
 
-  const updateSettings = (artworkCount) => {
-    if (artworkCount === 1) {
-      setSliderSettings({
-        dots: false,
-        infinite: false,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: false,
-      });
-    } else if(artworkCount == 2){
-        setSliderSettings({
-          dots: false,
-          infinite: false,
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          autoplay: false,
-        });
-    }
-    else {
-      setSliderSettings({
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 3,
-        slidesToScroll: 3
-      });
-    }
-  };
-
-  const handleImageClick = (artworkID) => {
+  const handleImageClick = async (artworkID) => {
     history.push(`/reviews/${artworkID}`);
     window.location.reload();
   };
 
   return (
-    <Slider {...settings} key={JSON.stringify(settings)}>
-    {artworks.map((artwork, index) => (
-        <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}>
-            <ImageCardHover src={artwork.image_url} alt={artwork.title} />
+    <Slider {...settings} key={JSON.stringify(settings)} style={{ margin: 'auto' }}>
+      {artworks.map((artwork, index) => (
+        <div key={index} onClick={() => handleImageClick(artwork.artwork_id)}
+             style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
+          <ImageCardHover src={artwork.image_url} alt={artwork.title} />
         </div>
-    ))}
-</Slider>
+      ))}
+    </Slider>
   );
 };
 

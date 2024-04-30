@@ -1,17 +1,28 @@
-import styles from "../styles/homepage.module.css";
-import VirtuosoLogo from "../../assets/images/VirtuosoLogo.png"
-import Button from "../Navigation/Button";
+import styles from "../styles/aboutpage.module.css";
+import { useEffect, useState } from 'react';
+
 const AboutPage = () => {
-  const onClick = () => {
-    console.log('click')
-  }
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768); 
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
-    
-    <div className={"About"}>
-       <div style={{margin: '15vh', flex: 2, maxWidth: '100%', border: '1px solid #cccccc', borderRadius: '10px', padding: '10px', maxHeight: '5000px', overflowY: 'auto', padding: '20px'}}> 
-            <div style={{maxWidth: '50vw'}}>
-            <h1 className={styles.h1}><span>Vir•tu•o•</span><span style ={{color: '#990000'}}>WHO?</span></h1>
-            <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Virtuos<span style ={{color: '#990000'}}>o</span> is more than a social network for art lovers. Virtuos<span style ={{color: '#990000'}}>o</span> is  a space that welcomes</p>
+    <div className={isMobile ? styles.aboutMobile : styles.aboutDesktop}>
+      <div className={styles.aboutContent}>
+        <h1 className={styles.h1}><span>Vir•tu•o•</span><span style={{ color: '#990000' }}>WHO?</span></h1>
+          <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Virtuos<span style ={{color: '#990000'}}>o</span> is more than a social network for art lovers. Virtuos<span style ={{color: '#990000'}}>o</span> is  a space that welcomes</p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}><span style ={{color: '#990000'}}>the explorer</span></p>
             
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}><span style ={{color: '#990000'}}>the creative</span></p>
@@ -29,24 +40,8 @@ const AboutPage = () => {
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Well thats enough words.</p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>Much like art we invite you to just</p>
             <p className={styles.p} style ={{marginBottom: '30px', maxWidth: '90%'}}>see it for yourself.</p>
-            
-            </div>
-            <div className={styles.background}>
-                <img src={VirtuosoLogo} alt="Home Background" className={styles.backgroundImage}style={{marginTop: '100px', width: '40vw', paddingLeft: '10vw', paddingTop: '10vh'}} />
-            </div>
-            <div className= {styles.btn}>
-            <a href ='./register'><Button text='Review Sneak Peak' onClick={onClick}/></a> <a href ='./register'><Button text='Trending Sneak Peak' onClick={onClick}/></a> <a href ='./register'><Button text='Annotations Sneak Peak' onClick={onClick}/></a> 
-            </div>
-
-            <div className="about-section-image-container">
-             
-            </div>
-        </div>
-
-        <div>
-        </div>
+      </div>
     </div>
-  )
-}
-
+  );
+};
 export default AboutPage;

@@ -11,13 +11,6 @@ const FetchAnnotate = ({ artworkID, setHoverCoordinates, url }) => {
 
   //const [hoverCoordinates, setHoverCoordinates] = useState({ x: null, y: null });
 
-
-  const handleAnnotationHover = (x, y) => {
-    setHoverCoordinates({ x, y });
-  };
-
-//get user info here (incl username) 
-//TODO: profile pic? (in info)
 const fetchAnnotations = async () => {
   try {
     const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/annotations/artwork/${artworkID}/annotations`, {
@@ -53,6 +46,7 @@ const fetchAnnotations = async () => {
   const handleAnnotationSubmit = async () => {
     try {
       await fetchAnnotations();
+      console.log("fetching")
     } catch (error) {
       console.error("Error adding annotation:", error);
     }
@@ -63,6 +57,7 @@ const fetchAnnotations = async () => {
       await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/annotations/annotations/${annotationId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
+      setHoverCoordinates({x: null, y:null})
       fetchAnnotations(); 
     } catch (error) {
       console.error("Error deleting annotation:", error);
@@ -76,7 +71,7 @@ const fetchAnnotations = async () => {
         <div style={{ textAlign: 'left', marginBottom: '20px', cursor: 'pointer' }}>
           <span style={{ fontSize: '24px', fontWeight: 'bold'}} onClick={handleAddAnnotationClick}>+</span>
           <hr style={{marginTop: '10px', color: 'gray'}}></hr>
-          {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} url={url} />}
+          {showPopup && <PopupForm onSubmit={handleAnnotationSubmit} onClose={() => setShowPopup(false)} />}
         </div>
         {annotations.map((annotation, index) => (
           <SingleAnnotation annotation={annotation} onDelete= {handleDeleteAnnotation} key={index} username={annotation.user_name} comment={annotation.message} x={annotation.x_coordinate} y={annotation.y_coordinate} onHover={setHoverCoordinates}/>

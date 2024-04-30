@@ -6,29 +6,17 @@ class Artwork(Document):
     artwork_id = StringField(required=True, unique=True)
     title = StringField(required=True)
     user_id = StringField(required=True) 
-    # Reference to the User document of the artist, required
     artist = StringField(required=True) 
     artist_name = StringField(required=True)
     year = StringField(required=True)
-    # URL to the image of the artwork, required
     image_url = StringField(required=True)
-    # List of tags associated with the artwork, each tag's max length is 50
-    tags = ListField(StringField(max_length=50))
-    # Description of the artwork, optional
+    tags = ListField(StringField())
     description = StringField()
     image_location = StringField()
     annotations = ListField(StringField()) #optional
-    average_rating = FloatField()
+    average_rating = FloatField(default=0.0)
     genre = StringField()
     reviews = ListField(ReferenceField(Review))
-
-
-    def update_average_rating(self):
-        reviews = Review.objects(artwork_id=self)  # This should correctly reference the `artwork` in Review
-        if reviews:
-            total_rating = sum(review.rating for review in reviews)
-            self.average_rating = total_rating / len(reviews)
-            self.save()
     
     def serialize(self):
         return {
@@ -47,3 +35,13 @@ class Artwork(Document):
             "genre": self.genre if self.genre else "",
             "reviews": [review.serialize() for review in self.reviews] if self.reviews else []
         }
+
+def updateRating(artwork_id):
+        artwork = Artwork.objects.get(artwork_id=artwork_id)
+        reviews = Review.objects(artwork_id=artwork)
+        if reviews:
+            total_rating = sum(review.rating for review in reviews)
+            average_rating = total_rating / len(reviews)
+        else:
+            average_rating = 0
+        artwork.update(set__average_rating=average_rating)
