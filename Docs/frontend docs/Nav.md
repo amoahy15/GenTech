@@ -14,6 +14,8 @@ that conditionally render depending on the user's status (signed in or not). Ple
 
 * Found in VirtuosoApp/frontend/src/components/Navigation
 
+## Components
+
 - **Button** 
  * Overview: A single button that takes in text and onClick as parameters. This is for ease of use since it already has preset styling.
 
