@@ -18,7 +18,7 @@ function DeleteUser({ userId }) {
                 return; 
             }
 
-            const response = await axios.delete(`http://127.0.0.1:8000/api/user/delete_user/${userId}`, {
+            const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/user/delete_user/${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
