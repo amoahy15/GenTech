@@ -12,7 +12,7 @@ Virtuoso is accessible at https://virtuoso-419315.web.app/
 ## Technologies Used
 * Flask
 * MongoDB
-* React
+* React.js
   
 ## Features
 * Annotation
@@ -34,7 +34,7 @@ All images used on our site are from the [National Gallery of Art](https://www.n
 ## Team Gentech
 * [Chloe Bickel](mailto:chl.bickel@gmail.com)
 * Humphrey Amoakohene
-* Ivan Martinez-Kay
+* [Ivan Martinez-Kay](mailto:martinezkayivan@gmail.com)
 * Jose Izaguirre I
 * Tierra Ablorh
 
