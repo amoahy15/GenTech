@@ -53,10 +53,10 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
 
 ## Components
 
-* found in VirtuosoApp/frontend/src/components
 * Note: At this point all API calls will use the user's generated token as an authourization header for safety befores pulling or posting any data to the database.
 
 - **post:**
+  * found in VirtuosoApp/frontend/src/components/API/Post.js
   * Overview: Authorized Users may create art. If a user wants access, they may request by emailing us [gentech.emory@gmail.com](mailto:gentech.emory@gmail.com) and providing us with their user ID (can be found in advanced settings) and a brief art portfolio. We reserve the rights to reject requests.
    * `handleFileChange` allows user to select a file from local machine.
    * `UploadImage` deals with the generation of an s3 link (s3 controller /upload). The image file chosen will be pushed to the database in the context of a url of the image stored in our s3 bucket.
@@ -64,11 +64,24 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
    * `togglePopup` shows and closes the pop up form where the user can specify description, artist, year, and title.
   
 - **ProfilePic:**
+  * found in VirtuosoApp/frontend/src/components/UserData/ProfilePic.js
   * Overview: Simple component that pulls the profile picture from the API endpoint /details so that it can be dynamically styled. Not much else to know here.
     
 - **UpdatePassword:**
-  * Overview: 
+  * found in VirtuosoApp/frontend/src/components/API/UpdatePassword.js
+  * Overview: The user must type their old password in correctly to change it. Upon completion, the user's password will have been updated for further use.
+     * `handleOldPasswordChange` handles form submission of old password.
+     * `handleNewPasswordChange` handles form submission of new password.
+     * `handleSubmit` makes an API call to /update_password which requires the old password to authenticate the change.
+     
     
 - **UpdateUsername:**
+  * found in VirtuosoApp/frontend/src/components/API/UpdateUsername.js
+  * Overview: The user can update their username here. Usernames are not unique, but the user ID is and will remain the same regardless. Think of it like Steam's system.
+    * `handleUsernameChange` handles form submission of typed requested username.
+    * `handleSubmit` makes an API call to /update_user which uses the user ID as verification then makes the change.
+     
 - **DeleteUser:**
-
+  * found in VirtuosoApp/frontend/src/components/API/DeleteUser.js
+  * Overview: This component will delete every trace of the user from the database, so be sure that this is your final decision. You will lose your artworks and reviews.
+    * `handleDelete` makes an API call to /delete_user which will delete all user variables. `useHistory` will push the user to the homepage after they have deleted their account.
