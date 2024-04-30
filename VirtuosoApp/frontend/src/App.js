@@ -1,6 +1,6 @@
 import Nav from "./components/Navigation/Nav";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch, useHistory} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import AboutPage from "./components/Pages/AboutPage";
 import Home from "./components/Pages/Home";
 import ReviewPage from "./components/Pages/ReviewPage";
@@ -25,10 +25,7 @@ import { NotificationProvider } from './components/Notifications/notificationPro
 import NotificationBar from './components/Notifications/notificationBar.js';
 import NavUsersMobile from "./components/Navigation/NavUsersMobile";
 import NavMobile from "./components/Navigation/NavMobile";
-
-
-
-
+import Team from "./components/Pages/Team.js"
 
 function App() {
   const token = localStorage.getItem("token");
@@ -133,6 +130,11 @@ function App() {
             {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
             <OtherUser/>
             </Route>
+            <Route path="/team">
+            {isMobile ? (token ? <NavUser /> : <Nav />) : (token ? <NavUser /> : <Nav />)}
+            <Team />
+            <Footer />
+          </Route>
             </Switch>
           </div>
         </NotificationProvider>
@@ -140,5 +142,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;
