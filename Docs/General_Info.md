@@ -54,6 +54,8 @@ Follow along at https://virtuoso-419315.web.app/
 
 
 ### Settings
+  * Here you will find all the information about your account that you need. You can change your password and username here. The one thing that remains constant is your user ID, so hold onto it with all costs. You may also completely delete your account from our database here (We do not collect information).
+
 ### Finding Images and Users
   There are two ways of finding artwork, the first being via the 'Gallery' or 'Collections' page. This page has capabilities to display a number of collections dependent on attributes such as period, artist, and media...
       ![image](https://github.com/amoahy15/GenTech/assets/141963248/866b3edc-4fb4-4ccc-a6ca-507436edfd84)
