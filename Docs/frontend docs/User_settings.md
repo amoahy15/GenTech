@@ -85,3 +85,9 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
   * found in VirtuosoApp/frontend/src/components/API/DeleteUser.js
   * Overview: This component will delete every trace of the user from the database, so be sure that this is your final decision. You will lose your artworks and reviews.
     * `handleDelete` makes an API call to /delete_user which will delete all user variables. `useHistory` will push the user to the homepage after they have deleted their account.
+   
+- **OtherUsers:**
+  * found in VirtuosoApp/frontend/src/components/UserData/OtherUsers.js
+  * Overview: This component is essentially the profile page of other users you may find in `<Search/>` or through reviews and annotations.
+     * `UseEffect` will make an API call to /details/(variable username) for the user you clicked on's information. This is done by using React `Link` on the usernames listed on a specific page. `Link` then allows us to pass the username clicked on as a parameter and variable for `UseEffect` to find the specific details.
+     * We then call `<Row>` and `<Collections>` to display that user's reviewed art by passing in their username as the given tag.
