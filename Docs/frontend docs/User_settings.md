@@ -35,7 +35,19 @@ The relevant folders are going to be UserData and API. Profile.js is contained i
      *`handleBioChange` will interact with the form to confirm the user wants to make this change.
      * `handleSave` merged the functionality with `togglePopup` and `handleBioChange`.
   * `togglePopup` shows the pop up form for the user to change their bio.
+  * `<post/>` calls the post component.
 <img width="1440" alt="Screenshot 2024-04-30 at 1 08 02 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/2aeeb57e-79e1-4fa9-b1d4-f89135c25569">
 
-
+* The user may also view more information on themself in the advanced settings page
+* Found in VirtuosoApp/frontend/src/components/UserData/AdvancedSettings.js
+  * `UseEffect` will make an API call to /details to retrieve the user data.
+  * `togglePopup` shows the pop up form for the user to confirm account deletion.
+  * `<ProfilePic/>` calls the profile picture.
+  * `<UpdatePassword/>` calls the component that handles this change.
+  * `<UpdateUsername/>` calls the component that handles this change.
+  * `<DeleteUser/>` calls the component that handles deletion.
+ 
+<img width="1437" alt="Screenshot 2024-04-30 at 1 26 12 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/b92b4142-410c-4134-8fee-fcda2969f096">
+<img width="1440" alt="Screenshot 2024-04-30 at 1 26 59 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/b1c272c7-1e83-4985-92e0-7c0c79a9659c">
+<img width="1440" alt="Screenshot 2024-04-30 at 1 27 27 PM" src="https://github.com/amoahy15/GenTech/assets/75340434/34487cbf-2fd7-4984-bbcf-9467fb92ec98">
 
