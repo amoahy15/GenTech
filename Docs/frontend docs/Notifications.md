@@ -1,5 +1,5 @@
 ## Notifications
-In the Virtuoso Web App, notifications are currently rendered upon login failures. This is to promote transparency with our users with an account. The notifications inform users about what caused their failed login attempt. Below is a breakdown about how this fuctionality was achieved with the interaction between three Notification-specific react components.
+In the Virtuoso Web App, notifications are currently rendered upon login failures. This is to promote transparency with our users who have a account. The notifications inform users about what caused their failed login attempt. Below is a breakdown about how this fuctionality was achieved with the interaction between three Notification-specific react components.
 
 ## NotificationBar Component
 
