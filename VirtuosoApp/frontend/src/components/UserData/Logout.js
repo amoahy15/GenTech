@@ -9,7 +9,7 @@ const Logout = () => {
     const handleLogout = () =>{
         
         localStorage.removeItem('token');
-        nav.push('./');
+        nav.push('/');
         window.location.reload();
     }
 
