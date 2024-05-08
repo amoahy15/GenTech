@@ -12,11 +12,11 @@ from .mailController import send_confirmation_email, send_password_reset_email
 from models.reviewModel import Review
 from models.artworkModel import Artwork
 logging.basicConfig(level=logging.DEBUG)
-
+# Setup Flask app and security features
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 user_controller = Blueprint('user_controller', __name__)
-
+# Route to create a new user
 @user_controller.route('/create_user', methods=['POST'])
 def create_user():
     current_app.logger.info("Attempting to create a new user")
@@ -24,11 +24,11 @@ def create_user():
     if not data:
         current_app.logger.warning("No JSON payload received")
         return jsonify({"error": "No JSON payload received"}), 400
-
+  # Check if the email already exists
     if User.objects(email=data['email']).first():
         current_app.logger.error("Email already exists")
         return jsonify({"error": "Email already exists"}), 409     
-     
+        # Generate a unique verification token
     verification_code = secrets.token_urlsafe(16)
     new_user = User(
         user_id=str(uuid.uuid4()),
@@ -51,7 +51,7 @@ def create_user():
         joined_date=datetime.now(timezone.utc)
     )
     try:
-        new_user.save()
+        new_user.save()# Save the new user to the database
         base_url = os.getenv('BASE_URL', 'http://localhost:3000')
         verification_url = f"{base_url}/verify/{new_user.user_id}/{verification_code}"
         send_confirmation_email(new_user.email, verification_url)
@@ -63,11 +63,11 @@ def create_user():
     except NotUniqueError:
         current_app.logger.error("User already exists with the provided username or email", exc_info=True)
         return jsonify({"error": "User already exists"}), 409
-
+# Route to update user information
 @user_controller.route('/update_user', methods=['PUT'])
 @jwt_required()
 def update_user():
-    user_id = get_jwt_identity()
+    user_id = get_jwt_identity() # Get the ID of the current user
     user = User.objects(user_id=user_id).first()
 
     if not user:
@@ -88,11 +88,11 @@ def update_user():
     except Exception as e:
         current_app.logger.error(f"Error updating user {user_id}: {str(e)}")
         return jsonify({"error": "Error updating user"}), 500
-
+#route to change password
 @user_controller.route('/update_password', methods=['PUT'])
 @jwt_required()
 def update_password():
-    user_id = get_jwt_identity()
+    user_id = get_jwt_identity()  # Get the ID of the current user
     user = User.objects(user_id=user_id).first()
 
     if not user:
@@ -114,7 +114,7 @@ def update_password():
             return jsonify({"error": "Incorrect old password"}), 400
     else:
         return jsonify({"error": "Required password fields missing"}), 400
-    
+#route to change bio
 @user_controller.route('/update_bio', methods=['PUT'])
 @jwt_required()
 def update_bio():
@@ -140,7 +140,7 @@ def update_bio():
         current_app.logger.error(f"Error updating bio for user {user_id}: {str(e)}")
         return jsonify({"error": "Error updating user bio"}), 500
 
-    
+ #route to login   
 @user_controller.route('/login', methods=['POST'])
 def login_user():
     data = request.get_json()
@@ -154,7 +154,7 @@ def login_user():
     current_app.logger.error("Invalid login credentials")
     return jsonify({"error": "Invalid credentials"}), 401
 
-
+#route to delete user
 @user_controller.route('/delete_user/<string:user_id>', methods=['DELETE'])
 @jwt_required()
 def delete_user(user_id):
@@ -167,7 +167,7 @@ def delete_user(user_id):
 
     current_app.logger.error(f"User {user_id} not found for deletion")
     return jsonify({"error": "User not found"}), 404
-
+#route to authenticate user 
 @user_controller.route('/authenticate_user', methods=['POST'])
 @jwt_required()
 def authenticate_user():
@@ -180,14 +180,14 @@ def authenticate_user():
 
     current_app.logger.error("Authentication failed")
     return jsonify({"error": "Authentication failed"}), 401
-
+#route to get list of users 
 @user_controller.route('/list_users', methods=['GET'])
 @jwt_required()
 def list_users():
     users = User.objects()
     current_app.logger.info("Successfully fetched all users")
     return jsonify([user.serialize() for user in users]), 200
-
+#route to get user's details
 @user_controller.route('/details', methods=['GET'])
 @jwt_required()
 def get_user_details():
@@ -200,7 +200,7 @@ def get_user_details():
 
     current_app.logger.error(f"Logged-in user {current_user_id} not found")
     return jsonify({"error": "User not found"}), 404
-
+# Route to follow another user
 @user_controller.route('/follow', methods=['POST'])
 @jwt_required()
 def follow_user():
@@ -232,7 +232,7 @@ def follow_user():
         target_user.update(add_to_set__followers=current_user_id)
         current_app.logger.info("User successfully followed another user")
         return jsonify({"message": "Successfully followed the user"}), 200
-
+#route to unfollow another user 
 @user_controller.route('/unfollow', methods=['POST'])
 @jwt_required()
 def unfollow_user():
@@ -259,7 +259,7 @@ def unfollow_user():
     else:
         current_app.logger.warning("User is not following this user")
         return jsonify({"error": "Not following this user"}), 400
-
+#route to authenticate user
 @user_controller.route('/verify/<user_id>/<verification_token>', methods=['GET'])
 def verify_user(user_id, verification_token):
     current_app.logger.debug(f"Verifying user {user_id} with token {verification_token}")
@@ -278,7 +278,7 @@ def verify_user(user_id, verification_token):
     else:
         current_app.logger.warning(f"Invalid verification token for user {user_id}: {verification_token}")
         return jsonify({"error": "Invalid verification token"}), 400
-
+# Route to request a password reset
 @user_controller.route('/request_password_reset', methods=['POST'])
 def request_password_reset():
     data = request.get_json()
@@ -304,7 +304,7 @@ def request_password_reset():
     except Exception as e:
         current_app.logger.error(f"Failed to send password reset email to {user.email}: {str(e)}")
         return jsonify({'error': 'Failed to send password reset email', 'details': str(e)}), 500
-
+#route to reset password through email
 @user_controller.route('/reset_password/<reset_token>', methods=['PUT'])
 def reset_password(reset_token):
     current_app.logger.info(f"Received password reset request for token: {reset_token}")
@@ -328,7 +328,7 @@ def reset_password(reset_token):
     except Exception as e:
         current_app.logger.error(f"Failed to reset password: {str(e)}")
         return jsonify({'error': 'Failed to reset password', 'details': str(e)}), 500
-
+#route to get reviews of user
 @user_controller.route('/getreviews', methods=['GET'])
 @jwt_required()
 def get_user_reviews():
@@ -358,7 +358,7 @@ def get_user_reviews():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
-
+#route to get users details
 @user_controller.route('/details/<string:user_name>', methods=['GET'])
 @jwt_required() 
 def get_user_details_by_username(user_name):
