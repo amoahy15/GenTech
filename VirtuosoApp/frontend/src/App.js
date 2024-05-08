@@ -106,7 +106,7 @@ function App() {
                 <EmailCheckPage />
               </Route>
               <Route path="/search">
-               {token ? <NavUser /> : <Nav />}
+              {isMobile ? (token ? <NavUsersMobile/> : <NavMobile/>) : (token ? <NavUser/> : <Nav/>)}
                 <Search />
                 <Footer></Footer>
               </Route>
